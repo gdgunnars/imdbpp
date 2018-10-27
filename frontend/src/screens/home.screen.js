@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import * as Style from './screen.style';
 
-// Todo replace this for parent container
 import Slider from '../components/Slider';
 import Backdrop from '../components/backdrop';
 
@@ -17,16 +16,37 @@ class HomeScreen extends PureComponent {
         <Backdrop />
         <Slider
           items={[
-            { key: '1' },
-            { key: '2' },
-            { key: '3' },
-            { key: '4' },
-            { key: '5' },
-            { key: '6' },
-            { key: '7' },
-            { key: '8' },
-            { key: '9' },
-            { key: '10' }
+            // just testing
+            {
+              key: '1',
+              poster_path:
+                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg'
+            },
+            {
+              key: '2',
+              poster_path:
+                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg'
+            },
+            {
+              key: '3',
+              poster_path:
+                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg'
+            },
+            {
+              key: '4',
+              poster_path:
+                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg'
+            },
+            {
+              key: '5',
+              poster_path:
+                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg'
+            },
+            {
+              key: '6',
+              poster_path:
+                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg'
+            }
           ]}
         />
       </Style.ScreenContainer>

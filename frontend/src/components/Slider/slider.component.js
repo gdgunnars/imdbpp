@@ -2,25 +2,10 @@ import React from 'react';
 import { FlatList } from 'react-native';
 import styled from 'styled-components';
 import * as DimSize from '../../common/dimensionSize';
+import Poster from '../poster';
 
-const cWidth = DimSize.width('35%');
-const cHeight = DimSize.height('30%');
+const height = DimSize.height('30%');
 const sWidth = DimSize.width('2%');
-const itemWidth = cWidth + sWidth;
-
-const Container = styled.TouchableOpacity`
-  width: ${cWidth};
-  height: ${cHeight};
-  background-color: tomato;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Text = styled.Text`
-  font-size: 24;
-  color: white;
-`;
 
 const Seperator = styled.View`
   width: ${sWidth};
@@ -37,16 +22,9 @@ class Slider extends React.Component {
         data={items}
         ItemSeparatorComponent={() => <Seperator />}
         renderItem={({ item }) => (
-          <Container>
-            <Text>{item.key}</Text>
-          </Container>
+          <Poster height={height} url={item.poster_path} />
         )}
-        getItemLayout={(data, index) => ({
-          length: itemWidth,
-          offset: itemWidth * index,
-          index
-        })}
-        snapToInterval={itemWidth}
+        snapToInterval={height * 0.7 + sWidth}
         snapToAlignment={'center'}
         showsHorizontalScrollIndicator={false}
         decelerationRate={'fast'}
