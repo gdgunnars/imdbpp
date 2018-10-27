@@ -1,15 +1,21 @@
 import React, { PureComponent } from 'react';
-import { ScrollView } from 'react-native';
-import SharedStyleOption from '../navigation/sharedStyle.navigation';
+import * as Style from './screen.style';
+
+// Todo replace this for parent container
+import Backdrop from '../components/backdrop.component';
 
 class HomeScreen extends PureComponent {
   static navigationOptions = {
     title: 'Home',
-    ...SharedStyleOption,
+    ...Style.NavigationStyle,
   };
 
   render() {
-    return <ScrollView style={{ flex: 1, backgroundColor: '#141414' }} />;
+    return (
+      <Style.ScreenContainer>
+        <Backdrop />
+      </Style.ScreenContainer>
+    );
   }
 }
 

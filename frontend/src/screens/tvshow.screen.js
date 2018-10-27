@@ -1,15 +1,14 @@
 import React, { PureComponent } from 'react';
-import { ScrollView } from 'react-native';
-import SharedStyleOption from '../navigation/sharedStyle.navigation';
+import * as Style from './screen.style';
 
 class TvShowScreen extends PureComponent {
   static navigationOptions = {
     title: 'Tv-Shows',
-    ...SharedStyleOption,
+    ...Style.NavigationStyle,
   };
 
   render() {
-    return <ScrollView style={{ flex: 1, backgroundColor: '#141414' }} />;
+    return <Style.ScreenContainer />;
   }
 }
 
