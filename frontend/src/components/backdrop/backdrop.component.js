@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ImageBackdrop from './image.backdrop.component';
 import Poster from '../poster';
+import Rating from '../rating';
 import * as DimSize from '../../common/dimensionSize';
 
 const Container = styled.View`
@@ -18,6 +19,12 @@ const ContentContainer = styled.View`
   position: absolute;
   display: flex;
   flex-direction: row;
+`;
+
+const RatingContainer = styled.View`
+  position: absolute;
+  top: ${DimSize.contentSidesPadding()};
+  right: ${DimSize.windowSidesPadding()};
 `;
 
 const ContentWrapper = styled.View`
@@ -63,6 +70,9 @@ const Backdrop = () => {
         height={ImageBackdropHeight}
         url="https://i.annihil.us/u/prod/marvel/i/mg/9/03/537ba26276348.jpg"
       />
+      <RatingContainer>
+        <Rating score={7.5} />
+      </RatingContainer>
       <ContentContainer>
         <Poster
           height={posterHeight}
