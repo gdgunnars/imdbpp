@@ -12,4 +12,11 @@ const toNumber = (percentage) => {
 const width = percentage => screenWidth * toNumber(percentage);
 const height = percentage => screenHeight * toNumber(percentage);
 
-export { width, height };
+const windowSidesPadding = () => width('4%');
+
+// Used for content
+const contentSidesPadding = () => width('2%');
+
+export {
+  width, height, windowSidesPadding, contentSidesPadding,
+};

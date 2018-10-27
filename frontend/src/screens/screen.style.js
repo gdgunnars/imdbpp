@@ -8,6 +8,7 @@ const NavigationStyle = {
     flex: 1,
     color: '#fefefe',
     fontWeight: 'normal',
+    fontSize: 16,
   },
   headerStyle: {
     backgroundColor: '#141414',
