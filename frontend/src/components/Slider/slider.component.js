@@ -1,11 +1,12 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import styled from 'styled-components';
-import * as DimSize from '../common/dimensionSize';
+import * as DimSize from '../../common/dimensionSize';
 
 const cWidth = DimSize.width('35%');
 const cHeight = DimSize.height('30%');
 const sWidth = DimSize.width('2%');
+const itemWidth = cWidth + sWidth;
 
 const Container = styled.TouchableOpacity`
   width: ${cWidth};
@@ -16,7 +17,10 @@ const Container = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const Text = styled.Text``;
+const Text = styled.Text`
+  font-size: 24;
+  color: white;
+`;
 
 const Seperator = styled.View`
   width: ${sWidth};
@@ -38,11 +42,14 @@ class Slider extends React.Component {
           </Container>
         )}
         getItemLayout={(data, index) => ({
-          length: cWidth + sWidth,
-          offset: (cWidth + sWidth) * index,
+          length: itemWidth,
+          offset: itemWidth * index,
           index
         })}
-        initialScrollIndex={items.length / 2}
+        snapToInterval={itemWidth}
+        snapToAlignment={'center'}
+        showsHorizontalScrollIndicator={false}
+        decelerationRate={'fast'}
       />
     );
   }
