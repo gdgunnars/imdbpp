@@ -19,7 +19,7 @@ const ShadowBottom = styled(ShadowContainer)`
 
 const FakeShadow = ({ position, height }) => {
   const style = { height: '100%', width: '100%' };
-  const colors = ['#141414', 'rgba(20,20,20, 0.25)', 'rgba(20,20,20,0)'];
+  const colors = ['#141414', 'rgba(20,20,20,0.4)', 'rgba(20,20,20,0)'];
   if (position === 'top') {
     return (
       <ShadowTop height={height}>

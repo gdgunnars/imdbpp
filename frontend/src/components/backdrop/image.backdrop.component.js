@@ -4,7 +4,7 @@ import FakeShadow from './fakeShadow.backdrop.component';
 
 const Container = styled.View`
   height: ${props => props.height};
-  background-color: green;
+  background-color: #141414;
   position: relative;
 `;
 
@@ -16,9 +16,9 @@ const BackdropImageContainer = (props) => {
   const { url, height } = props;
   return (
     <Container height={height}>
-      <BackdropImage source={{ uri: url }} height={height} />
-      <FakeShadow position="top" height={height * 0.9} />
-      <FakeShadow position="bottom" height={height * 0.9} />
+      <BackdropImage source={{ uri: url }} height={height} resizeMode="cover" />
+      <FakeShadow position="top" height={height * 0.15} />
+      <FakeShadow position="bottom" height={height * 0.4} />
     </Container>
   );
 };

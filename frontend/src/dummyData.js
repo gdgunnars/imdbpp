@@ -146,7 +146,7 @@ const movies = [
     id: 454992,
     name: 'The Spy Who Dumped Me',
     score: 6.4,
-    poster_path: 'https://image.tmdb.org/t/p/w500/2lIr27lBdxCpzYDl6WUHzzD6l6H.jpg',
+    poster_path: 'https://image.tmdb.org/t/p/w1280/2lIr27lBdxCpzYDl6WUHzzD6l6H.jpg',
     backdrop_path: 'https://image.tmdb.org/t/p/w500/uN6v3Hz4qI2CIqT1Ro4vPgAbub3.jpg',
     genre_ids: [28, 12, 35],
     overview:
