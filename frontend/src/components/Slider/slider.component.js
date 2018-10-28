@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as DimSize from '../../common/dimensionSize';
 import Poster from '../poster';
 
-const height = DimSize.height('30%');
+const height = DimSize.height('32%');
 const sWidth = DimSize.width('2%');
 
 const Seperator = styled.View`
@@ -18,16 +18,14 @@ class Slider extends React.Component {
 
     return (
       <FlatList
-        horizontal={true}
+        horizontal
         data={items}
         ItemSeparatorComponent={() => <Seperator />}
-        renderItem={({ item }) => (
-          <Poster height={height} url={item.poster_path} />
-        )}
+        renderItem={({ item }) => <Poster height={height} url={item.poster_path} />}
         snapToInterval={height * 0.7 + sWidth}
-        snapToAlignment={'center'}
+        snapToAlignment="center"
         showsHorizontalScrollIndicator={false}
-        decelerationRate={'fast'}
+        decelerationRate="fast"
       />
     );
   }
