@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import * as Style from './screen.style';
 
 import Slider from '../components/Slider';
+import Poster from '../components/poster';
 import Backdrop from '../components/backdrop';
 import * as DimSize from '../common/dimensionSize';
+import { getAllMovies } from '../dummyData';
 
 const TopRatedTitles = styled.Text`
   font-size: ${DimSize.height('2.5%')};
@@ -14,51 +16,45 @@ const TopRatedTitles = styled.Text`
   padding-left: ${DimSize.windowSidesPadding()};
 `;
 
+const getTrendingMovies = () => {
+  const movies = getAllMovies();
+  return movies
+    .slice(11, 20)
+    .map(item => <Poster key={item.id} url={item.poster_path} height={DimSize.height('32%')} />);
+};
+/*eslint-disable */
+const getTopMovies = () => {
+  const movies = getAllMovies();
+  return movies
+    .slice(1, 10)
+    .map(({ id, name, score, date, backdrop_path, poster_path, overview }) => (
+      <Backdrop
+        key={id}
+        name={name}
+        score={score}
+        date={date}
+        backdrop_path={backdrop_path}
+        poster_path={poster_path}
+        overview={`${overview.substr(0, 100).trim()}${overview.length > 100 ? '...' : ''}`}
+      />
+    ));
+};
+
 class HomeScreen extends PureComponent {
   static navigationOptions = {
-    title: 'Home',
+    title: '',
     ...Style.NavigationStyle,
   };
 
   render() {
     return (
       <Style.ScreenContainer>
-        <Backdrop />
+        <Slider snapWidth={DimSize.width('100%')} items={getTopMovies()} />
         <TopRatedTitles>TOP RATED TITLES</TopRatedTitles>
         <Slider
-          items={[
-            // just testing
-            {
-              key: '1',
-              poster_path:
-                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg',
-            },
-            {
-              key: '2',
-              poster_path:
-                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg',
-            },
-            {
-              key: '3',
-              poster_path:
-                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg',
-            },
-            {
-              key: '4',
-              poster_path:
-                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg',
-            },
-            {
-              key: '5',
-              poster_path:
-                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg',
-            },
-            {
-              key: '6',
-              poster_path:
-                'https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg',
-            },
-          ]}
+          snapWidth={DimSize.width('32%') * 0.7 * DimSize.width('2%')}
+          items={getTrendingMovies()}
+          seperator
         />
       </Style.ScreenContainer>
     );

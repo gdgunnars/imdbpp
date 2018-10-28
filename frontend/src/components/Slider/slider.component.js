@@ -1,31 +1,36 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList } from 'react-native';
 import styled from 'styled-components';
 import * as DimSize from '../../common/dimensionSize';
-import Poster from '../poster';
 
-const height = DimSize.height('32%');
-const sWidth = DimSize.width('2%');
+const seperatorWidth = DimSize.width('2%');
 
-const Seperator = styled.View`
-  width: ${sWidth};
+const NormalSeperator = styled.View`
+  width: ${seperatorWidth};
   height: 100%;
 `;
 
-class Slider extends React.Component {
-  render() {
-    const { items } = this.props;
+const NoSeperator = styled.View`
+  width: 0;
+  height: 100%;
+`;
 
+class Slider extends PureComponent {
+  render() {
+    const { items, seperator, snapWidth } = this.props;
+
+    const Seperator = seperator ? NormalSeperator : NoSeperator;
     return (
       <FlatList
         horizontal
         data={items}
         ItemSeparatorComponent={() => <Seperator />}
-        renderItem={({ item }) => <Poster height={height} url={item.poster_path} />}
-        snapToInterval={height * 0.7 + sWidth}
-        snapToAlignment="center"
+        renderItem={({ item }) => item}
+        snapToInterval={snapWidth}
+        snapToAlignment="start"
         showsHorizontalScrollIndicator={false}
         decelerationRate="fast"
+        centerContent
       />
     );
   }

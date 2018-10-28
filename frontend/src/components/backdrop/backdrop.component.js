@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ImageBackdrop from './image.backdrop.component';
 import Poster from '../poster';
 import Rating from '../rating';
 import * as DimSize from '../../common/dimensionSize';
+import dateFormat from '../../common/dateFormat';
 
 const Container = styled.View`
   position: relative;
   height: ${props => props.height};
+  width: ${props => props.width};
   flex-direction: column;
 `;
 
@@ -53,42 +55,36 @@ const FlexRow = styled.View`
   flex-direction: row;
 `;
 
-const dummyData = {
-  title: 'Black Panther',
-  year: '(2018)',
-  description: 'TChalla, heir to the hidden but advanced kingdom of Wakanda.',
-};
+const ImageBackdropHeight = DimSize.height('36%');
+const ContainerHeight = DimSize.height('44%');
+const ContainerWidth = DimSize.width('100%');
+const posterHeight = DimSize.height('20%');
 
-const Backdrop = () => {
-  const ImageBackdropHeight = DimSize.height('36%');
-  const ContainerHeight = DimSize.height('44%');
-  const posterHeight = DimSize.height('20%');
-  return (
-    <Container height={ContainerHeight}>
-      <ImageBackdrop
-        height={ImageBackdropHeight}
-        url="https://i.annihil.us/u/prod/marvel/i/mg/9/03/537ba26276348.jpg"
-      />
-      <RatingContainer>
-        <Rating score={7.5} />
-      </RatingContainer>
-      <ContentContainer>
-        <Poster
-          height={posterHeight}
-          url="https://m.media-amazon.com/images/M/MV5BMTg1MTY2MjYzNV5BMl5BanBnXkFtZTgwMTc4NTMwNDI@._V1_.jpg"
-        />
-        <ContentWrapper>
-          <FlexRow>
-            <Title color="#fefefe">{dummyData.title}</Title>
-            <Title color="rgba(254,254,254,0.48)">{dummyData.year}</Title>
-          </FlexRow>
-          <FlexRow>
-            <Description>{dummyData.description}</Description>
-          </FlexRow>
-        </ContentWrapper>
-      </ContentContainer>
-    </Container>
-  );
-};
+/* eslint-disable */
+class Backdrop extends PureComponent {
+  render() {
+    const { name, score, date, backdrop_path, poster_path, overview } = this.props;
+    return (
+      <Container height={ContainerHeight} width={ContainerWidth}>
+        <ImageBackdrop height={ImageBackdropHeight} url={backdrop_path} />
+        <RatingContainer>{score > 0 && <Rating score={score} />}</RatingContainer>
+        <ContentContainer>
+          <Poster height={posterHeight} url={poster_path} />
+          <ContentWrapper>
+            <FlexRow>
+              <Title color="#fefefe">
+                {name}
+                <Title color="rgba(254,254,254,0.48)">{dateFormat(date)}</Title>
+              </Title>
+            </FlexRow>
+            <FlexRow>
+              <Description>{overview}</Description>
+            </FlexRow>
+          </ContentWrapper>
+        </ContentContainer>
+      </Container>
+    );
+  }
+}
 
 export default Backdrop;
