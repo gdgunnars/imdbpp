@@ -11,17 +11,18 @@ const NavigationStyle = {
     fontSize: 16,
   },
   headerStyle: {
-    backgroundColor: '#141414',
     elevation: 0,
   },
+  headerTransparent: true,
 };
 
 const ScreenContainer = styled.ScrollView`
   display: flex;
   flex-direction: column;
-  width: ${() => DimSize.width('100%')};
-  height: ${() => DimSize.height('100%')};
+  width: ${DimSize.width('100%')};
+  height: ${DimSize.height('100%')};
   background-color: #141414;
+  padding-top: ${DimSize.statusBarHeight()};
 `;
 
 export { NavigationStyle, ScreenContainer };
