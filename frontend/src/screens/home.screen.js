@@ -19,14 +19,14 @@ const TopRatedTitles = styled.Text`
 const getTrendingMovies = () => {
   const movies = getAllMovies();
   return movies
-    .slice(11, 20)
+    .slice(0, 11)
     .map(item => <Poster key={item.id} url={item.poster_path} height={DimSize.height('32%')} />);
 };
 /*eslint-disable */
 const getTopMovies = () => {
   const movies = getAllMovies();
   return movies
-    .slice(1, 10)
+    .slice(11, 20)
     .map(({ id, name, score, date, backdrop_path, poster_path, overview }) => (
       <Backdrop
         key={id}
