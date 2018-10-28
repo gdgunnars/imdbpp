@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -17,6 +17,8 @@ const windowSidesPadding = () => width('4%');
 // Used for content
 const contentSidesPadding = () => width('2%');
 
+const statusBarHeight = () => StatusBar.currentHeight;
+
 export {
-  width, height, windowSidesPadding, contentSidesPadding,
+  width, height, windowSidesPadding, contentSidesPadding, statusBarHeight,
 };
