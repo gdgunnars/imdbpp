@@ -44,7 +44,7 @@ const Title = styled.Text`
 
 const Description = styled.Text`
   color: rgba(254, 254, 254, 0.48);
-  font-size: ${DimSize.height('1.5%')};
+  font-size: ${DimSize.height('2%')};
   overflow: hidden;
 `;
 
@@ -56,8 +56,7 @@ const FlexRow = styled.View`
 const dummyData = {
   title: 'Black Panther',
   year: '(2018)',
-  description:
-    "TChalla, heir to the hidden but advanced kingdom of Wakanda, must step forward to lead his people into a new future and must confront a challenger from his country's past.",
+  description: 'TChalla, heir to the hidden but advanced kingdom of Wakanda.',
 };
 
 const Backdrop = () => {
