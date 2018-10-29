@@ -5,7 +5,7 @@ import styled from 'styled-components';
 // Extract key from youtube link
 // TODO: Change API so that it just returns the key like it did originally
 
-const getId = (url) => {
+const getId = url => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
 
@@ -35,7 +35,15 @@ class Trailer extends PureComponent {
 
     return (
       <View style={{ width, height }}>
-        <WebView source={{ uri: url }} style={{ width, height }} scrollEnabled={false} allowsInlineMediaPlayback javaScriptEnabled startInLoadingState renderLoading={() => <Loading />} />
+        <WebView
+          source={{ uri: url }}
+          style={{ width, height }}
+          scrollEnabled={false}
+          allowsInlineMediaPlayback
+          javaScriptEnabled
+          startInLoadingState
+          renderLoading={() => <Loading />}
+        />
       </View>
     );
   }
