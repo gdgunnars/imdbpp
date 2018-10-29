@@ -16,7 +16,7 @@ const NavigationStyle = {
   headerTransparent: true,
 };
 
-const ScreenContainer = styled.ScrollView`
+const ScreenContainer = styled.View`
   display: flex;
   flex-direction: column;
   width: ${DimSize.width('100%')};

@@ -17,7 +17,7 @@ const windowSidesPadding = () => width('4%');
 // Used for content
 const contentSidesPadding = () => width('2%');
 
-const statusBarHeight = () => StatusBar.currentHeight;
+const statusBarHeight = () => StatusBar.currentHeight || 30;
 
 export {
   width, height, windowSidesPadding, contentSidesPadding, statusBarHeight,

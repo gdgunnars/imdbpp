@@ -72,6 +72,7 @@ class HomeScreen extends PureComponent {
             seperator
           />
         )}
+
       </Style.ScreenContainer>
     );
   }
