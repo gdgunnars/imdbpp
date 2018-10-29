@@ -31,7 +31,7 @@ class Trailer extends PureComponent {
   render() {
     const { src, width, height } = this.props;
     const id = getId(src);
-    const url = `https://www.youtube.com/embed/${id}?rel=0&autoplay=1&showinfo=0&controls=0&modestbranding=1`;
+    const url = `https://www.youtube.com/embed/${id}?rel=0&autoplay=0&controls=0&modestbranding=1`;
 
     return (
       <View style={{ width, height }}>
