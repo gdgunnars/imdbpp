@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { StyleSheet } from 'react-native';
-// import { FontAwesome} from "@expo/vector-icons";
 import { Icon } from 'expo';
 import * as DimSize from '../../common/dimensionSize';
 
@@ -24,7 +22,6 @@ const BookmarkIconContainer = styled.View`
     top: 20%;
 `;
 
-
 class Buttons extends PureComponent {
     constructor(props) {
         super(props)
@@ -35,8 +32,9 @@ class Buttons extends PureComponent {
         const iconSize = DimSize.height(size);
         const iconSizeMissing = DimSize.height('15%');
         const whiteColor = '#ffff';
-        const blackColor = '#0000';
         const redColor = '#e03d38';
+        const reduceSize = 2.5;
+
         switch (type) {
             case 'play':
                 return <Icon.FontAwesome name={'play-circle-o'} color={whiteColor} size={iconSize} />
@@ -49,7 +47,7 @@ class Buttons extends PureComponent {
                     <BookmarkContainer>
                         <Icon.FontAwesome name={'bookmark'} color={whiteColor} size={iconSize} />
                         <BookmarkIconContainer>
-                            <Icon.FontAwesome name={'plus'} size={iconSize / 2.5} />
+                            <Icon.FontAwesome name={'plus'} size={iconSize / reduceSize} />
                         </BookmarkIconContainer>
                     </BookmarkContainer>
                 );
@@ -58,7 +56,7 @@ class Buttons extends PureComponent {
                     <BookmarkContainer>
                         <Icon.FontAwesome name={'bookmark'} color={redColor} size={iconSize} />
                         <BookmarkIconContainer>
-                            <Icon.FontAwesome name={'close'} color={whiteColor} size={iconSize / 2.5} />
+                            <Icon.FontAwesome name={'close'} color={whiteColor} size={iconSize / reduceSize} />
                         </BookmarkIconContainer>
                     </BookmarkContainer>
                 );
