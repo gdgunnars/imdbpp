@@ -52,7 +52,7 @@ class HomeScreen extends PureComponent {
         <Slider snapWidth={DimSize.width('100%')} items={getTopMovies()} />
         <TopRatedTitles>TOP RATED TITLES</TopRatedTitles>
         <Slider
-          snapWidth={DimSize.width('32%') * 0.7 * DimSize.width('2%')}
+          snapWidth={DimSize.height('32%') * 0.7 + DimSize.width('2%')}
           items={getTrendingMovies()}
           seperator
         />
