@@ -5,8 +5,7 @@ class Slider extends PureComponent {
   render() {
     const { items, seperator, snapWidth } = this.props;
     const sneak = seperator ? snapWidth / 1.5 : 0;
-    const currPage = seperator ? items.length / 2 : 0;
-
+    const currPage = seperator ? Math.round(items.length / 2) : 0;
     return (
       <Carousel
         pageWidth={snapWidth}
