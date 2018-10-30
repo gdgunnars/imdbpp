@@ -1,6 +1,7 @@
 import express from "express";
 import axios from "axios";
 import * as config from "../config.js";
+import allGenres from "../common/genres";
 
 // Todo: Remove this in production, we use static data so we dont get blocked by tmdb.org api by issuing to many requests.
 var staticData = [];
@@ -48,7 +49,7 @@ router.route("/").get(async (req, res) => {
           score: vote_average,
           poster_path: config.getImageLink(width, poster_path),
           backdrop_path: config.getImageLink(width, backdrop_path),
-          genre_ids,
+          genres: genre_ids.map(item => allGenres[type][item]),
           overview,
           date: first_air_date || release_date,
           type,
