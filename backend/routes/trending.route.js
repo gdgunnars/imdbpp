@@ -1,6 +1,6 @@
-import express from "express";
-import axios from "axios";
-import * as config from "../config.js";
+import express from 'express';
+import axios from 'axios';
+import * as config from '../config.js';
 
 // Todo: Remove this in production, we use static data so we dont get blocked by tmdb.org api by issuing to many requests.
 var staticData = [];
@@ -9,16 +9,28 @@ const addTrailer = async (id, type) => {
   const trailerLink = `${config.getBasePath()}/${type}/${id}/videos?api_key=${config.getApiKey()}`;
   const { data } = await axios.get(trailerLink);
   const { results } = data;
-  return config.getTrailerLink(results[0].key);
+
+  const res = await axios(config.getYouTubeInfoPath(results[0].key));
+  const info = res.data;
+  const r = /\\u([\d\w]{4})/gi;
+
+  const decoded = decodeURIComponent(info);
+  const split = decoded.split(',');
+  let url = split.find(item => item.startsWith('"url') && item.includes('mp4'));
+  url = decodeURIComponent(url);
+  url = url.replace(r, (match, grp) => String.fromCharCode(parseInt(grp, 16)));
+  const final = unescape(url).slice(7, -1);
+
+  return final.toString().trim();
 };
 
 const router = express.Router();
-router.route("/").get(async (req, res) => {
+router.route('/').get(async (req, res) => {
   if (staticData.length > 0) {
     return res.json(staticData);
   }
   try {
-    console.time("bingo");
+    console.time('bingo');
     const width = 500;
     // get All trending data
     const trendingDataLink = `${config.getBasePath()}/trending/all/day?api_key=${config.getApiKey()}`;
@@ -40,7 +52,7 @@ router.route("/").get(async (req, res) => {
         release_date,
         first_air_date
       }) => {
-        const type = `${first_air_date ? "tv" : "movie"}`;
+        const type = `${first_air_date ? 'tv' : 'movie'}`;
         const trailer = await addTrailer(id, type);
         const elem = {
           id,
@@ -61,11 +73,12 @@ router.route("/").get(async (req, res) => {
     const finalRes = await Promise.all(mappedResults);
     staticData = finalRes;
 
-    console.timeEnd("bingo");
+    console.log(finalRes);
+    console.timeEnd('bingo');
     res.json(finalRes);
   } catch (error) {
     console.log(error);
-    res.json({ message: "SHIT FAILED" });
+    res.json({ message: 'SHIT FAILED' });
   }
 });
 

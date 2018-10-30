@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { StyleSheet } from 'react-native';
-// import { FontAwesome} from "@expo/vector-icons";
 import { Icon } from 'expo';
 import * as DimSize from '../../common/dimensionSize';
 
@@ -29,8 +27,7 @@ class Buttons extends PureComponent {
     const { size } = this.props;
     const iconSize = DimSize.height(size);
     const iconSizeMissing = DimSize.height('15%');
-    const whiteColor = '#ffff';
-    const blackColor = '#0000';
+    const whiteColor = '#fefefe';
     const redColor = '#e03d38';
     switch (type) {
       case 'play':
@@ -63,8 +60,8 @@ class Buttons extends PureComponent {
   }
 
   render() {
-    const { name, onClick } = this.props;
-    return <Button onPress={() => onClick()}>{this.getButton(name)}</Button>;
+    const { name, onPress } = this.props;
+    return <Button onPress={onPress}>{this.getButton(name)}</Button>;
   }
 }
 
