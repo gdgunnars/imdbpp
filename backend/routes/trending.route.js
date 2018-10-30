@@ -2,6 +2,9 @@ import express from "express";
 import axios from "axios";
 import * as config from "../config.js";
 
+// Todo: Remove this in production, we use static data so we dont get blocked by tmdb.org api by issuing to many requests.
+var staticData = [];
+
 const addTrailer = async (id, type) => {
   const trailerLink = `${config.getBasePath()}/${type}/${id}/videos?api_key=${config.getApiKey()}`;
   const { data } = await axios.get(trailerLink);
@@ -11,6 +14,9 @@ const addTrailer = async (id, type) => {
 
 const router = express.Router();
 router.route("/").get(async (req, res) => {
+  if (staticData.length > 0) {
+    return res.json(staticData);
+  }
   try {
     console.time("bingo");
     const width = 500;
@@ -48,12 +54,13 @@ router.route("/").get(async (req, res) => {
           type,
           trailer
         };
-        console.log(elem);
         return elem;
       }
     );
 
     const finalRes = await Promise.all(mappedResults);
+    staticData = finalRes;
+
     console.timeEnd("bingo");
     res.json(finalRes);
   } catch (error) {

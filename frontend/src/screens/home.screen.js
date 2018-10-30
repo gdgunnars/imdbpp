@@ -1,12 +1,15 @@
+/* eslint-disable*/
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import * as Style from './screen.style';
+import ScreenContainer from './screen.style';
 
 import Slider from '../components/Slider';
 import Poster from '../components/poster';
 import Backdrop from '../components/backdrop';
 import * as DimSize from '../common/dimensionSize';
-import { getAllMovies } from '../dummyData';
+import typeToRoutePath from '../common/typeToRoute';
+import { getRecommendedCombined, getTrendingCombined } from '../services';
+import { navigate } from '../navigation';
 
 const TopRatedTitles = styled.Text`
   font-size: ${DimSize.height('2.5%')};
@@ -16,47 +19,61 @@ const TopRatedTitles = styled.Text`
   padding-left: ${DimSize.windowSidesPadding()};
 `;
 
-const getTrendingMovies = () => {
-  const movies = getAllMovies();
-  return movies
-    .slice(0, 11)
-    .map(item => <Poster key={item.id} url={item.poster_path} height={DimSize.height('32%')} />);
-};
-/*eslint-disable */
-const getTopMovies = () => {
-  const movies = getAllMovies();
-  return movies
-    .slice(11, 20)
-    .map(({ id, name, score, date, backdrop_path, poster_path, overview }) => (
-      <Backdrop
-        key={id}
-        name={name}
-        score={score}
-        date={date}
-        backdrop_path={backdrop_path}
-        poster_path={poster_path}
-        overview={`${overview.substr(0, 100).trim()}${overview.length > 100 ? '...' : ''}`}
-      />
-    ));
-};
+const renderPoster = movies =>
+  movies.map(item => (
+    <Poster
+      onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
+      key={item.id}
+      url={item.poster_path}
+      height={DimSize.height('32%')}
+    />
+  ));
+
+const renderBackdrop = movies =>
+  movies.map(({ id, name, score, date, backdrop_path, poster_path, overview, type }) => (
+    <Backdrop
+      onPress={() => navigate(typeToRoutePath(type), { id })}
+      key={id}
+      name={name}
+      score={score}
+      date={date}
+      backdrop_path={backdrop_path}
+      poster_path={poster_path}
+      overview={`${overview.substr(0, 100).trim()}${overview.length > 100 ? '...' : ''}`}
+    />
+  ));
 
 class HomeScreen extends PureComponent {
-  static navigationOptions = {
-    title: '',
-    ...Style.NavigationStyle,
+  state = {
+    trendingNow: null,
+    recommended: null,
+  };
+
+  componentDidMount = async () => {
+    try {
+      const data = await getTrendingCombined();
+      this.setState({
+        trendingNow: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
+    const { trendingNow, recommended } = this.state;
+    const backdropSnapWidth = Math.round(DimSize.width('100%'));
+    const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
     return (
-      <Style.ScreenContainer>
-        <Slider snapWidth={DimSize.width('100%')} items={getTopMovies()} />
-        <TopRatedTitles>TOP RATED TITLES</TopRatedTitles>
-        <Slider
-          snapWidth={DimSize.width('32%') * 0.7 * DimSize.width('2%')}
-          items={getTrendingMovies()}
-          seperator
-        />
-      </Style.ScreenContainer>
+      <ScreenContainer>
+        {trendingNow && (
+          <Slider snapWidth={backdropSnapWidth} items={renderBackdrop(trendingNow)} />
+        )}
+        <TopRatedTitles>TRENDING NOW</TopRatedTitles>
+        {trendingNow && (
+          <Slider snapWidth={posterSnapWidh} items={renderPoster(trendingNow)} seperator />
+        )}
+      </ScreenContainer>
     );
   }
 }
