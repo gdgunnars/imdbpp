@@ -6,7 +6,7 @@ import Rating from '../rating';
 import * as DimSize from '../../common/dimensionSize';
 import dateFormat from '../../common/dateFormat';
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   position: relative;
   height: ${props => props.height};
   width: ${props => props.width};
@@ -63,9 +63,14 @@ const posterHeight = DimSize.height('20%');
 /* eslint-disable */
 class Backdrop extends PureComponent {
   render() {
-    const { name, score, date, backdrop_path, poster_path, overview } = this.props;
+    const { name, score, date, backdrop_path, poster_path, overview, onPress } = this.props;
     return (
-      <Container height={ContainerHeight} width={ContainerWidth}>
+      <Container
+        activeOpacity={1}
+        height={ContainerHeight}
+        width={ContainerWidth}
+        onPress={onPress}
+      >
         <ImageBackdrop height={ImageBackdropHeight} url={backdrop_path} />
         <RatingContainer>{score > 0 && <Rating score={score} />}</RatingContainer>
         <ContentContainer>

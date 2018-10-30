@@ -9,9 +9,9 @@ class ClientDataStorage {
     this[type] = { ...this[type], [element.id]: element };
   };
 
-  getMovieById = id => ({ ...this.movies[id] });
+  getMovieById = id => ({ ...this.movie[id] });
 
-  getTvShowById = id => ({ ...this.tvShows[id] });
+  getTvShowById = id => ({ ...this.tv[id] });
 
   getPeopleById = id => ({ ...this.people[id] });
 }

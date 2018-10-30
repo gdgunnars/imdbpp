@@ -7,7 +7,7 @@ const PosterImage = styled.Image`
   width: ${props => props.width};
 `;
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   height: ${props => props.height};
 `;
 
@@ -16,12 +16,14 @@ const Caption = styled.Text`
   color: #fefefe;
 `;
 
+const defaultFunc = () => {};
+
 const Poster = ({
-  height, withCaption, url, caption,
+  height, withCaption, url, caption, onPress = defaultFunc,
 }) => {
   const containerHeight = withCaption ? height * 1.2 : height;
   return (
-    <Container height={containerHeight}>
+    <Container activeOpacity={1} height={containerHeight} onPress={onPress}>
       <PosterImage
         width={height * 0.7}
         height={height}

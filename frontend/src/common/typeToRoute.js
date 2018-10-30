@@ -3,6 +3,7 @@ const typeToRoutePath = (type) => {
     return 'MovieDetail';
   }
   if (type === 'tv') {
+    console.log('IM BINGo');
     return 'TvShowDetail';
   }
   if (type === 'person') {

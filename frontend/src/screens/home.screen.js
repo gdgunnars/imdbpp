@@ -7,7 +7,9 @@ import Slider from '../components/Slider';
 import Poster from '../components/poster';
 import Backdrop from '../components/backdrop';
 import * as DimSize from '../common/dimensionSize';
+import typeToRoutePath from '../common/typeToRoute';
 import { getRecommendedCombined, getTrendingCombined } from '../services';
+import { navigate } from '../navigation';
 
 const TopRatedTitles = styled.Text`
   font-size: ${DimSize.height('2.5%')};
@@ -19,12 +21,18 @@ const TopRatedTitles = styled.Text`
 
 const renderPoster = movies =>
   movies.map(item => (
-    <Poster key={item.id} url={item.poster_path} height={DimSize.height('32%')} />
+    <Poster
+      onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
+      key={item.id}
+      url={item.poster_path}
+      height={DimSize.height('32%')}
+    />
   ));
 
 const renderBackdrop = movies =>
-  movies.map(({ id, name, score, date, backdrop_path, poster_path, overview }) => (
+  movies.map(({ id, name, score, date, backdrop_path, poster_path, overview, type }) => (
     <Backdrop
+      onPress={() => navigate(typeToRoutePath(type), { id })}
       key={id}
       name={name}
       score={score}
