@@ -1,7 +1,7 @@
 /* eslint-disable*/
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import * as Style from './screen.style';
+import ScreenContainer from './screen.style';
 
 import Slider from '../components/Slider';
 import Poster from '../components/poster';
@@ -36,11 +36,6 @@ const renderBackdrop = movies =>
   ));
 
 class HomeScreen extends PureComponent {
-  static navigationOptions = {
-    title: '',
-    ...Style.NavigationStyle,
-  };
-
   state = {
     trendingNow: null,
     recommended: null,
@@ -62,7 +57,7 @@ class HomeScreen extends PureComponent {
     const backdropSnapWidth = Math.round(DimSize.width('100%'));
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
     return (
-      <Style.ScreenContainer>
+      <ScreenContainer>
         {trendingNow && (
           <Slider snapWidth={backdropSnapWidth} items={renderBackdrop(trendingNow)} />
         )}
@@ -70,7 +65,7 @@ class HomeScreen extends PureComponent {
         {trendingNow && (
           <Slider snapWidth={posterSnapWidh} items={renderPoster(trendingNow)} seperator />
         )}
-      </Style.ScreenContainer>
+      </ScreenContainer>
     );
   }
 }

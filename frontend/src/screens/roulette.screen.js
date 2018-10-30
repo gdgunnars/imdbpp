@@ -1,15 +1,9 @@
 import React, { PureComponent } from 'react';
-import * as Style from './screen.style';
-import Buttons from '../components/buttons/index';
+import ScreenContainer from './screen.style';
 
 class RouletteScreen extends PureComponent {
-  static navigationOptions = {
-    title: 'Roulette',
-    ...Style.NavigationStyle,
-  };
-
   render() {
-    return <Style.ScreenContainer />;
+    return <ScreenContainer />;
   }
 }
 

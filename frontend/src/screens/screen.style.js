@@ -1,21 +1,6 @@
 import styled from 'styled-components';
 import * as DimSize from '../common/dimensionSize';
 
-const NavigationStyle = {
-  headerTitleStyle: {
-    textAlign: 'center',
-    alignSelf: 'center',
-    flex: 1,
-    color: '#fefefe',
-    fontWeight: 'normal',
-    fontSize: 16,
-  },
-  headerStyle: {
-    elevation: 0,
-  },
-  headerTransparent: true,
-};
-
 const ScreenContainer = styled.View`
   display: flex;
   flex-direction: column;
@@ -25,4 +10,4 @@ const ScreenContainer = styled.View`
   padding-top: ${DimSize.statusBarHeight()};
 `;
 
-export { NavigationStyle, ScreenContainer };
+export default ScreenContainer;

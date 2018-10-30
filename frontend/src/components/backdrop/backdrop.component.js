@@ -55,7 +55,7 @@ const FlexRow = styled.View`
   flex-direction: row;
 `;
 
-const ImageBackdropHeight = DimSize.height('40%');
+const ImageBackdropHeight = DimSize.height('38%');
 const ContainerHeight = DimSize.height('44%');
 const ContainerWidth = DimSize.width('100%');
 const posterHeight = DimSize.height('20%');

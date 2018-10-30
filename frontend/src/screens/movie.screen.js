@@ -1,15 +1,10 @@
 import React, { PureComponent } from 'react';
-import * as Style from './screen.style';
+import ScreenContainer from './screen.style';
 import Trailer from '../components/trailer';
 import * as DimSize from '../common/dimensionSize';
 import { getTrendingCombined } from '../services';
 
 class MovieScreen extends PureComponent {
-  static navigationOptions = {
-    title: 'Movies',
-    ...Style.NavigationStyle,
-  };
-
   state = {
     testSingleMovie: null,
   };
@@ -30,7 +25,7 @@ class MovieScreen extends PureComponent {
   render() {
     const { testSingleMovie } = this.state;
     return (
-      <Style.ScreenContainer>
+      <ScreenContainer>
         {testSingleMovie && (
           <Trailer
             src={testSingleMovie.trailer}
@@ -38,7 +33,7 @@ class MovieScreen extends PureComponent {
             width={DimSize.width('100%')}
           />
         )}
-      </Style.ScreenContainer>
+      </ScreenContainer>
     );
   }
 }
