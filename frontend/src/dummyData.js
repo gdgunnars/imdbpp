@@ -261,8 +261,84 @@ const movies = [
   },
 ];
 
+
+const searchResults = [
+  {
+    title: 'Movies',
+    data: [
+      {
+        movie: 'Jurasic Park',
+        genre: ['Horror', 'dino'],
+        movie_poster_url: 'https://image.tmdb.org/t/p/w500/c9XxwwhPHdaImA2f1WEfEsbhaFB.jpg',
+      },
+      {
+        movie: 'Two and Half men',
+        genre: ['Drugs', 'Commedy'],
+        movie_poster_url: 'https://image.tmdb.org/t/p/w500/eXXpuW2xaq5Aen9N5prFlARVIvr.jpg',
+      }, {
+        movie: 'Jurasic Park',
+        genre: ['Horror', 'dino'],
+        movie_poster_url: 'https://image.tmdb.org/t/p/w500/c9XxwwhPHdaImA2f1WEfEsbhaFB.jpg',
+      },
+      {
+        movie: 'Two and Half men',
+        genre: ['Drugs', 'Commedy'],
+        movie_poster_url: 'https://image.tmdb.org/t/p/w500/eXXpuW2xaq5Aen9N5prFlARVIvr.jpg',
+      }, {
+        movie: 'Jurasic Park',
+        genre: ['Horror', 'dino'],
+        movie_poster_url: 'https://image.tmdb.org/t/p/w500/c9XxwwhPHdaImA2f1WEfEsbhaFB.jpg',
+      },
+      {
+        movie: 'Two and Half men',
+        genre: ['Drugs', 'Commedy'],
+        movie_poster_url: 'https://image.tmdb.org/t/p/w500/eXXpuW2xaq5Aen9N5prFlARVIvr.jpg',
+      },
+    ]
+  },
+  {
+    title: 'Actors',
+    data: [
+      {
+        actor: 'Michael Douglas',
+        role: ['Actor', 'Producer'],
+        actor_photo_url: 'https://www.biography.com/.image/t_share/MTE5NTU2MzE2MjA0OTI2NDc1/michael-douglas-9278088-1-402.jpg'
+      },
+      {
+        actor: 'Charlie Sheen',
+        role: ['Actor', 'Producer'],
+        actor_photo_url: 'https://m.media-amazon.com/images/M/MV5BMTIyNDQ5Nzk2OF5BMl5BanBnXkFtZTcwODU4MTU5MQ@@._V1_UX214_CR0,0,214,317_AL_.jpg'
+      },
+      {
+        actor: 'keanu reeves',
+        role: ['Actor', 'Legend'],
+        actor_photo_url: 'https://images-na.ssl-images-amazon.com/images/M/MV5BMjIxMjE0MDY0Ml5BMl5BanBnXkFtZTgwNTI0OTcyMDI@._CR2554,398,788,788_UX402_UY402._SY201_SX201_AL_.jpg'
+      }, {
+        actor: 'Michael Douglas',
+        role: ['Actor', 'Producer'],
+        actor_photo_url: 'https://www.biography.com/.image/t_share/MTE5NTU2MzE2MjA0OTI2NDc1/michael-douglas-9278088-1-402.jpg'
+      },
+      {
+        actor: 'Charlie Sheen',
+        role: ['Actor', 'Producer'],
+        actor_photo_url: 'https://m.media-amazon.com/images/M/MV5BMTIyNDQ5Nzk2OF5BMl5BanBnXkFtZTcwODU4MTU5MQ@@._V1_UX214_CR0,0,214,317_AL_.jpg'
+      },
+      {
+        actor: 'keanu reeves',
+        role: ['Actor', 'Legend'],
+        actor_photo_url: 'https://images-na.ssl-images-amazon.com/images/M/MV5BMjIxMjE0MDY0Ml5BMl5BanBnXkFtZTgwNTI0OTcyMDI@._CR2554,398,788,788_UX402_UY402._SY201_SX201_AL_.jpg'
+      }
+    ]
+  }
+]
+
+
+
+
 const getSingleMovie = () => movies[0];
 
 const getAllMovies = () => movies;
 
-export { getSingleMovie, getAllMovies };
+const getSearchResults = () => searchResults;
+
+export { getSingleMovie, getAllMovies, getSearchResults };
