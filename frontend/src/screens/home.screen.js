@@ -59,18 +59,16 @@ class HomeScreen extends PureComponent {
 
   render() {
     const { trendingNow, recommended } = this.state;
+    const backdropSnapWidth = Math.round(DimSize.width('100%'));
+    const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
     return (
       <Style.ScreenContainer>
         {trendingNow && (
-          <Slider snapWidth={DimSize.width('100%')} items={renderBackdrop(trendingNow)} />
+          <Slider snapWidth={backdropSnapWidth} items={renderBackdrop(trendingNow)} />
         )}
         <TopRatedTitles>TRENDING NOW</TopRatedTitles>
         {trendingNow && (
-          <Slider
-            snapWidth={DimSize.width('32%') * 0.7 * DimSize.width('2%')}
-            items={renderPoster(trendingNow)}
-            seperator
-          />
+          <Slider snapWidth={posterSnapWidh} items={renderPoster(trendingNow)} seperator />
         )}
       </Style.ScreenContainer>
     );

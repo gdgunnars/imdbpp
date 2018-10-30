@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import * as Style from './screen.style';
 import Buttons from '../components/buttons/index';
+
 class RouletteScreen extends PureComponent {
   static navigationOptions = {
     title: 'Roulette',
@@ -8,11 +9,7 @@ class RouletteScreen extends PureComponent {
   };
 
   render() {
-    return (
-      <Style.ScreenContainer>
-
-      </Style.ScreenContainer>
-    );
+    return <Style.ScreenContainer />;
   }
 }
 
