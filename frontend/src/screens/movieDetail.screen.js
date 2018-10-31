@@ -7,6 +7,7 @@ import * as DimSize from '../common/dimensionSize';
 import dateFormat from '../common/dateFormat';
 import Duration from '../components/duration';
 import Genre from '../components/genre';
+// import Rating from '../components/rating';
 
 const MovieTitle = styled.Text`
   font-size: 24;
@@ -39,16 +40,9 @@ class MovieDetailScreen extends PureComponent {
   render() {
     const { navigation } = this.props;
     const id = navigation.getParam('id');
-    const {
-      name,
-      score,
-      date,
-      backdrop_path,
-      poster_path,
-      overview,
-      trailer,
-      genres,
-    } = getMovieById(id);
+    const movie = getMovieById(id);
+    console.log(JSON.stringify(movie, null, 2));
+    const { name, score, date, backdrop_path, poster_path, overview, trailer, genres } = movie;
     return (
       <ScreenContainer>
         <Trailer
