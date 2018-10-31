@@ -16,6 +16,7 @@ const InputContainer = styled.View`
 
 const Input = styled.TextInput`
   flex: 1;
+  font-size: 24;
   padding-top: 10;
   padding-right: 10;
   padding-bottom: 10;
