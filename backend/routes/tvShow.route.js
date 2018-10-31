@@ -1,6 +1,7 @@
 import express from "express";
 import axios from "axios";
 import * as config from "../config.js";
+import setImagePath from "../common/setImagePath";
 
 // Todo: Construct route for details:
 
@@ -29,9 +30,22 @@ router.route("/:tvId").get(async (req, res) => {
     );
     const allData = await Promise.all([getDetails, getCredits, getSimilar]);
     console.timeEnd("test");
-    const mappedData = allData.map(item => item.data);
-    // Todo: parse data and take what i need.
-    res.json({ message: "I got something" });
+    const [details, credits, similar] = allData.map(item => item.data);
+
+    const extra = {
+      id: details.id,
+      created_by: details.created_by,
+      episode_run_time: details.episode_run_time,
+      homepage: details.homepage,
+      in_production: details.in_production,
+      number_of_episodes: details.number_of_episodes,
+      number_of_seasons: details.number_of_seasons,
+      production_companies: details.production_companies,
+      networks: details.networks,
+      ...credits,
+      similar: similar.results
+    };
+    res.json(setImagePath(extra));
   } catch (error) {
     console.log(error);
     res.json({ message: "I got err" });
