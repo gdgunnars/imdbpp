@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Video } from 'expo';
 import styled from 'styled-components';
 import Buttons from '../buttons';
-import * as DimSize from '../../common/dimensionSize';
+import ImageBackdrop from '../backdrop/image.backdrop.component';
 
 const Container = styled.View`
   position: relative;
@@ -26,8 +26,9 @@ const ButtonContainer = ({ width, height, children }) => (
 
 class Trailer extends PureComponent {
   trailerRef = null;
+
   state = {
-    play: false
+    play: false,
   };
 
   handlePlayButton = () => {
@@ -40,25 +41,33 @@ class Trailer extends PureComponent {
 
   render() {
     const { play } = this.state;
-    const { src, poster, width, height } = this.props;
+    const {
+      src, poster, width, height,
+    } = this.props;
 
     return (
       <Container style={{ width, height }}>
         {!play && (
           <ButtonContainer width={width} height={height}>
-            <Buttons name={'play'} size="7%" onPress={this.handlePlayButton} />
+            <ImageBackdrop url={poster} height={height} />
+            <ButtonContainer width={width} height={height}>
+              <Buttons name="play" size="7%" onPress={this.handlePlayButton} />
+            </ButtonContainer>
           </ButtonContainer>
         )}
-        <Video
-          source={{ uri: src }}
-          posterSource={{ uri: poster }}
-          resizeMode="cover"
-          isMuted={false}
-          style={{ width, height }}
-          usePoster
-          useNativeControls
-          ref={ref => (this.trailerRef = ref)}
-        />
+        {src && (
+          <Video
+            source={{ uri: src }}
+            resizeMode="cover"
+            isMuted={false}
+            style={{ width, height }}
+            usePoster
+            useNativeControls
+            ref={(ref) => {
+              this.trailerRef = ref;
+            }}
+          />
+        )}
       </Container>
     );
   }
