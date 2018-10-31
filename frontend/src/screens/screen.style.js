@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 import * as DimSize from '../common/dimensionSize';
 
-const ScreenContainer = styled.View`
-  display: flex;
-  flex-direction: column;
+const ScreenContainer = styled.ScrollView`
+  flex: 1;
   width: ${DimSize.width('100%')};
-  height: ${DimSize.height('100%')};
   background-color: #141414;
-  padding-top: ${DimSize.statusBarHeight()};
 `;
 
 export default ScreenContainer;
