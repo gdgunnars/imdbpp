@@ -25,3 +25,4 @@ class MovieDetailScreen extends PureComponent {
 }
 
 export default MovieDetailScreen;
+ 
