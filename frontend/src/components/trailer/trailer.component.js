@@ -25,35 +25,39 @@ const ButtonContainer = ({ width, height, children }) => (
 );
 
 class Trailer extends PureComponent {
+  trailerRef = null;
   state = {
-    play: false,
+    play: false
   };
 
   handlePlayButton = () => {
     const { play } = this.state;
-    this.setState({ play: !play });
+    if (!play) {
+      this.setState({ play: true });
+      this.trailerRef.playAsync();
+    }
   };
 
   render() {
     const { play } = this.state;
-    const {
-      src, poster, width, height,
-    } = this.props;
+    const { src, poster, width, height } = this.props;
 
     return (
       <Container style={{ width, height }}>
-        <ButtonContainer width={width} height={height}>
-          <Buttons name={play ? 'pause' : 'play'} size="7%" onPress={this.handlePlayButton} />
-        </ButtonContainer>
+        {!play && (
+          <ButtonContainer width={width} height={height}>
+            <Buttons name={'play'} size="7%" onPress={this.handlePlayButton} />
+          </ButtonContainer>
+        )}
         <Video
           source={{ uri: src }}
           posterSource={{ uri: poster }}
           resizeMode="cover"
           isMuted={false}
           style={{ width, height }}
-          shouldPlay={play}
           usePoster
           useNativeControls
+          ref={ref => (this.trailerRef = ref)}
         />
       </Container>
     );
