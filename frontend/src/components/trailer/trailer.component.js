@@ -1,50 +1,65 @@
 import React, { PureComponent } from 'react';
-import { WebView, View } from 'react-native';
+import { Video } from 'expo';
 import styled from 'styled-components';
+import Buttons from '../buttons';
+import * as DimSize from '../../common/dimensionSize';
 
-// Extract key from youtube link
-// TODO: Change API so that it just returns the key like it did originally
-
-const getId = url => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-
-  if (match && match[2].length == 11) {
-    return match[2];
-  }
-  return 'error';
-};
-
-const Loading = styled.View`
-  background-color: #141414;
+const Container = styled.View`
+  position: relative;
 `;
 
-/* 
-  THIS IS PRETTY MUCH THE ONLY WAY TO PLAY YOUTUBE VIDEOS WITH REACT-NATIVE AND EXPO.
-  There is a library called react-native-youtube but Expo doesnt support it.
-  Expo's native <Video> component does not support YouTube videos either.
+const ButtonContainerStyle = styled.View`
+  position: absolute;
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${props => props.width};
+  height: ${props => props.height};
+`;
 
-  WebView is pretty much an iFrame, it sucks but its the only way to implement YouTube videos.
-*/
+const ButtonContainer = ({ width, height, children }) => (
+  <ButtonContainerStyle width={width} height={height} pointerEvents="box-none">
+    {children}
+  </ButtonContainerStyle>
+);
 
 class Trailer extends PureComponent {
+  trailerRef = null;
+  state = {
+    play: false
+  };
+
+  handlePlayButton = () => {
+    const { play } = this.state;
+    if (!play) {
+      this.setState({ play: true });
+      this.trailerRef.playAsync();
+    }
+  };
+
   render() {
-    const { src, width, height } = this.props;
-    const id = getId(src);
-    const url = `https://www.youtube.com/embed/${id}?rel=0&autoplay=0&controls=0&modestbranding=1`;
+    const { play } = this.state;
+    const { src, poster, width, height } = this.props;
 
     return (
-      <View style={{ width, height }}>
-        <WebView
-          source={{ uri: url }}
+      <Container style={{ width, height }}>
+        {!play && (
+          <ButtonContainer width={width} height={height}>
+            <Buttons name={'play'} size="7%" onPress={this.handlePlayButton} />
+          </ButtonContainer>
+        )}
+        <Video
+          source={{ uri: src }}
+          posterSource={{ uri: poster }}
+          resizeMode="cover"
+          isMuted={false}
           style={{ width, height }}
-          scrollEnabled={false}
-          allowsInlineMediaPlayback
-          javaScriptEnabled
-          startInLoadingState
-          renderLoading={() => <Loading />}
+          usePoster
+          useNativeControls
+          ref={ref => (this.trailerRef = ref)}
         />
-      </View>
+      </Container>
     );
   }
 }

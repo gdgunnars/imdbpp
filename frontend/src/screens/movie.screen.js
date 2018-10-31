@@ -29,6 +29,7 @@ class MovieScreen extends PureComponent {
         {testSingleMovie && (
           <Trailer
             src={testSingleMovie.trailer}
+            poster={testSingleMovie.backdrop_path}
             height={DimSize.height('35%')}
             width={DimSize.width('100%')}
           />
