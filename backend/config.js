@@ -10,6 +10,6 @@ export const getImageLink = (width, image) => {
   return `https://image.tmdb.org/t/p/w${width}${image}`;
 };
 
-export const getTrailerLink = key => {
-  return `https://youtube.com/watch?v=${key}`;
+export const getYouTubeInfoPath = key => {
+  return `http://www.youtube.com/get_video_info?video_id=${key}&el=embedded&ps=default&eurl=&gl=US&hl=en`;
 };
