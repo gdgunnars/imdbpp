@@ -20,7 +20,7 @@ const Routes = {
   Home: {
     screen: Screen.HomeScreen,
     navigationOptions: {
-      header: null,
+      ...NavigationStyle,
     },
   },
   Movies: {

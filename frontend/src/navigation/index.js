@@ -4,11 +4,10 @@ import {
   setTopLevelNavigator, navigate, goBack, StackNavigator,
 } from './stackNavigation.service';
 import TabNavigation from './tab/main.tab';
+import * as DimSize from '../common/dimensionSize';
 
 const MainContainer = styled.View`
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
+  height: ${DimSize.height('100%')};
   background-color: #141414;
 `;
 
