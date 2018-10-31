@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import SearchResults from '../components/search/searchResults';
-import * as Style from './screen.style';
+import ScreenContainer from './screen.style';
 
 class SearchScreen extends PureComponent {
   render() {
     return (
-      <Style.ScreenContainer>
+      <ScreenContainer>
         <SearchResults />
-      </Style.ScreenContainer>
+      </ScreenContainer>
     )
   }
 }
