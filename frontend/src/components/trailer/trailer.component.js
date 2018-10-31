@@ -24,6 +24,7 @@ const ButtonContainer = ({ width, height, children }) => (
   </ButtonContainerStyle>
 );
 
+const containsTrailer = src => src.includes('https');
 class Trailer extends PureComponent {
   trailerRef = null;
 
@@ -44,18 +45,19 @@ class Trailer extends PureComponent {
     const {
       src, poster, width, height,
     } = this.props;
-
     return (
       <Container style={{ width, height }}>
         {!play && (
           <ButtonContainer width={width} height={height}>
             <ImageBackdrop url={poster} height={height} />
-            <ButtonContainer width={width} height={height}>
-              <Buttons name="play" size="7%" onPress={this.handlePlayButton} />
-            </ButtonContainer>
+            {containsTrailer(src) && (
+              <ButtonContainer width={width} height={height}>
+                <Buttons name="play" size="7%" onPress={this.handlePlayButton} />
+              </ButtonContainer>
+            )}
           </ButtonContainer>
         )}
-        {src && (
+        {containsTrailer(src) && (
           <Video
             source={{ uri: src }}
             resizeMode="cover"
