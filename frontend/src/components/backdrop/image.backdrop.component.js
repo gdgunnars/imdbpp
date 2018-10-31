@@ -4,6 +4,7 @@ import FakeShadow from './fakeShadow.backdrop.component';
 
 const Container = styled.View`
   height: ${props => props.height};
+  width: 100%;
   background-color: #141414;
   position: relative;
 `;

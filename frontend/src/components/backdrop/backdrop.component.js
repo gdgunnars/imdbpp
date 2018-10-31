@@ -25,7 +25,7 @@ const ContentContainer = styled.View`
 
 const RatingContainer = styled.View`
   position: absolute;
-  top: ${DimSize.contentSidesPadding()};
+  top: ${DimSize.statusBarHeight() + DimSize.contentSidesPadding()};
   right: ${DimSize.windowSidesPadding()};
 `;
 
@@ -79,7 +79,7 @@ class Backdrop extends PureComponent {
             <FlexRow>
               <Title color="#fefefe">
                 {name}
-                <Title color="rgba(254,254,254,0.48)">{dateFormat(date)}</Title>
+                <Title color="rgba(254,254,254,0.48)">{` (${dateFormat(date)})`}</Title>
               </Title>
             </FlexRow>
             <FlexRow>
