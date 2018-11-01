@@ -14,14 +14,16 @@ const Container = styled.TouchableOpacity`
 const Caption = styled.Text`
   font-size: ${DimSize.height('2%')};
   color: #fefefe;
+  padding-top: ${DimSize.height('1%')};
+  text-align: center;
 `;
 
 const defaultFunc = () => {};
 
 const Poster = ({
-  height, withCaption, url, caption, onPress = defaultFunc,
+  height, url, caption, onPress = defaultFunc,
 }) => {
-  const containerHeight = withCaption ? height * 1.2 : height;
+  const containerHeight = caption ? height * 1.2 : height;
   return (
     <Container activeOpacity={1} height={containerHeight} onPress={onPress}>
       <PosterImage
@@ -30,7 +32,7 @@ const Poster = ({
         source={{ uri: url }}
         resizeMode="contain"
       />
-      {withCaption && <Caption>{caption}</Caption>}
+      {caption && <Caption>{caption}</Caption>}
     </Container>
   );
 };

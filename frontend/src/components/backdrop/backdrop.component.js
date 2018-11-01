@@ -63,7 +63,7 @@ const posterHeight = DimSize.height('20%');
 /* eslint-disable */
 class Backdrop extends PureComponent {
   render() {
-    const { name, score, date, backdrop_path, poster_path, overview, onPress } = this.props;
+    const { name, score, date, backdropPath, posterPath, overview, onPress } = this.props;
     return (
       <Container
         activeOpacity={1}
@@ -71,10 +71,10 @@ class Backdrop extends PureComponent {
         width={ContainerWidth}
         onPress={onPress}
       >
-        <ImageBackdrop height={ImageBackdropHeight} url={backdrop_path} />
+        <ImageBackdrop height={ImageBackdropHeight} url={backdropPath} />
         <RatingContainer>{score > 0 && <Rating score={score} />}</RatingContainer>
         <ContentContainer>
-          <Poster height={posterHeight} url={poster_path} />
+          <Poster height={posterHeight} url={posterPath} />
           <ContentWrapper>
             <FlexRow>
               <Title color="#fefefe">
