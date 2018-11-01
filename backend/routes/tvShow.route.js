@@ -2,6 +2,8 @@ import express from "express";
 import axios from "axios";
 import * as config from "../config.js";
 import setImagePath from "../common/setImagePath";
+import populateMedia from "../common/populateMedia";
+import GetTrailer from "../common/getTrailer";
 
 // Todo: Construct route for details:
 
@@ -18,7 +20,7 @@ router.route("/:tvId").get(async (req, res) => {
     res.json({ message: "Missing tvId" });
   }
   try {
-    console.time("test");
+    console.time("axios");
     const getDetails = axios.get(
       `${config.getBasePath()}/tv/${tvId}?api_key=${config.getApiKey()}`
     );
@@ -28,24 +30,32 @@ router.route("/:tvId").get(async (req, res) => {
     const getSimilar = axios.get(
       `${config.getBasePath()}/tv/${tvId}/similar?api_key=${config.getApiKey()}&language=en-US&page=1`
     );
-    const allData = await Promise.all([getDetails, getCredits, getSimilar]);
-    console.timeEnd("test");
-    const [details, credits, similar] = allData.map(item => item.data);
 
-    const extra = {
-      id: details.id,
-      created_by: details.created_by,
-      episode_run_time: details.episode_run_time,
-      homepage: details.homepage,
-      in_production: details.in_production,
-      number_of_episodes: details.number_of_episodes,
-      number_of_seasons: details.number_of_seasons,
-      production_companies: details.production_companies,
-      networks: details.networks,
+    const getTrailer = GetTrailer(tvId, "tv");
+
+    const allData = await Promise.all([
+      getDetails,
+      getCredits,
+      getSimilar,
+      getTrailer
+    ]);
+    console.timeEnd("axios"); // takes about 1.1sec to fetch all this data.
+
+    const [details, credits, similar, trailer] = allData.map(
+      item => (item.data ? item.data : item)
+    );
+
+    const tvShoDetails = {
+      ...details,
+      type: "tv",
       ...credits,
+      trailer,
       similar: similar.results
     };
-    res.json(setImagePath(extra));
+    console.time("populate");
+    const populated = setImagePath(populateMedia(tvShoDetails));
+    console.timeEnd("populate");
+    res.json(populated);
   } catch (error) {
     console.log(error);
     res.json({ message: "I got err" });
