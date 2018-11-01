@@ -3,7 +3,7 @@ class ClientDataStorage {
 
   tv = {};
 
-  people = {};
+  person = {};
 
   storeElement = (type, element) => {
     this[type] = { ...this[type], [element.id]: element };
@@ -13,7 +13,7 @@ class ClientDataStorage {
 
   getTvShowById = id => ({ ...this.tv[id] });
 
-  getPeopleById = id => ({ ...this.people[id] });
+  getPeopleById = id => ({ ...this.person[id] });
 }
 
 export default new ClientDataStorage();
