@@ -1,20 +1,20 @@
 import React, { PureComponent } from 'react';
 import ScreenContainer from './screen.style';
-import Trailer from '../components/trailer';
 import * as DimSize from '../common/dimensionSize';
-import { getTrendingCombined } from '../services';
+import { getTopRatedMovies } from '../services';
+import Podium from '../components/podium';
 
 class MovieScreen extends PureComponent {
   state = {
-    testSingleMovie: null,
+    topRated: null,
   };
 
   componentDidMount = async () => {
     try {
-      const list = await getTrendingCombined();
-      if (list.length > 0) {
+      const top = await getTopRatedMovies();
+      if (top.length > 0) {
         this.setState({
-          testSingleMovie: list[0],
+          topRated: top,
         });
       }
     } catch (error) {
@@ -23,17 +23,11 @@ class MovieScreen extends PureComponent {
   };
 
   render() {
-    const { testSingleMovie } = this.state;
+    const { topRated } = this.state;
+    console.log(topRated);
     return (
       <ScreenContainer>
-        {testSingleMovie && (
-          <Trailer
-            src={testSingleMovie.trailer}
-            poster={testSingleMovie.backdrop_path}
-            height={DimSize.height('35%')}
-            width={DimSize.width('100%')}
-          />
-        )}
+        {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
       </ScreenContainer>
     );
   }

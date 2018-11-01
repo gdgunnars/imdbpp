@@ -17,6 +17,9 @@ const fetchTvShowById = id => $get(`${basePath}/tvshow/${id}`);
 /* Method used in PersonDetailScreen */
 const getPersonById = id => ClientDataStorage.getPeopleById(id);
 
+/* Method used in MovieScreen */
+const getTopRatedMovies = () => $get(`${basePath}/topratedmovies`);
+
 export {
   getRecommendedCombined,
   getTrendingCombined,
@@ -24,4 +27,5 @@ export {
   getTvShowById,
   getPersonById,
   fetchTvShowById,
+  getTopRatedMovies,
 };
