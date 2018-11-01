@@ -1,8 +1,8 @@
 import React from 'react';
-import { Naviagtion } from './src/navigation';
+import { Navigation } from './src/navigation';
 
 export default class App extends React.Component {
   render() {
-    return <Naviagtion />;
+    return <Navigation />;
   }
 }
