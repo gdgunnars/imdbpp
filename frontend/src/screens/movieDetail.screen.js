@@ -73,7 +73,7 @@ class MovieDetailScreen extends PureComponent {
           {[
             <Genre text="Movie" light withMargin key="genre_movie" />,
             ...genres
-              .slice(0, 4)
+              .slice(0, 3)
               .map(({ name }) => <Genre text={name} withMargin key={`genre_${name}`} />),
           ]}
         </Row>
@@ -95,7 +95,6 @@ class MovieDetailScreen extends PureComponent {
         <Row>
           <OverviewText>{overview}</OverviewText>
         </Row>
-
         <Row>
           <SeactionHeader>CAST</SeactionHeader>
         </Row>
