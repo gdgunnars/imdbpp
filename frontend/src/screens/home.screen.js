@@ -24,21 +24,21 @@ const renderPoster = movies =>
     <Poster
       onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
       key={item.id}
-      url={item.poster_path}
+      url={item.posterPath}
       height={DimSize.height('32%')}
     />
   ));
 
 const renderBackdrop = movies =>
-  movies.map(({ id, name, score, date, backdrop_path, poster_path, overview, type }) => (
+  movies.map(({ id, name, score, date, backdropPath, posterPath, overview, type }) => (
     <Backdrop
       onPress={() => navigate(typeToRoutePath(type), { id })}
       key={id}
       name={name}
       score={score}
       date={date}
-      backdrop_path={backdrop_path}
-      poster_path={poster_path}
+      backdropPath={backdropPath}
+      posterPath={posterPath}
       overview={`${overview.substr(0, 100).trim()}${overview.length > 100 ? '...' : ''}`}
     />
   ));
