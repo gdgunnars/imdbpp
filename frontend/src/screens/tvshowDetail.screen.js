@@ -110,9 +110,9 @@ class TvShowDetailScreen extends PureComponent {
         </Row>
         <Row>
           {[
-            <Genre text="Movie" light withMargin key="genre_movie" />,
+            <Genre text="Tv-Show" light withMargin key="genre_movie" />,
             ...genres
-              .slice(0, 4)
+              .slice(0, 3)
               .sort((a, b) => (a.id < b.id ? 1 : -1))
               .map(({ name }) => <Genre text={name} withMargin key={`genre_${name}`} />),
           ]}
@@ -135,6 +135,7 @@ class TvShowDetailScreen extends PureComponent {
         <Row>
           <OverviewText>{overview}</OverviewText>
         </Row>
+        {/* Todo: Add preloader */}
         {cast && (
           <Row>
             <SeactionHeader>CAST</SeactionHeader>
