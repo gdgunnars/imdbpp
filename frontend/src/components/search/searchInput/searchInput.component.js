@@ -11,12 +11,12 @@ const InputContainer = styled.View`
   align-items: center;
   margin-top: ${DimSize.statusBarHeight() + Header.HEIGHT};
   background: #424242;
-  border-radius: 7;
+  border-radius: 8;
 `;
 
 const Input = styled.TextInput`
   flex: 1;
-  font-size: 24;
+  font-size: 16;
   padding-top: 10;
   padding-right: 10;
   padding-bottom: 10;
@@ -33,7 +33,7 @@ const SearchInput = () => {
   return (
     <InputContainer>
       <Input placeholder=" ... start typing" type="text" underlineColorAndroid="transparent" />
-      <Icon.FontAwesome name="camera" color="white" size={24} style={searchIcon} />
+      <Icon.FontAwesome name="camera" color="white" size={16} style={searchIcon} />
     </InputContainer>
   );
 };
