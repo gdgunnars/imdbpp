@@ -11,7 +11,7 @@ const MainContainer = styled.View`
   background-color: #141414;
 `;
 
-const Naviagtion = () => (
+const Navigation = () => (
   <MainContainer>
     <StackNavigator
       ref={(navigationRef) => {
@@ -22,4 +22,4 @@ const Naviagtion = () => (
   </MainContainer>
 );
 
-export { navigate, goBack, Naviagtion };
+export { navigate, goBack, Navigation };
