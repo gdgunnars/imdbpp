@@ -13,6 +13,6 @@ const isTv = value =>
   value && (value["type"] === "tv" || value["first_air_date"]);
 
 const isPerson = value =>
-  value && (value["type"] === "person" || value["character"]);
+  value && (value["type"] === "person" || value.hasOwnProperty("gender"));
 
 export { isArray, isObject, isString, isMovie, isTv, isPerson };
