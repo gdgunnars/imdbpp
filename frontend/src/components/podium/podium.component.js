@@ -5,7 +5,6 @@ import PodiumPoster from './podium.poster.component';
 
 const Container = styled.View`
   width: ${DimSize.width('100%')};
-  padding-top: ${DimSize.statusBarHeight()};
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
