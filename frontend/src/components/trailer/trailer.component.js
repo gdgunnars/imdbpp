@@ -3,6 +3,7 @@ import { Video } from 'expo';
 import styled from 'styled-components';
 import Buttons from '../buttons';
 import ImageBackdrop from '../backdrop/image.backdrop.component';
+import * as DimSize from '../../common/dimensionSize';
 
 const Container = styled.View`
   position: relative;
@@ -52,7 +53,7 @@ class Trailer extends PureComponent {
             <ImageBackdrop url={poster} height={height} />
             {containsTrailer(src) && (
               <ButtonContainer width={width} height={height}>
-                <Buttons name="play" size="7%" onPress={this.handlePlayButton} />
+                <Buttons.play size={DimSize.height('7%')} onPress={this.handlePlayButton} />
               </ButtonContainer>
             )}
           </ButtonContainer>
