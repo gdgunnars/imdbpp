@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled, { ThemeConsumer } from 'styled-components';
+import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import Trailer from '../components/trailer';
 import { getTvShowById, fetchTvShowById } from '../services';
@@ -11,6 +11,7 @@ import Poster from '../components/poster';
 import Slider from '../components/Slider';
 // import Rating from '../components/rating';
 import typeToRoutePath from '../common/typeToRoute';
+import Buttons from '../components/buttons';
 
 const MovieTitle = styled.Text`
   font-size: 24;
@@ -38,6 +39,11 @@ const OverviewText = styled.Text`
   color: #bababa;
 `;
 
+const ButtonGroupContainer = styled(Row)`
+  margin-top: ${DimSize.height('2%')};
+  margin-bottom: ${DimSize.height('2%')};
+`;
+
 const renderCast = cast => cast.map(({ name, profilePath, id }) => (
   <Poster
     height={DimSize.height('32%')}
@@ -61,6 +67,8 @@ const renderSimilar = (tvShows, navigation) => tvShows.map(item => (
 class TvShowDetailScreen extends PureComponent {
   state = {
     tvShow: getTvShowById(this.props.navigation.getParam('id')),
+    markAsWatched: false,
+    addToWatchList: false,
   };
 
   componentDidMount = async () => {
@@ -77,11 +85,11 @@ class TvShowDetailScreen extends PureComponent {
 
   componentWillUnmount = () => {
     console.log('unmounted!');
-  }
+  };
 
   render() {
-    const { tvShow } = this.state;
-    const {navigation} = this.props;
+    const { tvShow, markAsWatched, addToWatchList } = this.state;
+    const { navigation } = this.props;
     const { name, score, date, backdropPath, overview, trailer, genres, cast, similar } = tvShow;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
@@ -105,11 +113,22 @@ class TvShowDetailScreen extends PureComponent {
             <Genre text="Movie" light withMargin key="genre_movie" />,
             ...genres
               .slice(0, 4)
-              .sort((a,b) => a.id < b.id ? 1 : -1)
+              .sort((a, b) => (a.id < b.id ? 1 : -1))
               .map(({ name }) => <Genre text={name} withMargin key={`genre_${name}`} />),
           ]}
         </Row>
-        {/* <Row justifyContent="space-between" />  Adding buttons here later*/}
+        <ButtonGroupContainer justifyContent="space-between">
+          <Buttons.markAsWatched
+            active={markAsWatched}
+            size={DimSize.width('48%') - DimSize.windowSidesPadding()}
+            onPress={() => this.setState({ markAsWatched: !markAsWatched })}
+          />
+          <Buttons.addToWatchList
+            active={addToWatchList}
+            size={DimSize.width('48%') - DimSize.windowSidesPadding()}
+            onPress={() => this.setState({ addToWatchList: !addToWatchList })}
+          />
+        </ButtonGroupContainer>
         <Row marginBottom="0">
           <SeactionHeader>STORYLINE</SeactionHeader>
         </Row>
@@ -127,7 +146,9 @@ class TvShowDetailScreen extends PureComponent {
             <SeactionHeader>SIMILAR TV-SHOWS</SeactionHeader>
           </Row>
         )}
-        {similar && <Slider snapWidth={posterSnapWidh} items={renderSimilar(similar, navigation)} seperator />}
+        {similar && (
+          <Slider snapWidth={posterSnapWidh} items={renderSimilar(similar, navigation)} seperator />
+        )}
       </ScreenContainer>
     );
   }
