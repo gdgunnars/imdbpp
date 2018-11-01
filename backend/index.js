@@ -19,8 +19,8 @@ app.use("/movie", movieRoute);
 app.use("/search", searchRoute);
 app.use('/topratedmovies', topRatedMoviesRoute);
 app.use('/topratedtv', topRatedTvRoute);
-app.use('/movies', moviesByGenreRoute);
-app.use('/tv', tvByGenreRoute);
+app.use('/moviesgenre', moviesByGenreRoute);
+app.use('/tvgenre', tvByGenreRoute);
 
 app.get('/', function(req, res) {
   res.send('API up and running...');
