@@ -2,13 +2,16 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import Trailer from '../components/trailer';
-import { getMovieById } from '../services';
+import { getMovieById, fetchMovieById } from '../services';
 import * as DimSize from '../common/dimensionSize';
 import dateFormat from '../common/dateFormat';
 import Duration from '../components/duration';
 import Genre from '../components/genre';
-import Buttons from '../components/buttons';
+import Poster from '../components/poster';
+import Slider from '../components/Slider';
 // import Rating from '../components/rating';
+import typeToRoutePath from '../common/typeToRoute';
+import Buttons from '../components/buttons';
 
 const MovieTitle = styled.Text`
   font-size: 24;
@@ -41,19 +44,50 @@ const OverviewText = styled.Text`
   color: #bababa;
 `;
 
+const renderCast = cast => cast.map(({ name, profilePath, id }) => (
+  <Poster
+    height={DimSize.height('32%')}
+    key={`cast_${id}`}
+    caption={name}
+    url={profilePath}
+    onPress={() => {}}
+  />
+));
+
+const renderSimilar = (tvShows, navigation) => tvShows.map(item => (
+  <Poster
+    onPress={() => navigation.push(typeToRoutePath(item.type), { id: item.id })}
+    key={item.id}
+    url={item.posterPath}
+    height={DimSize.height('32%')}
+  />
+));
+
 /*eslint-disable */
 class MovieDetailScreen extends PureComponent {
   state = {
+    movie: getMovieById(this.props.navigation.getParam('id')),
     markAsWatched: false,
     addToWatchList: false,
   };
-  render() {
-    const { markAsWatched, addToWatchList } = this.state;
 
+  componentDidMount = async () => {
+    const { movie } = this.state;
+    const { trailer, runtime, id } = movie;
+    // Todo: We need to cancel this async call if the component unmounts before finishing.
+    if (!trailer && !runtime) {
+      const fetchedMovie = await fetchMovieById(id);
+      this.setState({
+        movie: fetchedMovie,
+      });
+    }
+  };
+  render() {
     const { navigation } = this.props;
-    const id = navigation.getParam('id');
-    const movie = getMovieById(id);
-    const { name, score, date, backdropPath, overview, trailer, genres } = movie;
+    const { movie, markAsWatched, addToWatchList } = this.state;
+    const { name, score, date, backdropPath, overview, trailer, genres, cast, similar } = movie;
+    const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
+  
     return (
       <ScreenContainer>
         <Trailer
@@ -95,12 +129,21 @@ class MovieDetailScreen extends PureComponent {
         <Row>
           <OverviewText>{overview}</OverviewText>
         </Row>
-        <Row>
-          <SeactionHeader>CAST</SeactionHeader>
-        </Row>
-        <Row>
-          <SeactionHeader>SIMILAR MOVIES</SeactionHeader>
-        </Row>
+        {/* Todo: Add preloader */}
+        {cast && (
+          <Row>
+            <SeactionHeader>CAST</SeactionHeader>
+          </Row>
+        )}
+        {cast && <Slider snapWidth={posterSnapWidh} items={renderCast(cast)} seperator />}
+        {similar && (
+          <Row>
+            <SeactionHeader>SIMILAR MOVIES</SeactionHeader>
+          </Row>
+        )}
+        {similar && (
+          <Slider snapWidth={posterSnapWidh} items={renderSimilar(similar, navigation)} seperator />
+        )}
       </ScreenContainer>
     );
   }
