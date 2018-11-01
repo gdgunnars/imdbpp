@@ -5,7 +5,6 @@ import { SectionList, Text } from 'react-native';
 import * as DimSize from '../../../common/dimensionSize';
 import { Icon } from 'expo';
 
-
 const TitleSection = styled.Text`
   font-size: ${DimSize.height('3%')};
   font-weight: bold;
