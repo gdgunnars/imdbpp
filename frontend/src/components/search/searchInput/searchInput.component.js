@@ -5,12 +5,12 @@ import { Header } from 'react-navigation';
 import * as DimSize from '../../../common/dimensionSize';
 
 const InputContainer = styled.View`
+  background: #424242;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-top: ${DimSize.statusBarHeight() + Header.HEIGHT};
-  background: #424242;
   border-radius: 8;
 `;
 

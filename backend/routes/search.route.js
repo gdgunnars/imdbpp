@@ -6,54 +6,34 @@ import populateMedia from "../common/populateMedia";
 // Postman request localhost:3000/search/{"actor":"Tom Hanks", "movie":"Titanic"}
 
 const router = express.Router();
-router.route("/:searchParams").get(async (req, res) => {
-    console.log('In search')
+/**
+ * params (query): query
+ */
+router.route("/").get(async (req, res) => {
+  console.log("In search");
 
-    const { actor = '', movie = '' } = JSON.parse(req.params.searchParams);
-    const uriActor = encodeURI(actor);
-    const uriMovie = encodeURI(movie);
+  const { query } = req.query;
+  if (!query) {
+    res.status(400).json({ message: "Missing search query" });
+  }
+  try {
+    console.time("axios");
 
-    if (!actor && movie) {
-        res.status(404).json({ message: "Missing searchParameter" });
-    }
-    try {
-        console.time("axios");
-        const getActors = axios.get(
-            `${config.getBasePath()}/search/person?api_key=${config.getApiKey()}&language=en-US&query=${uriActor}&page=1&include_adult=false}`
-        );
+    const searchQuery = encodeURI(query);
+    const queryResults = await axios.get(
+      `${config.getBasePath()}/search/multi?api_key=${config.getApiKey()}&language=en-US&query=${searchQuery}&page=1&include_adult=false}`
+    );
 
-        const getMovies = axios.get(
-            `${config.getBasePath()}/search/movie?api_key=${config.getApiKey()}&language=en-US&query=${uriMovie}&page=1&include_adult=false}`
-        );
+    console.timeEnd("axios"); // takes about 1916.7 s to fetch all this data.
 
-        const allData = await Promise.all([
-            getActors,
-            getMovies
-        ]);
-
-        console.timeEnd("axios"); // takes about 1916.7 s to fetch all this data.
-
-        const [actor, movies] = allData.map(
-            item => (item.data ? item.data : item)
-        );
-
-        const actorsData = {
-            type: 'actors',
-            ...actor,
-            type: 'movies',
-            ...movies
-
-        }
-
-        res.status(200).json({
-            message: "Got something",
-            actors: actorsData
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Error occurred" })
-    }
-})
+    res.status(200).json({
+      message: "Got something",
+      data: queryResults.data
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error occurred" });
+  }
+});
 
 export default router;
