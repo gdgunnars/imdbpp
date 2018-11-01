@@ -9,6 +9,7 @@ const getTrendingCombined = () => $get(`${basePath}/trending`);
 
 /* Method used in MovieDetailScreen */
 const getMovieById = id => ClientDataStorage.getMovieById(id);
+const fetchMovieById = id => $get(`${basePath}/movie/${id}`);
 
 /* Method used in TvShowDetailScreen */
 const getTvShowById = id => ClientDataStorage.getTvShowById(id);
@@ -24,4 +25,5 @@ export {
   getTvShowById,
   getPersonById,
   fetchTvShowById,
+  fetchMovieById,
 };
