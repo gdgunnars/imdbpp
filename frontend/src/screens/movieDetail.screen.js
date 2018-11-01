@@ -138,7 +138,7 @@ class MovieDetailScreen extends PureComponent {
         {cast && <Slider snapWidth={posterSnapWidh} items={renderCast(cast)} seperator />}
         {similar && (
           <Row>
-            <SeactionHeader>SIMILAR TV-SHOWS</SeactionHeader>
+            <SeactionHeader>SIMILAR MOVIES</SeactionHeader>
           </Row>
         )}
         {similar && (
