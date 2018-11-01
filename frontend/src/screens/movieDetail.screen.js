@@ -41,13 +41,12 @@ class MovieDetailScreen extends PureComponent {
     const { navigation } = this.props;
     const id = navigation.getParam('id');
     const movie = getMovieById(id);
-    console.log(JSON.stringify(movie, null, 2));
-    const { name, score, date, backdrop_path, poster_path, overview, trailer, genres } = movie;
+    const { name, score, date, backdropPath, overview, trailer, genres } = movie;
     return (
       <ScreenContainer>
         <Trailer
           src={trailer}
-          poster={backdrop_path}
+          poster={backdropPath}
           height={DimSize.height('38%')}
           width={DimSize.width('100%')}
         />
