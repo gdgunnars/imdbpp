@@ -28,14 +28,16 @@ const searchIcon = {
   padding: 10,
 };
 
-const SearchInput = () => {
-  const d = 'data';
-  return (
-    <InputContainer>
-      <Input placeholder=" ... start typing" type="text" underlineColorAndroid="transparent" />
-      <Icon.FontAwesome name="camera" color="white" size={16} style={searchIcon} />
-    </InputContainer>
-  );
-};
+const SearchInput = ({ onSearch }) => (
+  <InputContainer>
+    <Input
+      placeholder=" ... start typing"
+      type="text"
+      underlineColorAndroid="transparent"
+      onChangeText={onSearch}
+    />
+    <Icon.FontAwesome name="camera" color="white" size={16} style={searchIcon} />
+  </InputContainer>
+);
 
 export default SearchInput;
