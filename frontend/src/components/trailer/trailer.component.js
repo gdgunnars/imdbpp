@@ -24,7 +24,7 @@ const ButtonContainer = ({ width, height, children }) => (
   </ButtonContainerStyle>
 );
 
-const containsTrailer = src => src.includes('https');
+const containsTrailer = src => src && src.includes('https');
 class Trailer extends PureComponent {
   trailerRef = null;
 
