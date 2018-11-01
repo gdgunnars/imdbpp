@@ -7,6 +7,7 @@ import * as DimSize from '../common/dimensionSize';
 import dateFormat from '../common/dateFormat';
 import Duration from '../components/duration';
 import Genre from '../components/genre';
+import Buttons from '../components/buttons';
 // import Rating from '../components/rating';
 
 const MovieTitle = styled.Text`
@@ -25,6 +26,11 @@ const Row = styled.View`
   align-items: center;
 `;
 
+const ButtonGroupContainer = styled(Row)`
+  margin-top: ${DimSize.height('2%')};
+  margin-bottom: ${DimSize.height('2%')};
+`;
+
 const SeactionHeader = styled.Text`
   font-size: 16;
   color: #fefefe;
@@ -37,7 +43,13 @@ const OverviewText = styled.Text`
 
 /*eslint-disable */
 class MovieDetailScreen extends PureComponent {
+  state = {
+    markAsWatched: false,
+    addToWatchList: false,
+  };
   render() {
+    const { markAsWatched, addToWatchList } = this.state;
+
     const { navigation } = this.props;
     const id = navigation.getParam('id');
     const movie = getMovieById(id);
@@ -65,7 +77,18 @@ class MovieDetailScreen extends PureComponent {
               .map(({ name }) => <Genre text={name} withMargin key={`genre_${name}`} />),
           ]}
         </Row>
-        {/* <Row justifyContent="space-between" />  Adding buttons here later*/}
+        <ButtonGroupContainer justifyContent="space-between">
+          <Buttons.markAsWatched
+            active={markAsWatched}
+            size={DimSize.width('48%') - DimSize.windowSidesPadding()}
+            onPress={() => this.setState({ markAsWatched: !markAsWatched })}
+          />
+          <Buttons.addToWatchList
+            active={addToWatchList}
+            size={DimSize.width('48%') - DimSize.windowSidesPadding()}
+            onPress={() => this.setState({ addToWatchList: !addToWatchList })}
+          />
+        </ButtonGroupContainer>
         <Row marginBottom="0">
           <SeactionHeader>STORYLINE</SeactionHeader>
         </Row>
