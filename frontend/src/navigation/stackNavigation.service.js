@@ -40,7 +40,10 @@ const transitionConfig = () => ({
   },
 });
 
-const StackNavigator = createStackNavigator(Routes, { transitionConfig });
+const StackNavigator = createStackNavigator(Routes, {
+  transitionConfig,
+  headerLayoutPreset: 'center',
+});
 
 export {
   setTopLevelNavigator, navigate, goBack, StackNavigator,
