@@ -15,10 +15,16 @@ const DurationText = styled.Text`
   padding-left: ${DimSize.width('1.5%')};
 `;
 
+const formatDuration = (duration) => {
+  const hours = Math.floor(duration / 60);
+  const mins = duration - hours * 60;
+  return `${hours > 0 ? `${hours}h` : ''} ${mins}min`;
+};
+
 const DurationComponent = ({ duration }) => (
   <DurationContainer>
-    <Icon.FontAwesome name="clock-o" size={16} color="#E63B3B" />
-    <DurationText>{duration}</DurationText>
+    {duration && <Icon.FontAwesome name="clock-o" size={16} color="#E63B3B" />}
+    {duration && <DurationText>{formatDuration(duration)}</DurationText>}
   </DurationContainer>
 );
 
