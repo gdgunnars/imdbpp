@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { getSearchResults } from '../../../dummyData';
-import { SectionList, Text } from 'react-native';
-import * as DimSize from '../../../common/dimensionSize';
+import { FlatList, Text } from 'react-native';
 import { Icon } from 'expo';
+import { stringify } from 'querystring';
+import { getSearchResults } from '../../../dummyData';
+import * as DimSize from '../../../common/dimensionSize';
 
 const TitleSection = styled.Text`
   font-size: ${DimSize.height('3%')};
@@ -25,7 +26,7 @@ const ProfileImgContainer = styled.View`
   align-items: center;
 `;
 
-const Name_role = styled.View`
+const NameRole = styled.View`
   flex: 4;
   display: flex;
   flex-direction: column;
@@ -58,43 +59,49 @@ const RoleContainer = styled.Text`
   color: #edeeef;
 `;
 
+const mapObjectToDisplayType = data => ({
+  id: data.id,
+  displayName: data.title ? data.title : data.name,
+  image: data.poster_path ? data.poster_path : data.profile_path,
+  popularity: data.popularity,
+});
 
+// -----------------------
+// - Results
+// - Tom Hanks - Actor
+// -> known for>
+// - - Forrest Gump
+// - - Toy story
+// - - Saving private ryan
+// - Saturday Night LIve: Best of Tom Hanks - TV
+// - Killing Lincoln - Movie
 
-const SearchResults = () => {
+const SearchResults = (props) => {
+  const { searchResults } = props;
 
-  const listData = getSearchResults();
   return (
-
-    <SectionList
-      renderItem={({ item, index, section }) =>
-        <ListItems key={index} >
+    <FlatList
+      data={searchResults}
+      keyExtractor={item => stringify(item.id)}
+      renderItem={({ item }) => (
+        <ListItems>
           <ProfileImgContainer>
-            <ProfileImg
-              source={{ uri: item.actor_photo_url !== undefined ? item.actor_photo_url : item.movie_poster_url }}>
-            </ProfileImg>
+            <ProfileImg source={{ uri: item.image }} />
           </ProfileImgContainer>
-          <Name_role>
+          <NameRole>
             <Name>
-              {item.movie}
-              {item.actor}
+              {item.type}
+              {' - '}
+              {item.displayName}
             </Name>
-            <RoleContainer>
-              {item.role ? `${item.role[0]} | ${item.role[1]}` : `${item.genre[0]} | ${item.genre[1]}`}
-            </RoleContainer>
-          </Name_role>
+          </NameRole>
           <Remove>
-            <Icon.FontAwesome name={'close'} color={'white'} size={32} />
+            <Icon.FontAwesome name="close" color="white" size={32} />
           </Remove>
-
-        </ListItems>}
-      renderSectionHeader={({ section: { title } }) => (
-        <TitleSection >{title}</TitleSection>
+        </ListItems>
       )}
-      sections={listData}
-      keyExtractor={(item, index) => item + index}
     />
+  );
+};
 
-  )
-}
-
-export default SearchResults; 
+export default SearchResults;
