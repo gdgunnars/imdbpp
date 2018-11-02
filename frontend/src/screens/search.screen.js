@@ -21,11 +21,19 @@ class SearchScreen extends PureComponent {
 
   doSearch = async (query) => {
     try {
-      const data = await getSearchResults(query);
+      this.searchQuery = getSearchResults(query);
+      const data = await this.searchQuery.promise;
+
       this.setState({ searchResults: data });
       console.log('Data:', data);
     } catch (error) {
       console.log('Error doing search:', error);
+    }
+  };
+
+  componentWillUnmount = () => {
+    if (this.subscription) {
+      this.subscription.cancel();
     }
   };
 
@@ -34,7 +42,7 @@ class SearchScreen extends PureComponent {
     return (
       <ScreenContainer>
         <SearchInput onSearch={this.queryChange} />
-        <SearchResults />
+        <SearchResults searchResults={searchResults} />
       </ScreenContainer>
     );
   }
