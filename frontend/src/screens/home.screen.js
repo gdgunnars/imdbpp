@@ -8,7 +8,7 @@ import Poster from '../components/poster';
 import Backdrop from '../components/backdrop';
 import * as DimSize from '../common/dimensionSize';
 import typeToRoutePath from '../common/typeToRoute';
-import { getRecommendedCombined, getTrendingCombined } from '../services';
+import { getTrendingCombined } from '../services';
 import { navigate } from '../navigation';
 
 const TopRatedTitles = styled.Text`
@@ -51,12 +51,19 @@ class HomeScreen extends PureComponent {
 
   componentDidMount = async () => {
     try {
-      const data = await getTrendingCombined();
+      this.subscription = getTrendingCombined();
+      const data = await this.subscription.promise;
       this.setState({
         trendingNow: data,
       });
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  componentWillUnmount = () => {
+    if (this.subscription) {
+      this.subscription.cancel();
     }
   };
 

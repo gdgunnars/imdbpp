@@ -19,9 +19,7 @@ const Title = styled.Text`
 
 const View = styled.View``;
 
-const posterSnapWidh = Math.round(
-  DimSize.height('32%') * 0.7 + DimSize.width('2%'),
-);
+const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
 const renderPoster = movies => movies.map(item => (
   <Poster
@@ -35,11 +33,7 @@ const renderPoster = movies => movies.map(item => (
 const getMovies = list => list.map(item => (
   <View key={item.title}>
     <Title>{item.title}</Title>
-    <Slider
-      snapWidth={posterSnapWidh}
-      items={renderPoster(item.data)}
-      seperator
-    />
+    <Slider snapWidth={posterSnapWidh} items={renderPoster(item.data)} seperator />
   </View>
 ));
 
@@ -51,20 +45,30 @@ class TvShowScreen extends PureComponent {
 
   componentDidMount = async () => {
     try {
-      const topList = await getTopRatedTv();
+      this.subscriptions = [getTopRatedTv(), getTvByGenre(18), getTvByGenre(35), getTvByGenre(16)];
+
+      const [topRated, dramaData, comedyData, animationData] = await Promise.all(
+        this.subscriptions.map(item => item.promise),
+      );
 
       // There has to be a more cleaner way to do this..
-      const dramaList = { data: await getTvByGenre(18), title: 'DRAMA' };
-      const comedyList = { data: await getTvByGenre(35), title: 'COMEDY' };
-      const animationList = { data: await getTvByGenre(16), title: 'ANIMATION' };
+      const dramaList = { data: dramaData, title: 'DRAMA' };
+      const comedyList = { data: comedyData, title: 'COMEDY' };
+      const animationList = { data: animationData, title: 'ANIMATION' };
       const genres = [dramaList, comedyList, animationList];
 
       this.setState({
-        topRated: topList,
+        topRated,
         shows: genres,
       });
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  componentWillUnmount = () => {
+    if (this.subscriptions) {
+      this.subscriptions.forEach(item => item.cancel());
     }
   };
 

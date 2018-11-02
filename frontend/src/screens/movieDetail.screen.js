@@ -74,20 +74,30 @@ class MovieDetailScreen extends PureComponent {
   componentDidMount = async () => {
     const { movie } = this.state;
     const { trailer, runtime, id } = movie;
-    // Todo: We need to cancel this async call if the component unmounts before finishing.
     if (!trailer && !runtime) {
-      const fetchedMovie = await fetchMovieById(id);
-      this.setState({
-        movie: fetchedMovie,
-      });
+      try {
+        this.subscription = fetchMovieById(id);
+        const fetchedMovie = await this.subscription.promise;
+        this.setState({
+          movie: fetchedMovie,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+  componentWillUnmount = () => {
+    if(this.subscription) {
+      this.subscription.cancel();
+    }
+  };
+
   render() {
     const { navigation } = this.props;
     const { movie, markAsWatched, addToWatchList } = this.state;
     const { name, score, date, backdropPath, overview, trailer, genres, cast, similar } = movie;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
-  
+
     return (
       <ScreenContainer>
         <Trailer

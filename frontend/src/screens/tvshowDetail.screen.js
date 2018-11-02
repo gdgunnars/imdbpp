@@ -74,17 +74,23 @@ class TvShowDetailScreen extends PureComponent {
   componentDidMount = async () => {
     const { tvShow } = this.state;
     const { trailer, createdBy, id } = tvShow;
-    // Todo: We need to cancel this async call if the component unmounts before finishing.
     if (!trailer && !createdBy) {
-      const fetchedTvShow = await fetchTvShowById(id);
-      this.setState({
-        tvShow: fetchedTvShow,
-      });
+      try {
+        this.subscription = fetchTvShowById(id);
+        const fetchedTvShow = await this.subscription.promise;
+        this.setState({
+          tvShow: fetchedTvShow,
+        });
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
 
   componentWillUnmount = () => {
-    console.log('unmounted!');
+    if(this.subscription) {
+      this.subscription.cancel();
+    }
   };
 
   render() {
@@ -113,8 +119,8 @@ class TvShowDetailScreen extends PureComponent {
             <Genre text="Tv-Show" light withMargin key="genre_movie" />,
             ...genres
               .slice(0, 3)
-              .sort((a, b) => (a.id < b.id ? 1 : -1))
-              .map(({ name }) => <Genre text={name} withMargin key={`genre_${name}`} />),
+              .sort((a, b) => (a.id || 0 < b.id || 1 ? 1 : -1))
+              .map(({ name = '' }) => <Genre text={name} withMargin key={`genre_${name}`} />),
           ]}
         </Row>
         <ButtonGroupContainer justifyContent="space-between">

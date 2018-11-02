@@ -1,5 +1,6 @@
 import axios from 'axios';
 import ClientDataStorage from './clientData.storage';
+import cancelablePromise from './cancelablePromise';
 
 const isArray = value => value && typeof value === 'object' && value.constructor === Array;
 
@@ -17,18 +18,20 @@ const addToClientStorage = (data) => {
   }
 };
 
-const $get = url => new Promise(async (resolve, reject) => {
-  try {
-    const response = await axios(url);
-    const { data } = response;
-    if (!data) {
-      resolve([]);
+const $get = url => cancelablePromise(
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios(url);
+      const { data } = response;
+      if (!data) {
+        resolve([]);
+      }
+      addToClientStorage(data);
+      resolve(data);
+    } catch (error) {
+      reject(error);
     }
-    addToClientStorage(data);
-    resolve(data);
-  } catch (error) {
-    reject(error);
-  }
-});
+  }),
+);
 
 export default $get;
