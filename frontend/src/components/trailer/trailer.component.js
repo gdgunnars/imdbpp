@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Video } from 'expo';
 import styled from 'styled-components';
 import Buttons from '../buttons';
+import Rating from '../rating';
 import ImageBackdrop from '../backdrop/image.backdrop.component';
 import * as DimSize from '../../common/dimensionSize';
 
@@ -11,7 +12,7 @@ const Container = styled.View`
 
 const ButtonContainerStyle = styled.View`
   position: absolute;
-  z-index: 99;
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,6 +25,13 @@ const ButtonContainer = ({ width, height, children }) => (
     {children}
   </ButtonContainerStyle>
 );
+
+const RatingContainer = styled.View`
+  position: absolute;
+  top: ${DimSize.statusBarHeight() + DimSize.contentSidesPadding()};
+  right: ${DimSize.windowSidesPadding()};
+  z-index: 99;
+`;
 
 const containsTrailer = src => src && src.includes('https');
 class Trailer extends PureComponent {
@@ -44,7 +52,7 @@ class Trailer extends PureComponent {
   render() {
     const { play } = this.state;
     const {
-      src, poster, width, height,
+      src, poster, width, height, score,
     } = this.props;
     return (
       <Container style={{ width, height }}>
@@ -56,6 +64,9 @@ class Trailer extends PureComponent {
                 <Buttons.play size={DimSize.height('7%')} onPress={this.handlePlayButton} />
               </ButtonContainer>
             )}
+            <RatingContainer>
+              <Rating score={score} />
+            </RatingContainer>
           </ButtonContainer>
         )}
         {containsTrailer(src) && (

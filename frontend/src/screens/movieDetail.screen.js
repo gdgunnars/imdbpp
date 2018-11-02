@@ -9,7 +9,6 @@ import Duration from '../components/duration';
 import Genre from '../components/genre';
 import Poster from '../components/poster';
 import Slider from '../components/Slider';
-// import Rating from '../components/rating';
 import typeToRoutePath from '../common/typeToRoute';
 import Buttons from '../components/buttons';
 
@@ -100,6 +99,7 @@ class MovieDetailScreen extends PureComponent {
     return (
       <ScreenContainer>
         <Trailer
+          score={score}
           src={trailer}
           poster={backdropPath}
           height={DimSize.height('38%')}

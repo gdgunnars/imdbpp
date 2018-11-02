@@ -38,7 +38,7 @@ const getStars = (score) => {
 const Rating = ({ score }) => (
   <RatingContainer>
     {getStars(score)}
-    <Score>{score}</Score>
+    {score && <Score>{score}</Score>}
   </RatingContainer>
 );
 
