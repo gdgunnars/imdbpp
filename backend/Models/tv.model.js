@@ -38,7 +38,10 @@ const tv = ({
   type,
   trailer,
   createdBy: populateMedia(created_by),
-  duration: episode_run_time,
+  duration:
+    episode_run_time && episode_run_time.length > 0
+      ? episode_run_time[0]
+      : null,
   homepage,
   status,
   episodesCount: number_of_episodes,

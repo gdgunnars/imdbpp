@@ -37,7 +37,7 @@ const movie = ({
   backdropPath: setImagePath(backdrop_path),
   collection: populateMedia(belongs_to_collection),
   type,
-  runtime,
+  duration: runtime,
   homePage,
   status,
   productionCompanies: production_companies,
