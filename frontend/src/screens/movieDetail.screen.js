@@ -95,9 +95,8 @@ class MovieDetailScreen extends PureComponent {
   render() {
     const { navigation } = this.props;
     const { movie, markAsWatched, addToWatchList } = this.state;
-    const { name, score, date, backdropPath, overview, trailer, genres, cast, similar } = movie;
+    const { name, score, date, backdropPath, overview, trailer, genres, cast, similar, duration } = movie;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
-
     return (
       <ScreenContainer>
         <Trailer
@@ -110,7 +109,7 @@ class MovieDetailScreen extends PureComponent {
           <MovieTitle>{name}</MovieTitle>
         </Row>
         <Row justifyContent="space-between">
-          <Duration duration="2h 20min" />
+          <Duration duration={duration} />
           <Genre text={dateFormat(date)} light />
         </Row>
         <Row>
