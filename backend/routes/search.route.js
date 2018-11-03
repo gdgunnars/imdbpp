@@ -39,7 +39,6 @@ router.route("/").get(async (req, res) => {
     }, []);
 
     const sortedByPopularity = data.sort((a, b) => (a.popularity >= b.popularity) ? -1 : 1);
-    console.log("-data:", sortedByPopularity);
 
     res.status(200).json(sortedByPopularity);
   } catch (error) {

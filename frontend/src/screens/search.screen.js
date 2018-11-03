@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import { throttle } from 'throttle-debounce';
-import SearchResults from '../components/search/searchResults';
+import Search from '../components/search';
 import ScreenContainer from './screen.style';
-import SearchInput from '../components/search/searchInput';
 import { getSearchResults } from '../services';
 
 class SearchScreen extends PureComponent {
@@ -41,8 +40,8 @@ class SearchScreen extends PureComponent {
     const { searchResults } = this.state;
     return (
       <ScreenContainer>
-        <SearchInput onSearch={this.queryChange} />
-        <SearchResults searchResults={searchResults} />
+        <Search.SearchInput onSearch={this.queryChange} />
+        <Search.SearchResults searchResults={searchResults} />
       </ScreenContainer>
     );
   }

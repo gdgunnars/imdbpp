@@ -1,16 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import { Icon } from 'expo';
-import { stringify } from 'querystring';
-import { getSearchResults } from '../../../dummyData';
-import * as DimSize from '../../../common/dimensionSize';
+import * as DimSize from '../../common/dimensionSize';
 
-const TitleSection = styled.Text`
-  font-size: ${DimSize.height('3%')};
-  font-weight: bold;
-  color: white;
-`;
 
 const ListItems = styled.View`
   display: flex;
@@ -51,12 +44,11 @@ const Name = styled.Text`
 
 const SubTexContainer = styled.Text`
   font-size: ${DimSize.height('2%')};
-  color: #edeeef;
+  color: ${props => props.color || '#edeeef'};
+  padding-left: ${props => props.indent || 0};
 `;
 
-const capitalizeFirstLetter = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+const capitalizeFirstLetter = value => value.charAt(0).toUpperCase() + value.slice(1);
 
 const SearchResults = (props) => {
   const { searchResults } = props;
@@ -75,8 +67,15 @@ const SearchResults = (props) => {
               {item.displayName}
             </Name>
             <SubTexContainer>
-              {capitalizeFirstLetter(item.type)}
+              {`${capitalizeFirstLetter(item.type)} | Popularity: ${item.popularity}`}
             </SubTexContainer>
+            {
+              item.knownFor.map(obj => (
+                <SubTexContainer indent="10" color="gray">
+                  { obj.title }
+                </SubTexContainer>
+              ))
+            }
           </NameRole>
           <Remove>
             <Icon.FontAwesome name="close" color="white" size={32} />

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'expo';
 import { Header } from 'react-navigation';
-import * as DimSize from '../../../common/dimensionSize';
+import * as DimSize from '../../common/dimensionSize';
 
 const InputContainer = styled.View`
   background: #424242;
