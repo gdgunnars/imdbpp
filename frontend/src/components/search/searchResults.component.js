@@ -49,6 +49,8 @@ const SubTexContainer = styled.Text`
 
 const capitalizeFirstLetter = value => value && value.charAt(0).toUpperCase() + value.slice(1);
 
+const getSingleGenre = genres => (genres && (typeof genres === 'object' && genres.constructor === Array) ? genres[0] : genres);
+
 const SearchResults = (props) => {
   const { searchResults } = props;
 
@@ -67,7 +69,7 @@ const SearchResults = (props) => {
               {item.name}
             </Name>
             <SubTexContainer>
-              {`${capitalizeFirstLetter(item.type)} ${item.genres && item.genres.length ? ` | ${item.genres[0].name}` : ''}`}
+              {`${capitalizeFirstLetter(item.type)} ${item.genres ? ` | ${getSingleGenre(item.genres)}` : '' } `}
             </SubTexContainer>
             {item.knownFor
               && item.knownFor.map(obj => (
