@@ -15,7 +15,7 @@ router.route("/").get(async (req, res) => {
 
   const { query, page = 1 } = req.query;
   if (!query) {
-    res.status(400).json({ message: "Missing search query" });
+    return res.status(400).json({ message: "Missing search query" });
   }
   try {
     const searchQuery = encodeURI(query);
