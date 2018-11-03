@@ -49,32 +49,14 @@ const Name = styled.Text`
   color: #ffffff;
 `;
 
-const Roles = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
-
-const RoleContainer = styled.Text`
+const SubTexContainer = styled.Text`
   font-size: ${DimSize.height('2%')};
   color: #edeeef;
 `;
 
-const mapObjectToDisplayType = data => ({
-  id: data.id,
-  displayName: data.title ? data.title : data.name,
-  image: data.poster_path ? data.poster_path : data.profile_path,
-  popularity: data.popularity,
-});
-
-// -----------------------
-// - Results
-// - Tom Hanks - Actor
-// -> known for>
-// - - Forrest Gump
-// - - Toy story
-// - - Saving private ryan
-// - Saturday Night LIve: Best of Tom Hanks - TV
-// - Killing Lincoln - Movie
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const SearchResults = (props) => {
   const { searchResults } = props;
@@ -82,7 +64,7 @@ const SearchResults = (props) => {
   return (
     <FlatList
       data={searchResults}
-      keyExtractor={item => stringify(item.id)}
+      keyExtractor={item => item.id.toString()}
       renderItem={({ item }) => (
         <ListItems>
           <ProfileImgContainer>
@@ -90,10 +72,11 @@ const SearchResults = (props) => {
           </ProfileImgContainer>
           <NameRole>
             <Name>
-              {item.type}
-              {' - '}
               {item.displayName}
             </Name>
+            <SubTexContainer>
+              {capitalizeFirstLetter(item.type)}
+            </SubTexContainer>
           </NameRole>
           <Remove>
             <Icon.FontAwesome name="close" color="white" size={32} />

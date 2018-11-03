@@ -37,9 +37,11 @@ router.route("/").get(async (req, res) => {
       acc.push(searchObject);
       return acc;
     }, []);
-    console.log("-data:", data);
 
-    res.status(200).json(data);
+    const sortedByPopularity = data.sort((a, b) => (a.popularity >= b.popularity) ? -1 : 1);
+    console.log("-data:", sortedByPopularity);
+
+    res.status(200).json(sortedByPopularity);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error occurred" });
