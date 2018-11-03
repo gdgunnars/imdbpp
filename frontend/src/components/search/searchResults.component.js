@@ -71,7 +71,7 @@ const SearchResults = (props) => {
             </SubTexContainer>
             {
               item.knownFor.map(obj => (
-                <SubTexContainer indent="10" color="gray">
+                <SubTexContainer key={obj.id.toString()} indent="10" color="gray">
                   { obj.title }
                 </SubTexContainer>
               ))
