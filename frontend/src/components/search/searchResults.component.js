@@ -4,7 +4,6 @@ import { FlatList } from 'react-native';
 import { Icon } from 'expo';
 import * as DimSize from '../../common/dimensionSize';
 
-
 const ListItems = styled.View`
   display: flex;
   flex-direction: row;
@@ -57,6 +56,7 @@ const SearchResults = (props) => {
     <FlatList
       data={searchResults}
       keyExtractor={item => item.id.toString()}
+      height={DimSize.height('74%')}
       renderItem={({ item }) => (
         <ListItems>
           <ProfileImgContainer>
@@ -72,7 +72,7 @@ const SearchResults = (props) => {
             {
               item.knownFor.map(obj => (
                 <SubTexContainer key={obj.id.toString()} indent="10" color="gray">
-                  { obj.title }
+                  {obj.title}
                 </SubTexContainer>
               ))
             }
