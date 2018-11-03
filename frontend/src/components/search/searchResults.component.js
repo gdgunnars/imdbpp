@@ -47,7 +47,7 @@ const SubTexContainer = styled.Text`
   padding-left: ${props => props.indent || 0};
 `;
 
-const capitalizeFirstLetter = value => value.charAt(0).toUpperCase() + value.slice(1);
+const capitalizeFirstLetter = value => value && value.charAt(0).toUpperCase() + value.slice(1);
 
 const SearchResults = (props) => {
   const { searchResults } = props;
@@ -60,19 +60,19 @@ const SearchResults = (props) => {
       renderItem={({ item }) => (
         <ListItems>
           <ProfileImgContainer>
-            <ProfileImg source={{ uri: item.image }} />
+            <ProfileImg source={{ uri: item.posterPath ? item.posterPath : item.profilePath }} />
           </ProfileImgContainer>
           <NameRole>
             <Name>
-              {item.displayName}
+              {item.name}
             </Name>
             <SubTexContainer>
-              {`${capitalizeFirstLetter(item.type)} | Popularity: ${item.popularity}`}
+              {`${capitalizeFirstLetter(item.type)} ${item.genres && item.genres.length ? ` | ${item.genres[0].name}` : ''}`}
             </SubTexContainer>
-            {
-              item.knownFor.map(obj => (
+            {item.knownFor
+              && item.knownFor.map(obj => (
                 <SubTexContainer key={obj.id.toString()} indent="10" color="gray">
-                  {obj.title}
+                  {obj.name}
                 </SubTexContainer>
               ))
             }

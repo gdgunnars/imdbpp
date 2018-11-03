@@ -7,12 +7,12 @@ const isObject = value =>
 const isString = value => value && typeof value === "string";
 
 const isMovie = value =>
-  value && (value["type"] === "movie" || value["release_date"]);
+  value && (value["type"] === "movie" || value["media_type"] === "movie" || value["release_date"]);
 
 const isTv = value =>
-  value && (value["type"] === "tv" || value["first_air_date"]);
+  value && (value["type"] === "tv"  || value["media_type"] === "tv" || value["first_air_date"]);
 
 const isPerson = value =>
-  value && (value["type"] === "person" || value.hasOwnProperty("gender"));
+  value && (value["type"] === "person" || value["media_type"] === "person" || value.hasOwnProperty("gender"));
 
 export { isArray, isObject, isString, isMovie, isTv, isPerson };
