@@ -33,7 +33,8 @@ const RatingContainer = styled.View`
   z-index: 99;
 `;
 
-const containsTrailer = src => src && src.includes('https');
+const containsTrailer = src => src != null && src.includes('https');
+
 class Trailer extends PureComponent {
   trailerRef = null;
 
@@ -54,6 +55,7 @@ class Trailer extends PureComponent {
     const {
       src, poster, width, height, score,
     } = this.props;
+
     return (
       <Container style={{ width, height }}>
         {!play && (
