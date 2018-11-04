@@ -48,8 +48,8 @@ const SubTexContainer = styled.Text`
 `;
 
 const capitalizeFirstLetter = value => value && value.charAt(0).toUpperCase() + value.slice(1);
-
-const getSingleGenre = genres => (genres && (typeof genres === 'object' && genres.constructor === Array) ? genres[0] : genres);
+const checkIfGenreAvailable = genres => (genres.length > 0 ? genres[0].name : '');
+const getSingleGenre = genres => (genres && typeof genres === 'object' && genres.length >= 1 && checkIfGenreAvailable(genres.filter(Boolean)));
 
 const SearchResults = (props) => {
   const { searchResults } = props;
@@ -69,7 +69,7 @@ const SearchResults = (props) => {
               {item.name}
             </Name>
             <SubTexContainer>
-              {`${capitalizeFirstLetter(item.type)} ${item.genres ? ` | ${getSingleGenre(item.genres)}` : '' } `}
+              {`${capitalizeFirstLetter(item.type)} ${item.genres ? ` | ${getSingleGenre(item.genres)}` : ''} `}
             </SubTexContainer>
             {item.knownFor
               && item.knownFor.map(obj => (
