@@ -8,6 +8,7 @@ import topRatedMoviesRoute from './routes/topRatedMovies.route';
 import topRatedTvRoute from './routes/topRatedTv.route';
 import moviesByGenreRoute from './routes/moviesByGenre.route';
 import tvByGenreRoute from './routes/tvByGenre.route';
+import getImageData from './routes/vision.route';
 
 const app = express();
 const port = 3000;
@@ -22,10 +23,13 @@ app.use('/topratedtv', topRatedTvRoute);
 app.use('/moviesgenre', moviesByGenreRoute);
 app.use('/tvgenre', tvByGenreRoute);
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.send('API up and running...');
 });
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
+  setTimeout(() => {
+    getImageData();
+  }, 2000);
 });
