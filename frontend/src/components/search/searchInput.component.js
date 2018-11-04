@@ -35,7 +35,7 @@ const SearchInput = ({ onSearch }) => (
       type="text"
       underlineColorAndroid="transparent"
       onChangeText={onSearch}
-      autoFocus="true"
+      autoFocus={true}
     />
     <Icon.FontAwesome name="camera" color="white" size={16} style={searchIcon} />
   </InputContainer>
