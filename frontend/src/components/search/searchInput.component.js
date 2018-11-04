@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Icon } from 'expo';
 import { Header } from 'react-navigation';
 import * as DimSize from '../../common/dimensionSize';
+import { navigate } from '../../navigation';
+
 
 const InputContainer = styled.View`
   background: #424242;
@@ -37,7 +39,7 @@ const SearchInput = ({ onSearch }) => (
       onChangeText={onSearch}
       autoFocus={true}
     />
-    <Icon.FontAwesome name="camera" color="white" size={16} style={searchIcon} />
+    <Icon.FontAwesome name="camera" color="white" size={16} style={searchIcon} onPress={() => navigate('Camera', {})} />
   </InputContainer>
 );
 

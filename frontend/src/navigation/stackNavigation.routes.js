@@ -69,6 +69,12 @@ const Routes = {
       ...NavigationStyle,
     },
   },
+  Camera: {
+    screen: Screen.CameraScreen,
+    navigationOptions: {
+      ...NavigationStyle,
+    },
+  },
 };
 
 export default Routes;

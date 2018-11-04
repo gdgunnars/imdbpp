@@ -6,6 +6,7 @@ import RouletteScreen from './roulette.screen';
 import MovieDetailScreen from './movieDetail.screen';
 import TvShowDetailScreen from './tvshowDetail.screen';
 import PersonDetailScreen from './personDetail.screen';
+import CameraScreen from './camera.screen';
 
 export default {
   HomeScreen,
@@ -16,4 +17,5 @@ export default {
   MovieDetailScreen,
   TvShowDetailScreen,
   PersonDetailScreen,
+  CameraScreen,
 };
