@@ -10,15 +10,11 @@ const storageKeys = {
     },
     movies: {
       topThree: () => 'list_movies_topThree',
-      actionGenre: () => 'list_movies_actionGenre',
-      comedyGenre: () => 'list_movies_comedyGenre',
-      fantasyGenre: () => 'list_movies_fantasyGenre',
+      genre: genreId => `list_movies_genre_${genreId}`,
     },
     tvShow: {
       topThree: () => 'list_tvShow_topThree',
-      dramaGenre: () => 'list_tvShow_dramaGenre',
-      comedyGenre: () => 'list_tvShow_comedyGenre',
-      animationGenre: () => 'list_tvShow_animationGenre',
+      genre: genreId => `list_tvShow_genre_${genreId}`,
     },
   },
 };
