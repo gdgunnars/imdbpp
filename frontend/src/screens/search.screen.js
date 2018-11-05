@@ -23,7 +23,7 @@ class SearchScreen extends PureComponent {
 
   componentDidMount = () => {
     this.subscription = this.searchSubjectObserver
-      .pipe(debounceTime(500))
+      .pipe(debounceTime(200))
       .pipe(
         map((val) => {
           if (!val || val.trim() === '') {

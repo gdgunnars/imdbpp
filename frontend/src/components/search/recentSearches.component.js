@@ -103,6 +103,7 @@ class RecentSearches extends PureComponent {
 
   componentDidMount = () => {
     this.subscription = getRecentSearches().subscribe((searches) => {
+      this.clearSubscription();
       this.setState({
         searches: [
           { id: 'flatList_title', textElement: 'Recent Searches' },
@@ -111,6 +112,10 @@ class RecentSearches extends PureComponent {
         ].map(elem => ({ ...elem, id: elem.id.toString() })),
       });
     });
+  };
+
+  componentWillUnmount = () => {
+    this.clearSubscription();
   };
 
   onReomve = (id) => {
@@ -122,6 +127,13 @@ class RecentSearches extends PureComponent {
       });
     });
   };
+
+  clearSubscription() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+  }
 
   render() {
     const { searches } = this.state;
