@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import Trailer from '../components/trailer';
-import { getMovieById, fetchMovieById } from '../services';
+import { getMovieById } from '../services';
 import * as DimSize from '../common/dimensionSize';
 import dateFormat from '../common/dateFormat';
 import Duration from '../components/duration';
@@ -11,6 +11,7 @@ import Poster from '../components/poster';
 import Slider from '../components/Slider';
 import typeToRoutePath from '../common/typeToRoute';
 import Buttons from '../components/buttons';
+import { navigate } from '../navigation';
 
 const MovieTitle = styled.Text`
   font-size: 24;
@@ -53,49 +54,75 @@ const renderCast = cast => cast.map(({ name, profilePath, id }) => (
   />
 ));
 
-const renderSimilar = (tvShows, navigation) => tvShows.map(item => (
+const renderSimilar = tvShows => tvShows.map(item => (
   <Poster
-    onPress={() => navigation.push(typeToRoutePath(item.type), { id: item.id })}
+    onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
     key={item.id}
     url={item.posterPath}
     height={DimSize.height('32%')}
   />
 ));
 
-/*eslint-disable */
 class MovieDetailScreen extends PureComponent {
   state = {
-    movie: getMovieById(this.props.navigation.getParam('id')),
+    movie: null,
     markAsWatched: false,
     addToWatchList: false,
   };
 
-  componentDidMount = async () => {
-    const { movie } = this.state;
-    const { trailer, runtime, id } = movie;
-    if (!trailer && !runtime) {
-      try {
-        this.subscription = fetchMovieById(id);
-        const fetchedMovie = await this.subscription.promise;
-        this.setState({
-          movie: fetchedMovie,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-  componentWillUnmount = () => {
-    if(this.subscription) {
-      this.subscription.cancel();
+  cleanupSubscription = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
     }
   };
 
-  render() {
+  componentDidUpdate = () => {
+    console.log('UPDATED');
+  };
+
+  componentDidMount = () => {
     const { navigation } = this.props;
+    const id = navigation.getParam('id');
+
+    if (!id) {
+      console.warn('No id was provided!');
+      return;
+    }
+    console.log(`MovieDetailScreen - getMovieById: ${id}`);
+    this.subscription = getMovieById(id).subscribe((data) => {
+      this.cleanupSubscription();
+      this.setState({
+        movie: data,
+      });
+    });
+  };
+
+  componentWillUnmount = () => {
+    console.log('I UNMOUNTED!');
+    this.cleanupSubscription();
+  };
+
+  render() {
     const { movie, markAsWatched, addToWatchList } = this.state;
-    const { name, score, date, backdropPath, overview, trailer, genres, cast, similar, duration } = movie;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
+    if (!movie) {
+      // Todo: Add preloader
+      return <ScreenContainer />;
+    }
+
+    const {
+      name,
+      score,
+      date,
+      backdropPath,
+      overview,
+      trailer,
+      genres,
+      cast,
+      similar,
+      duration,
+    } = movie;
     return (
       <ScreenContainer>
         <Trailer
@@ -117,7 +144,7 @@ class MovieDetailScreen extends PureComponent {
             <Genre text="Movie" light withMargin key="genre_movie" />,
             ...genres
               .slice(0, 3)
-              .map(({ name }) => <Genre text={name} withMargin key={`genre_${name}`} />),
+              .map(item => <Genre text={item.name} withMargin key={`genre_${item.name}`} />),
           ]}
         </Row>
         <ButtonGroupContainer justifyContent="space-between">
@@ -150,9 +177,7 @@ class MovieDetailScreen extends PureComponent {
             <SeactionHeader>SIMILAR MOVIES</SeactionHeader>
           </Row>
         )}
-        {similar && (
-          <Slider snapWidth={posterSnapWidh} items={renderSimilar(similar, navigation)} seperator />
-        )}
+        {similar && <Slider snapWidth={posterSnapWidh} items={renderSimilar(similar)} seperator />}
       </ScreenContainer>
     );
   }
