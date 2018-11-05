@@ -1,9 +1,15 @@
 import React, { PureComponent } from 'react';
 import { from, Subject } from 'rxjs';
 import { debounceTime, switchMap, map } from 'rxjs/operators';
+import styled from 'styled-components';
+import { Header } from 'react-navigation';
 import Search from '../components/search';
-import ScreenContainer from './screen.style';
 import { getSearchResults } from '../services';
+
+const SearchScreenContainer = styled.View`
+  flex: 1;
+  background-color: #141414;
+`;
 
 class SearchScreen extends PureComponent {
   constructor(props) {
@@ -17,7 +23,7 @@ class SearchScreen extends PureComponent {
 
   componentDidMount = () => {
     this.subscription = this.searchSubjectObserver
-      .pipe(debounceTime(300))
+      .pipe(debounceTime(500))
       .pipe(
         map((val) => {
           if (!val || val.trim() === '') {
@@ -41,11 +47,11 @@ class SearchScreen extends PureComponent {
   render() {
     const { searchResults, showRecentSearch } = this.state;
     return (
-      <ScreenContainer>
+      <SearchScreenContainer>
         <Search.SearchInput onSearch={this.queryChange} />
         {!showRecentSearch && <Search.SearchResults searchResults={searchResults} />}
         {showRecentSearch && <Search.RecentSearches />}
-      </ScreenContainer>
+      </SearchScreenContainer>
     );
   }
 }
