@@ -20,6 +20,7 @@ const InputContainer = styled.View`
   align-items: center;
   padding-left: ${DimSize.windowSidesPadding()};
   padding-right: ${DimSize.windowSidesPadding()};
+  margin-bottom: ${Math.round(DimSize.contentSidesPadding())};
 `;
 
 const AbsoluteTitleContainer = styled.View`
@@ -107,6 +108,7 @@ class SearchInput extends PureComponent {
           marginTop: DimSize.statusBarHeight() + Math.round(DimSize.contentSidesPadding()),
           height: Header.HEIGHT - Math.round(DimSize.windowSidesPadding()),
           borderRadius: DimSize.width('2%'),
+          marginBottom: Math.round(DimSize.contentSidesPadding()),
         }}
         style={{
           opacity: focused ? spring(0, animConfig) : spring(1, animConfig),
@@ -124,6 +126,9 @@ class SearchInput extends PureComponent {
             ? spring(Header.HEIGHT, animConfig)
             : spring(Header.HEIGHT - Math.round(DimSize.windowSidesPadding()), animConfig),
           borderRadius: focused ? spring(0, animConfig) : spring(DimSize.width('2%'), animConfig),
+          marginBottom: focused
+            ? spring(0, animConfig)
+            : spring(Math.round(DimSize.contentSidesPadding()), animConfig),
         }}
       >
         {animation => (
@@ -134,6 +139,7 @@ class SearchInput extends PureComponent {
               borderRadius: animation.borderRadius,
               marginLeft: animation.marginLeftRight,
               marginRight: animation.marginLeftRight,
+              marginBottom: animation.marginBottom,
             }}
           >
             <Icon.Entypo name="chevron-thin-left" color="#C1C1C1" size={16} onPress={goBack} />

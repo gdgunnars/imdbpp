@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import { FlatList } from 'react-native';
 import { Icon } from 'expo';
 import * as DimSize from '../../common/dimensionSize';
+import { navigate } from '../../navigation';
+import { addItemToRecentSearches } from '../../services';
+import typeToRoute from '../../common/typeToRoute';
 
-const ListItems = styled.View`
+const ListItems = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -49,35 +52,48 @@ const SubTexContainer = styled.Text`
 
 const capitalizeFirstLetter = value => value && value.charAt(0).toUpperCase() + value.slice(1);
 const checkIfGenreAvailable = genres => (genres.length > 0 ? genres[0].name : '');
-const getSingleGenre = genres => (genres && typeof genres === 'object' && genres.length >= 1 && checkIfGenreAvailable(genres.filter(Boolean)));
+const getSingleGenre = genres => genres
+  && typeof genres === 'object'
+  && genres.length >= 1
+  && checkIfGenreAvailable(genres.filter(Boolean));
+
+const handleSearchItemPress = async (item) => {
+  if (item.type !== 'movie' && item.type !== 'tv') {
+    return;
+  }
+  try {
+    await addItemToRecentSearches(item);
+    navigate(typeToRoute(item.type), { id: item.id });
+  } catch (error) {
+    navigate(typeToRoute(item.type), { id: item.id });
+  }
+};
 
 const SearchResults = (props) => {
   const { searchResults } = props;
-
   return (
     <FlatList
       data={searchResults}
       keyExtractor={item => item.id.toString()}
       height={DimSize.height('74%')}
       renderItem={({ item }) => (
-        <ListItems>
+        <ListItems onPress={() => handleSearchItemPress(item)}>
           <ProfileImgContainer>
             <ProfileImg source={{ uri: item.posterPath ? item.posterPath : item.profilePath }} />
           </ProfileImgContainer>
           <NameRole>
-            <Name>
-              {item.name}
-            </Name>
+            <Name>{item.name}</Name>
             <SubTexContainer>
-              {`${capitalizeFirstLetter(item.type)} ${item.genres ? ` | ${getSingleGenre(item.genres)}` : ''} `}
+              {`${capitalizeFirstLetter(item.type)} ${
+                item.genres ? ` | ${getSingleGenre(item.genres)}` : ''
+              } `}
             </SubTexContainer>
             {item.knownFor
               && item.knownFor.map(obj => (
                 <SubTexContainer key={obj.id.toString()} indent="10" color="gray">
                   {obj.name}
                 </SubTexContainer>
-              ))
-            }
+              ))}
           </NameRole>
           <Remove>
             <Icon.FontAwesome name="close" color="white" size={32} />
