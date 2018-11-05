@@ -1,6 +1,4 @@
 import Screen from '../screens';
-import { getTrendingCombined } from '../services';
-import * as DimSize from '../common/dimensionSize';
 
 const NavigationStyle = {
   headerTitleStyle: {

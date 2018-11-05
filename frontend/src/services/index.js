@@ -9,6 +9,7 @@ import {
   getSearchResults,
   addItemToRecentSearches,
   getRecentSearches,
+  removeItemFromRecentSearches,
 } from './storage.service';
 
 export {
@@ -22,4 +23,5 @@ export {
   getSearchResults,
   addItemToRecentSearches,
   getRecentSearches,
+  removeItemFromRecentSearches,
 };

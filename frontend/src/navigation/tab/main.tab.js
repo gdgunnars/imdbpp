@@ -20,7 +20,7 @@ class MainTab extends Component {
   };
 
   componentDidMount = () => {
-    routeChange().subscribe((newTabName) => {
+    this.subscription = routeChange().subscribe((newTabName) => {
       const { activeTabName } = this.state;
       if (newTabName !== activeTabName) {
         this.setState({
@@ -28,6 +28,10 @@ class MainTab extends Component {
         });
       }
     });
+  };
+
+  componentWillUnmount = () => {
+    this.subscription.unsubscribe();
   };
 
   render() {

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Icon } from 'expo';
 import { FlatList } from 'react-native';
 import * as DimSize from '../../common/dimensionSize';
-import { getRecentSearches } from '../../services';
+import { getRecentSearches, removeItemFromRecentSearches } from '../../services';
 import { navigate } from '../../navigation';
 import typeToRoute from '../../common/typeToRoute';
 
@@ -11,10 +11,7 @@ const RecentSearchContainer = styled.View`
   padding-top: ${DimSize.windowSidesPadding()};
   margin-left: ${DimSize.windowSidesPadding()};
   margin-right: ${DimSize.windowSidesPadding()};
-  flex: 1;
 `;
-
-const FlatListContainer = styled.View``;
 
 const RecentSearchTitle = styled.Text`
   color: #fefefe;
@@ -22,12 +19,16 @@ const RecentSearchTitle = styled.Text`
   text-align: center;
 `;
 
-const SearchItemContainer = styled.TouchableOpacity`
-  flex: 1;
+const SearchItemContainer = styled.View`
   flex-direction: row;
   margin-top: ${DimSize.windowSidesPadding()};
   margin-top: ${DimSize.windowSidesPadding()};
   align-items: center;
+`;
+
+const SearchItemNaviagtionContainer = styled.TouchableOpacity`
+  flex: 1;
+  flex-direction: row;
 `;
 
 const SearchImageStyle = styled.Image`
@@ -72,19 +73,26 @@ const capitalize = (text) => {
 const joinGenres = genres => genres.slice(0, 2).reduce((prev, curr) => `${prev !== '' ? `${prev} |` : prev} ${curr.name}`, '');
 
 const SearchItem = ({
-  posterPath, type, name, genres, id,
+  posterPath, type, name, genres, id, onRemove,
 }) => (
-  <SearchItemContainer onPress={() => navigate(typeToRoute(type), { id })}>
-    {SearchItemImage[type](posterPath)}
-    <SearchTextColumn>
-      <SearchItemName>{name}</SearchItemName>
-      <SearchItemSubTitleContainer>
-        <SearchItemSubTitle>{capitalize(type)}</SearchItemSubTitle>
-        <SearchItemSubTitle> &#8226; </SearchItemSubTitle>
-        <SearchItemSubTitle>{joinGenres(genres)}</SearchItemSubTitle>
-      </SearchItemSubTitleContainer>
-    </SearchTextColumn>
-    <Icon.EvilIcons name="close" color="#C1C1C1" size={DimSize.height('4%')} />
+  <SearchItemContainer>
+    <SearchItemNaviagtionContainer onPress={() => navigate(typeToRoute(type), { id })}>
+      {SearchItemImage[type](posterPath)}
+      <SearchTextColumn>
+        <SearchItemName>{name}</SearchItemName>
+        <SearchItemSubTitleContainer>
+          <SearchItemSubTitle>{capitalize(type)}</SearchItemSubTitle>
+          <SearchItemSubTitle> &#8226; </SearchItemSubTitle>
+          <SearchItemSubTitle>{joinGenres(genres)}</SearchItemSubTitle>
+        </SearchItemSubTitleContainer>
+      </SearchTextColumn>
+    </SearchItemNaviagtionContainer>
+    <Icon.EvilIcons
+      name="close"
+      color="#C1C1C1"
+      size={DimSize.height('4%')}
+      onPress={() => onRemove(id)}
+    />
   </SearchItemContainer>
 );
 
@@ -96,29 +104,50 @@ class RecentSearches extends PureComponent {
   componentDidMount = () => {
     this.subscription = getRecentSearches().subscribe((searches) => {
       this.setState({
-        searches,
+        searches: [
+          { id: 'flatList_title', textElement: 'Recent Searches' },
+          ...searches,
+          { id: 'Please_fix_this', textElement: ' ' },
+        ].map(elem => ({ ...elem, id: elem.id.toString() })),
+      });
+    });
+  };
+
+  onReomve = (id) => {
+    removeItemFromRecentSearches(id).then(() => {
+      const { searches } = this.state;
+      const clonedSearches = [...searches];
+      this.setState({
+        searches: clonedSearches.filter(item => item.id !== id.toString()),
       });
     });
   };
 
   render() {
     const { searches } = this.state;
-    const withTitle = ['Recent Searches', ...searches, ' '];
     return (
       <RecentSearchContainer>
         <FlatList
-          keyExtractor={item => (item.id ? item.id.toString() : `flatListItem_${item}`)}
-          data={withTitle}
+          keyExtractor={item => item.id}
+          data={searches}
           title="Recent Searches"
           renderItem={({ item }) => {
-            if (typeof item === 'string') {
-              return <RecentSearchTitle>{item}</RecentSearchTitle>;
+            if (item.textElement) {
+              return <RecentSearchTitle key={item.id}>{item.textElement}</RecentSearchTitle>;
             }
             const {
               posterPath, type, name, genres, id,
             } = item;
             return (
-              <SearchItem id={id} posterPath={posterPath} type={type} name={name} genres={genres} />
+              <SearchItem
+                key={id}
+                id={id}
+                posterPath={posterPath}
+                type={type}
+                name={name}
+                genres={genres}
+                onRemove={this.onReomve}
+              />
             );
           }}
         />

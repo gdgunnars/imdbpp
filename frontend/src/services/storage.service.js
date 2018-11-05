@@ -93,15 +93,27 @@ const getRecentSearches = () => defer(() => Observable.create(async (observer) =
   try {
     const storageData = await retrieveData(key);
     observer.next(storageData);
-    return observer.complete();
+    observer.complete();
   } catch (error) {
     if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
       observer.next([]);
-      return observer.complete();
+      observer.complete();
     }
   }
   return () => `Defer with the key:${key} was completed`;
 }));
+
+const removeItemFromRecentSearches = async (id) => {
+  const key = storageKeys.recentSearches();
+  try {
+    const storageData = await retrieveData(key);
+    const filteredData = storageData.filter(item => item.id !== +id);
+    await storeData(key, filteredData);
+    return id;
+  } catch (error) {
+    return null;
+  }
+};
 
 const getSearchResults = (query, page = 1) => $get(`${basePath}/search?query=${query}&page=${page}`);
 
@@ -116,4 +128,5 @@ export {
   getSearchResults,
   addItemToRecentSearches,
   getRecentSearches,
+  removeItemFromRecentSearches,
 };
