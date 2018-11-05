@@ -3,8 +3,8 @@ import { ApiGetDataError } from '../errors';
 
 const get = async (url) => {
   try {
-    const reponse = await axios(url);
-    return reponse.data;
+    const response = await axios(url);
+    return response.data;
   } catch (error) {
     throw new ApiGetDataError(error);
   }

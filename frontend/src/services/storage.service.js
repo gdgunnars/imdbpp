@@ -1,5 +1,6 @@
 import { defer, Observable } from 'rxjs';
 import basePath from './service.config';
+import { ApiGetDataError } from '../errors';
 
 import {
   storeData, retrieveData, storageKeys, clearSessionData,
@@ -68,8 +69,7 @@ const getTvByGenre = (genreId) => {
   return createDefer(key, url);
 };
 
-// Todo: Fix this. params: (query, page = 1)
-const getSearchResults = () => {};
+const getSearchResults = (query, page = 1) => $get(`${basePath}/search?query=${query}&page=${page}`);
 
 export {
   getMovieById,
