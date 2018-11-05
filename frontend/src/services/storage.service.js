@@ -16,7 +16,6 @@ const createDefer = (key, url) => defer(() => Observable.create(async (observer)
     observer.next(storageData);
     return observer.complete();
   } catch (error) {
-    console.log(`ERROR: ${error.name}, CODE: ${error.code}`);
     if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
       const apiData = await $get(url);
       observer.next(apiData);
