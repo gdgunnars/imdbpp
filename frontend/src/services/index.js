@@ -7,6 +7,8 @@ import {
   getTopRatedTv,
   getTvByGenre,
   getSearchResults,
+  addItemToRecentSearches,
+  getRecentSearches,
 } from './storage.service';
 
 export {
@@ -18,4 +20,6 @@ export {
   getTopRatedTv,
   getTvByGenre,
   getSearchResults,
+  addItemToRecentSearches,
+  getRecentSearches,
 };

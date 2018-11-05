@@ -1,12 +1,11 @@
 import { defer, Observable } from 'rxjs';
 import basePath from './service.config';
-import { ApiGetDataError } from '../errors';
+import { errorCodes } from '../errors';
 
 import {
   storeData, retrieveData, storageKeys, clearSessionData,
 } from '../storage';
 import $get from './api.service';
-import { errorCodes } from '../errors';
 
 const createDefer = (key, url) => defer(() => Observable.create(async (observer) => {
   try {
@@ -69,6 +68,41 @@ const getTvByGenre = (genreId) => {
   return createDefer(key, url);
 };
 
+const addItemToRecentSearches = item => new Promise(async (resolve, reject) => {
+  const key = storageKeys.recentSearches();
+  try {
+    const recentSearches = await retrieveData(key);
+    const isAlreadyInList = recentSearches.find(elem => elem.id === item.id);
+    if (isAlreadyInList) {
+      return resolve(true);
+    }
+    await storeData(key, [item, ...recentSearches]);
+    return resolve(true);
+  } catch (error) {
+    if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
+      const newSearches = [item];
+      await storeData(key, newSearches);
+      return resolve(true);
+    }
+    return reject(error);
+  }
+});
+
+const getRecentSearches = () => defer(() => Observable.create(async (observer) => {
+  const key = storageKeys.recentSearches();
+  try {
+    const storageData = await retrieveData(key);
+    observer.next(storageData);
+    return observer.complete();
+  } catch (error) {
+    if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
+      observer.next([]);
+      return observer.complete();
+    }
+  }
+  return () => `Defer with the key:${key} was completed`;
+}));
+
 const getSearchResults = (query, page = 1) => $get(`${basePath}/search?query=${query}&page=${page}`);
 
 export {
@@ -80,4 +114,6 @@ export {
   getTopRatedTv,
   getTvByGenre,
   getSearchResults,
+  addItemToRecentSearches,
+  getRecentSearches,
 };
