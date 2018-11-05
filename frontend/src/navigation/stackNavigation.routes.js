@@ -1,4 +1,6 @@
 import Screen from '../screens';
+import { getTrendingCombined } from '../services';
+import * as DimSize from '../common/dimensionSize';
 
 const NavigationStyle = {
   headerTitleStyle: {
@@ -33,8 +35,7 @@ const Routes = {
   Search: {
     screen: Screen.SearchScreen,
     navigationOptions: {
-      title: 'Search',
-      ...NavigationStyle,
+      header: null,
     },
   },
   TvShow: {
