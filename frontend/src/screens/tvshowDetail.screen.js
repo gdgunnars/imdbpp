@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import Trailer from '../components/trailer';
-import { getTvShowById, fetchTvShowById } from '../services';
+import { getTvShowById } from '../services';
 import * as DimSize from '../common/dimensionSize';
 import dateFormat from '../common/dateFormat';
 import Duration from '../components/duration';
@@ -11,6 +11,7 @@ import Poster from '../components/poster';
 import Slider from '../components/Slider';
 import typeToRoutePath from '../common/typeToRoute';
 import Buttons from '../components/buttons';
+import { navigate } from '../navigation';
 
 const MovieTitle = styled.Text`
   font-size: 24;
@@ -53,55 +54,78 @@ const renderCast = cast => cast.map(({ name, profilePath, id }) => (
   />
 ));
 
-const renderSimilar = (tvShows, navigation) => tvShows.map(item => (
+const renderSimilar = tvShows => tvShows.map(item => (
   <Poster
-    onPress={() => navigation.push(typeToRoutePath(item.type), { id: item.id })}
+    onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
     key={item.id}
     url={item.posterPath}
     height={DimSize.height('32%')}
   />
 ));
 
-/*eslint-disable */
 class TvShowDetailScreen extends PureComponent {
   state = {
-    tvShow: getTvShowById(this.props.navigation.getParam('id')),
+    tvShow: null,
     markAsWatched: false,
     addToWatchList: false,
   };
 
-  componentDidMount = async () => {
-    const { tvShow } = this.state;
-    const { trailer, createdBy, id } = tvShow;
-    if (!trailer && !createdBy) {
-      try {
-        this.subscription = fetchTvShowById(id);
-        const fetchedTvShow = await this.subscription.promise;
-        this.setState({
-          tvShow: fetchedTvShow,
-        });
-      } catch (error) {
-        console.log(error)
-      }
+  cleanupSubscription = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
     }
   };
 
-  componentWillUnmount = () => {
-    if(this.subscription) {
-      this.subscription.cancel();
+  componentDidUpdate = () => {
+    console.log('UPDATED');
+  };
+
+  componentDidMount = () => {
+    const { navigation } = this.props;
+    const id = navigation.getParam('id');
+    if (!id) {
+      console.warn('No Id was provided to tvShowDetailScreen');
+      return;
     }
+    console.log(`MovieDetailScreen - getMovieById: ${id}`);
+    this.subscription = getTvShowById(id).subscribe((data) => {
+      this.cleanupSubscription();
+      this.setState({
+        tvShow: data,
+      });
+    });
+  };
+
+  componentWillUnmount = () => {
+    console.log('I UNMOUNTED!');
+    this.cleanupSubscription();
   };
 
   render() {
     const { tvShow, markAsWatched, addToWatchList } = this.state;
-    const { navigation } = this.props;
-    const { name, score, date, backdropPath, overview, trailer, genres, cast, similar, duration } = tvShow;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
+    if (!tvShow) {
+      // Todo: Add preloader
+      return <ScreenContainer />;
+    }
+    const {
+      name,
+      score,
+      date,
+      backdropPath,
+      overview,
+      trailer,
+      genres,
+      cast,
+      similar,
+      duration,
+    } = tvShow;
 
     return (
       <ScreenContainer>
         <Trailer
-        score={score}
+          score={score}
           src={trailer}
           poster={backdropPath}
           height={DimSize.height('38%')}
@@ -119,8 +143,8 @@ class TvShowDetailScreen extends PureComponent {
             <Genre text="Tv-Show" light withMargin key="genre_movie" />,
             ...genres
               .slice(0, 3)
-              .sort((a, b) => (a.id || 0 < b.id || 1 ? 1 : -1))
-              .map(({ name = '' }) => <Genre text={name} withMargin key={`genre_${name}`} />),
+              .sort((a, b) => (a.id || b.id > 0 || 1 ? 1 : -1))
+              .map(item => <Genre text={item.name} withMargin key={`genre_${item.name}`} />),
           ]}
         </Row>
         <ButtonGroupContainer justifyContent="space-between">
@@ -153,9 +177,7 @@ class TvShowDetailScreen extends PureComponent {
             <SeactionHeader>SIMILAR TV-SHOWS</SeactionHeader>
           </Row>
         )}
-        {similar && (
-          <Slider snapWidth={posterSnapWidh} items={renderSimilar(similar, navigation)} seperator />
-        )}
+        {similar && <Slider snapWidth={posterSnapWidh} items={renderSimilar(similar)} seperator />}
       </ScreenContainer>
     );
   }
