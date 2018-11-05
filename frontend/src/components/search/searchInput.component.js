@@ -8,13 +8,16 @@ import * as DimSize from '../../common/dimensionSize';
 import { navigate, goBack } from '../../navigation';
 
 const InputContainer = styled.View`
+  margin-top: ${DimSize.statusBarHeight() + Math.round(DimSize.contentSidesPadding())};
+  height: ${Header.HEIGHT - Math.round(DimSize.windowSidesPadding())};
+  border-radius: ${DimSize.width('2%')};
+  margin-left: ${DimSize.windowSidesPadding() / 1.5};
+  margin-right: ${DimSize.windowSidesPadding() / 1.5};
   background: #424242;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: ${DimSize.statusBarHeight()};
-  height: ${Header.HEIGHT};
   padding-left: ${DimSize.windowSidesPadding()};
   padding-right: ${DimSize.windowSidesPadding()};
 `;
@@ -48,7 +51,8 @@ class SearchInput extends PureComponent {
   inputRef = React.createRef();
 
   state = {
-    focused: true,
+    focused: false,
+    inputText: '',
   };
 
   componentDidMount() {
@@ -59,37 +63,67 @@ class SearchInput extends PureComponent {
     this.keyboardDidHideListener.remove();
   }
 
+  shouldBlurInput = () => {
+    const { inputText } = this.state;
+    if (inputText.trim() === '') {
+      this.inputRef.current.blur();
+      this.setState({
+        focused: false,
+      });
+    }
+  };
+
   keyBoardDidHide = () => {
+    this.shouldBlurInput();
+  };
+
+  handleOnInputChange = (val) => {
+    const { onSearch } = this.props;
+    this.setState({
+      inputText: val,
+    });
+    onSearch(val);
+  };
+
+  handleOnClose = () => {
+    const { onSearch } = this.props;
     this.inputRef.current.blur();
     this.setState({
+      inputText: '',
       focused: false,
     });
+    onSearch('');
   };
 
   render() {
-    const { onSearch } = this.props;
-    const { focused } = this.state;
+    const { focused, inputText } = this.state;
+    const animConfig = { stiffness: 300, damping: 26 };
     return (
       <Motion
         defaultStyle={{
-          opacity: 0,
-          inputOpacity: 1,
-          marginLeftRight: 0,
-          marginTop: DimSize.statusBarHeight(),
-          height: Header.HEIGHT,
-          borderRadius: 0,
+          opacity: 1,
+          inputOpacity: 0,
+          marginLeftRight: DimSize.windowSidesPadding() / 1.5,
+          marginTop: DimSize.statusBarHeight() + Math.round(DimSize.contentSidesPadding()),
+          height: Header.HEIGHT - Math.round(DimSize.windowSidesPadding()),
+          borderRadius: DimSize.width('2%'),
         }}
         style={{
-          opacity: focused ? spring(0) : spring(1),
-          inputOpacity: focused ? spring(1) : spring(0),
-          marginLeftRight: focused ? spring(0) : spring(DimSize.windowSidesPadding() / 1.5),
+          opacity: focused ? spring(0, animConfig) : spring(1, animConfig),
+          inputOpacity: focused ? spring(1, animConfig) : spring(0, animConfig),
+          marginLeftRight: focused
+            ? spring(0, animConfig)
+            : spring(DimSize.windowSidesPadding() / 1.5, animConfig),
           marginTop: focused
-            ? spring(DimSize.statusBarHeight())
-            : spring(DimSize.statusBarHeight() + Math.round(DimSize.contentSidesPadding())),
+            ? spring(DimSize.statusBarHeight(), animConfig)
+            : spring(
+              DimSize.statusBarHeight() + Math.round(DimSize.contentSidesPadding()),
+              animConfig,
+            ),
           height: focused
-            ? spring(Header.HEIGHT)
-            : spring(Header.HEIGHT - Math.round(DimSize.windowSidesPadding())),
-          borderRadius: focused ? spring(0) : spring(DimSize.width('2%')),
+            ? spring(Header.HEIGHT, animConfig)
+            : spring(Header.HEIGHT - Math.round(DimSize.windowSidesPadding()), animConfig),
+          borderRadius: focused ? spring(0, animConfig) : spring(DimSize.width('2%'), animConfig),
         }}
       >
         {animation => (
@@ -106,21 +140,34 @@ class SearchInput extends PureComponent {
             <Input
               style={{ opacity: animation.inputOpacity }}
               type="text"
+              value={inputText}
               underlineColorAndroid="transparent"
-              onChangeText={onSearch}
+              onChangeText={this.handleOnInputChange}
               ref={this.inputRef}
-              onBlur={() => this.setState({ focused: false })}
+              onBlur={() => this.shouldBlurInput}
               onFocus={() => {
+                if (focused) {
+                  return;
+                }
                 this.setState({ focused: true });
               }}
-              autoFocus
             />
-            <Icon.SimpleLineIcons
-              name="camera"
-              color="#C1C1C1"
-              size={DimSize.height('3%')}
-              onPress={() => navigate('Camera', {})}
-            />
+            {inputText === '' && (
+              <Icon.SimpleLineIcons
+                name="camera"
+                color="#C1C1C1"
+                size={DimSize.height('3%')}
+                onPress={() => navigate('Camera', {})}
+              />
+            )}
+            {inputText !== '' && (
+              <Icon.EvilIcons
+                name="close"
+                color="#C1C1C1"
+                size={DimSize.height('4%')}
+                onPress={this.handleOnClose}
+              />
+            )}
             <AbsoluteTitleContainer style={{ opacity: animation.opacity }} pointerEvents="none">
               <SearchTitle>Search</SearchTitle>
             </AbsoluteTitleContainer>
