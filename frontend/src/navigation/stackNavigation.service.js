@@ -17,6 +17,7 @@ const navigate = (routeName, params) => {
 };
 
 const goBack = () => {
+  mirrorStack.pop();
   const previousRoute = mirrorStack.pop();
   if (previousRoute) {
     navigator.dispatch(StackActions.replace(previousRoute));
