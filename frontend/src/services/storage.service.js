@@ -1,5 +1,5 @@
 import { defer, Observable } from 'rxjs';
-import basePath from './config.service';
+import basePath from './service.config';
 
 import {
   storeData, retrieveData, storageKeys, clearSessionData,
@@ -9,6 +9,9 @@ import { errorCodes } from '../errors';
 
 const createDefer = (key, url) => defer(() => Observable.create(async (observer) => {
   try {
+    // Todo: Remove clearSessionData.
+    // Uncomment nextLine to clearAllData from LocalDB.
+    // await clearSessionData();
     const storageData = await retrieveData(key);
     observer.next(storageData);
     return observer.complete();
@@ -66,8 +69,8 @@ const getTvByGenre = (genreId) => {
   return createDefer(key, url);
 };
 
-// Todo: Fix this.
-const getSearchResults = (query, page = 1) => false;
+// Todo: Fix this. params: (query, page = 1)
+const getSearchResults = () => {};
 
 export {
   getMovieById,
