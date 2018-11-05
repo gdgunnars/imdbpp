@@ -4,6 +4,8 @@ import { Icon } from 'expo';
 import { FlatList } from 'react-native';
 import * as DimSize from '../../common/dimensionSize';
 import { getRecentSearches } from '../../services';
+import { navigate } from '../../navigation';
+import typeToRoute from '../../common/typeToRoute';
 
 const RecentSearchContainer = styled.View`
   padding-top: ${DimSize.windowSidesPadding()};
@@ -20,7 +22,7 @@ const RecentSearchTitle = styled.Text`
   text-align: center;
 `;
 
-const SearchItemContainer = styled.View`
+const SearchItemContainer = styled.TouchableOpacity`
   flex: 1;
   flex-direction: row;
   margin-top: ${DimSize.windowSidesPadding()};
@@ -70,9 +72,9 @@ const capitalize = (text) => {
 const joinGenres = genres => genres.slice(0, 2).reduce((prev, curr) => `${prev !== '' ? `${prev} |` : prev} ${curr.name}`, '');
 
 const SearchItem = ({
-  posterPath, type, name, genres,
+  posterPath, type, name, genres, id,
 }) => (
-  <SearchItemContainer>
+  <SearchItemContainer onPress={() => navigate(typeToRoute(type), { id })}>
     {SearchItemImage[type](posterPath)}
     <SearchTextColumn>
       <SearchItemName>{name}</SearchItemName>
@@ -113,9 +115,11 @@ class RecentSearches extends PureComponent {
               return <RecentSearchTitle>{item}</RecentSearchTitle>;
             }
             const {
-              posterPath, type, name, genres,
+              posterPath, type, name, genres, id,
             } = item;
-            return <SearchItem posterPath={posterPath} type={type} name={name} genres={genres} />;
+            return (
+              <SearchItem id={id} posterPath={posterPath} type={type} name={name} genres={genres} />
+            );
           }}
         />
       </RecentSearchContainer>
