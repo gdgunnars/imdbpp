@@ -1,25 +1,54 @@
-import { NavigationActions, createStackNavigator } from 'react-navigation';
+import { createStackNavigator, StackActions } from 'react-navigation';
+import { BackHandler } from 'react-native';
+import { defer, BehaviorSubject } from 'rxjs';
 import Routes from './stackNavigation.routes';
 
 let navigator;
+const defaultRoute = { routeName: 'Home', params: null, activeTabName: 'Home' };
+let currentTabName = defaultRoute.routeName;
+const routingSubject = new BehaviorSubject(defaultRoute.routeName);
+const mirrorStack = [{ ...defaultRoute }];
+const mainRoutes = {
+  Home: 'Home',
+  Movies: 'Movies',
+  Search: 'Search',
+  TvShow: 'TvShow',
+  Roulette: 'Roulette',
+};
+
+const oneOfMainRoutes = routeName => mainRoutes[routeName];
 
 const setTopLevelNavigator = (navigatorRef) => {
   navigator = navigatorRef;
 };
 
-const navigate = (routeName, params) => {
-  console.log(routeName);
-  navigator.dispatch(
-    NavigationActions.navigate({
-      routeName,
-      params,
-    }),
-  );
+const routeChange = () => defer(() => routingSubject.asObservable());
+
+const navigate = (
+  routeName,
+  params,
+  activeTabName = oneOfMainRoutes(routeName) ? routeName : currentTabName,
+) => {
+  currentTabName = activeTabName;
+  const options = { routeName, params, activeTabName };
+  mirrorStack.push(options);
+  routingSubject.next(currentTabName);
+  navigator.dispatch(StackActions.replace(options));
 };
 
 const goBack = () => {
-  navigator.dispatch(NavigationActions.back());
+  mirrorStack.pop();
+  const previousRoute = mirrorStack.pop();
+  if (previousRoute) {
+    navigate(previousRoute.routeName, previousRoute.params, previousRoute.activeTabName);
+  } else {
+    const defaultScreen = 'Home';
+    navigate(defaultScreen);
+  }
+  return true;
 };
+
+BackHandler.addEventListener('hardwareBackPress', goBack);
 
 const FadeTransition = (index, position) => {
   const inputRange = [index - 1, index, index + 1];
@@ -46,5 +75,5 @@ const StackNavigator = createStackNavigator(Routes, {
 });
 
 export {
-  setTopLevelNavigator, navigate, goBack, StackNavigator,
+  setTopLevelNavigator, navigate, goBack, StackNavigator, routeChange,
 };

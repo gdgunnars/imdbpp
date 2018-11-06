@@ -1,48 +1,57 @@
 import React, { PureComponent } from 'react';
-import { throttle } from 'throttle-debounce';
+import { from, Subject } from 'rxjs';
+import { debounceTime, switchMap, map } from 'rxjs/operators';
+import styled from 'styled-components';
+import { Header } from 'react-navigation';
 import Search from '../components/search';
-import ScreenContainer from './screen.style';
 import { getSearchResults } from '../services';
+
+const SearchScreenContainer = styled.View`
+  flex: 1;
+  background-color: #141414;
+`;
 
 class SearchScreen extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { searchResults: [] };
-    this.searchOnInputThrottled = throttle(500, this.doSearch);
+    this.state = { searchResults: [], showRecentSearch: true };
+    this.searchSubject = new Subject();
+    this.searchSubjectObserver = this.searchSubject.asObservable();
   }
 
-  queryChange = (newQ) => {
-    this.setState({ query: newQ }, () => {
-      const { query } = this.state;
-      this.searchOnInputThrottled(query);
-    });
-  };
+  queryChange = newQ => this.searchSubject.next(newQ);
 
-  doSearch = async (query) => {
-    try {
-      this.searchQuery = getSearchResults(query);
-      const data = await this.searchQuery.promise;
-
-      this.setState({ searchResults: data });
-      console.log('Data:', data);
-    } catch (error) {
-      console.log('Error doing search:', error);
-    }
+  componentDidMount = () => {
+    this.subscription = this.searchSubjectObserver
+      .pipe(debounceTime(200))
+      .pipe(
+        map((val) => {
+          if (!val || val.trim() === '') {
+            this.setState({
+              showRecentSearch: true,
+            });
+          }
+          return val.trim();
+        }),
+      )
+      .pipe(switchMap(query => (query ? from(getSearchResults(query)) : [])))
+      .subscribe((data) => {
+        this.setState({ searchResults: data, showRecentSearch: false });
+      });
   };
 
   componentWillUnmount = () => {
-    if (this.subscription) {
-      this.subscription.cancel();
-    }
+    this.subscription.unsubscribe();
   };
 
   render() {
-    const { searchResults } = this.state;
+    const { searchResults, showRecentSearch } = this.state;
     return (
-      <ScreenContainer>
+      <SearchScreenContainer>
         <Search.SearchInput onSearch={this.queryChange} />
-        <Search.SearchResults searchResults={searchResults} />
-      </ScreenContainer>
+        {!showRecentSearch && <Search.SearchResults searchResults={searchResults} />}
+        {showRecentSearch && <Search.RecentSearches />}
+      </SearchScreenContainer>
     );
   }
 }

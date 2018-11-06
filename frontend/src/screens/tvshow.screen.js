@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { zip } from 'rxjs';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import * as DimSize from '../common/dimensionSize';
@@ -43,34 +44,35 @@ class TvShowScreen extends PureComponent {
     shows: null,
   };
 
-  componentDidMount = async () => {
-    try {
-      this.subscriptions = [getTopRatedTv(), getTvByGenre(18), getTvByGenre(35), getTvByGenre(16)];
+  cleanupSubscription = (key) => {
+    if (this[key]) {
+      this[key].unsubscribe();
+      this[key] = null;
+    }
+  };
 
-      const [topRated, dramaData, comedyData, animationData] = await Promise.all(
-        this.subscriptions.map(item => item.promise),
-      );
-
-      // There has to be a more cleaner way to do this..
-      const dramaList = { data: dramaData, title: 'DRAMA' };
-      const comedyList = { data: comedyData, title: 'COMEDY' };
-      const animationList = { data: animationData, title: 'ANIMATION' };
-      const genres = [dramaList, comedyList, animationList];
-
+  componentDidMount = () => {
+    this.topRatedSubscription = getTopRatedTv().subscribe((topRated) => {
+      this.cleanupSubscription('topRatedSubscription');
       this.setState({
         topRated,
-        shows: genres,
       });
-    } catch (error) {
-      console.log(error);
-    }
+    });
+
+    const genres = zip(getTvByGenre(18), getTvByGenre(35), getTvByGenre(16));
+    this.genresSubscription = genres.subscribe((shows) => {
+      this.cleanupSubscription('genresSubscription');
+      this.setState({
+        shows: shows.map(item => ({ data: item.data, title: item.title.toUpperCase() })),
+      });
+    });
   };
 
   componentWillUnmount = () => {
-    if (this.subscriptions) {
-      this.subscriptions.forEach(item => item.cancel());
-    }
+    this.cleanupSubscription('genresSubscription');
+    this.cleanupSubscription('topRatedSubscription');
   };
+
 
   render() {
     const { topRated, shows } = this.state;

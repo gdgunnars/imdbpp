@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as DimSize from '../../common/dimensionSize';
-import { navigate } from '../index';
+import { navigate, routeChange } from '../stackNavigation.service';
 import NavTabItem from './item.tab';
 
 const NavTabContainer = styled.View`
@@ -19,14 +19,19 @@ class MainTab extends Component {
     activeTabName: 'Home',
   };
 
-  onItemClick = (name) => {
-    const { activeTabName } = this.state;
-    if (activeTabName !== name) {
-      this.setState({
-        activeTabName: name,
-      });
-    }
-    navigate(name);
+  componentDidMount = () => {
+    this.subscription = routeChange().subscribe((newTabName) => {
+      const { activeTabName } = this.state;
+      if (newTabName !== activeTabName) {
+        this.setState({
+          activeTabName: newTabName,
+        });
+      }
+    });
+  };
+
+  componentWillUnmount = () => {
+    this.subscription.unsubscribe();
   };
 
   render() {
@@ -34,35 +39,35 @@ class MainTab extends Component {
     return (
       <NavTabContainer>
         <NavTabItem
-          onPress={this.onItemClick}
+          onPress={navigate}
           title="Home"
           iconName="home"
           iconSet="FontAwesome"
           focused={isFocused('Home', activeTabName)}
         />
         <NavTabItem
-          onPress={this.onItemClick}
+          onPress={navigate}
           title="Movies"
           iconName="film"
           iconSet="FontAwesome"
           focused={isFocused('Movies', activeTabName)}
         />
         <NavTabItem
-          onPress={this.onItemClick}
+          onPress={navigate}
           title="Search"
           iconName="search"
           iconSet="FontAwesome"
           focused={isFocused('Search', activeTabName)}
         />
         <NavTabItem
-          onPress={this.onItemClick}
+          onPress={navigate}
           title="TvShow"
           iconName="television-classic"
           iconSet="MaterialCommunityIcons"
           focused={isFocused('TvShow', activeTabName)}
         />
         <NavTabItem
-          onPress={this.onItemClick}
+          onPress={navigate}
           title="Roulette"
           iconName="random"
           iconSet="FontAwesome"

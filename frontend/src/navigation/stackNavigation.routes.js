@@ -33,8 +33,7 @@ const Routes = {
   Search: {
     screen: Screen.SearchScreen,
     navigationOptions: {
-      title: 'Search',
-      ...NavigationStyle,
+      header: null,
     },
   },
   TvShow: {
