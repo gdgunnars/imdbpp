@@ -104,7 +104,7 @@ class MovieDetailScreen extends PureComponent {
   };
 
   render() {
-    const { movie, markAsWatched, addToWatchList } = this.state;
+    const { movie,  addToWatchList } = this.state;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
     if (!movie) {
       // Todo: Add preloader
@@ -122,6 +122,7 @@ class MovieDetailScreen extends PureComponent {
       cast,
       similar,
       duration,
+      type,
     } = movie;
     return (
       <ScreenContainer>
@@ -136,26 +137,23 @@ class MovieDetailScreen extends PureComponent {
           <MovieTitle>{name}</MovieTitle>
         </Row>
         <Row justifyContent="space-between">
-          <Duration duration={duration} />
-          <Genre text={dateFormat(date)} light />
+          <Duration type={type} duration={duration} />
+          <Genre type={type} text={dateFormat(date)} />
         </Row>
         <Row>
           {[
-            <Genre text="Movie" light withMargin key="genre_movie" />,
+            <Genre type="movie" text="Movie" light withMargin key="genre_movie" />,
             ...genres
               .slice(0, 3)
+              .sort((a, b) => (a.id || b.id > 0 || 1 ? 1 : -1))
               .map(item => <Genre text={item.name} withMargin key={`genre_${item.name}`} />),
           ]}
         </Row>
         <ButtonGroupContainer justifyContent="space-between">
-          <Buttons.markAsWatched
-            active={markAsWatched}
-            size={DimSize.width('48%') - DimSize.windowSidesPadding()}
-            onPress={() => this.setState({ markAsWatched: !markAsWatched })}
-          />
           <Buttons.addToWatchList
+            type={type}
             active={addToWatchList}
-            size={DimSize.width('48%') - DimSize.windowSidesPadding()}
+            size={DimSize.width('100%') - DimSize.windowSidesPadding() * 2}
             onPress={() => this.setState({ addToWatchList: !addToWatchList })}
           />
         </ButtonGroupContainer>

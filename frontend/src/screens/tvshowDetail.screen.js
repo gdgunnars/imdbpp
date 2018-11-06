@@ -66,7 +66,6 @@ const renderSimilar = tvShows => tvShows.map(item => (
 class TvShowDetailScreen extends PureComponent {
   state = {
     tvShow: null,
-    markAsWatched: false,
     addToWatchList: false,
   };
 
@@ -103,7 +102,7 @@ class TvShowDetailScreen extends PureComponent {
   };
 
   render() {
-    const { tvShow, markAsWatched, addToWatchList } = this.state;
+    const { tvShow, addToWatchList } = this.state;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
     if (!tvShow) {
       // Todo: Add preloader
@@ -120,6 +119,7 @@ class TvShowDetailScreen extends PureComponent {
       cast,
       similar,
       duration,
+      type,
     } = tvShow;
 
     return (
@@ -135,12 +135,12 @@ class TvShowDetailScreen extends PureComponent {
           <MovieTitle>{name}</MovieTitle>
         </Row>
         <Row justifyContent="space-between">
-          <Duration duration={duration} />
-          <Genre text={dateFormat(date)} light />
+          <Duration type={type} duration={duration} />
+          <Genre type="tv" text={dateFormat(date)} />
         </Row>
         <Row>
           {[
-            <Genre text="Tv-Show" light withMargin key="genre_movie" />,
+            <Genre type="tv" text="Tv" light withMargin key="genre_tv" />,
             ...genres
               .slice(0, 3)
               .sort((a, b) => (a.id || b.id > 0 || 1 ? 1 : -1))
@@ -148,14 +148,10 @@ class TvShowDetailScreen extends PureComponent {
           ]}
         </Row>
         <ButtonGroupContainer justifyContent="space-between">
-          <Buttons.markAsWatched
-            active={markAsWatched}
-            size={DimSize.width('48%') - DimSize.windowSidesPadding()}
-            onPress={() => this.setState({ markAsWatched: !markAsWatched })}
-          />
           <Buttons.addToWatchList
+            type={type}
             active={addToWatchList}
-            size={DimSize.width('48%') - DimSize.windowSidesPadding()}
+            size={DimSize.width('100%') - DimSize.windowSidesPadding() * 2}
             onPress={() => this.setState({ addToWatchList: !addToWatchList })}
           />
         </ButtonGroupContainer>
