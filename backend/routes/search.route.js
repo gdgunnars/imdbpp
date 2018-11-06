@@ -22,7 +22,7 @@ router.route("/").get(async (req, res) => {
     const queryResults = await axios.get(
       `${config.getBasePath()}/search/multi?api_key=${config.getApiKey()}&language=en-US&query=${searchQuery}&page=${page}&include_adult=false}`
     );
-    
+
     const sortedByPopularity = queryResults.data.results.sort((a, b) => (a.popularity >= b.popularity) ? -1 : 1);
     const data = populateMedia(sortedByPopularity);
     res.status(200).json(data);
