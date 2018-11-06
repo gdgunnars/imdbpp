@@ -6,6 +6,7 @@ import * as DimSize from '../../common/dimensionSize';
 import { getRecentSearches, removeItemFromRecentSearches } from '../../services';
 import { navigate } from '../../navigation';
 import typeToRoute from '../../common/typeToRoute';
+import Genre from '../genre';
 
 const RecentSearchContainer = styled.View`
   padding-top: ${DimSize.windowSidesPadding()};
@@ -58,19 +59,13 @@ const SearchItemName = styled.Text`
 
 const SearchItemSubTitleContainer = styled.View`
   flex-direction: row;
-`;
-
-const SearchItemSubTitle = styled.Text`
-  font-size: 14;
-  color: #c1c1c1;
+  margin-top: ${DimSize.width('1.5%')};
 `;
 
 const capitalize = (text) => {
   const [firstLetter, ...rest] = text;
   return [firstLetter.toUpperCase(), ...rest].join('');
 };
-
-const joinGenres = genres => genres.slice(0, 2).reduce((prev, curr) => `${prev !== '' ? `${prev} |` : prev} ${curr.name}`, '');
 
 const SearchItem = ({
   posterPath, type, name, genres, id, onRemove,
@@ -81,9 +76,10 @@ const SearchItem = ({
       <SearchTextColumn>
         <SearchItemName>{name}</SearchItemName>
         <SearchItemSubTitleContainer>
-          <SearchItemSubTitle>{capitalize(type)}</SearchItemSubTitle>
-          <SearchItemSubTitle> &#8226; </SearchItemSubTitle>
-          <SearchItemSubTitle>{joinGenres(genres)}</SearchItemSubTitle>
+          <Genre type={type} text={capitalize(type)} withMargin />
+          {genres.slice(0, 2).map(item => (
+            <Genre key={`genre_${item.name}`} text={item.name} withMargin />
+          ))}
         </SearchItemSubTitleContainer>
       </SearchTextColumn>
     </SearchItemNaviagtionContainer>
