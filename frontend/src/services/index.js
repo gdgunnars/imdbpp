@@ -26,7 +26,9 @@ const getMoviesByGenre = genre => $get(`${basePath}/moviesgenre?genre=${genre}`)
 const getTopRatedTv = () => $get(`${basePath}/topratedtv`);
 const getTvByGenre = genre => $get(`${basePath}/tvgenre?genre=${genre}`);
 
+/*Methood used in Search*/
 const getSearchResults = (query, page = 1) => $get(`${basePath}/search?query=${query}&page=${page}`);
+
 
 export {
   getRecommendedCombined,
@@ -41,4 +43,5 @@ export {
   getTopRatedTv,
   getTvByGenre,
   getSearchResults,
+  getVisioinSearchResults,
 };
