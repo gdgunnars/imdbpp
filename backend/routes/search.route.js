@@ -1,9 +1,7 @@
 import express from "express";
 import axios from "axios";
 import * as config from "../config.js";
-import setImagePath from "../common/setImagePath";
 import populateMedia from "../common/populateMedia";
-// Postman request localhost:3000/search/{"actor":"Tom Hanks", "movie":"Titanic"}
 
 const router = express.Router();
 /**
@@ -11,21 +9,46 @@ const router = express.Router();
  * Query is mandatorybut page is optional, defaults to 1.
  */
 router.route("/").get(async (req, res) => {
-  console.log("In search");
-
   const { query, page = 1 } = req.query;
   if (!query) {
     return res.status(400).json({ message: "Missing search query" });
   }
+  console.log(`In search - Query: ${query}`);
   try {
+    console.time("Fetching data");
     const searchQuery = encodeURI(query);
     const queryResults = await axios.get(
       `${config.getBasePath()}/search/multi?api_key=${config.getApiKey()}&language=en-US&query=${searchQuery}&page=${page}&include_adult=false}`
     );
-    
-    const sortedByPopularity = queryResults.data.results.sort((a, b) => (a.popularity >= b.popularity) ? -1 : 1);
+    console.timeEnd("Fetching data");
+    console.time("Extra parsing");
+    const sortedByPopularity = queryResults.data.results.sort(
+      (a, b) => (a.popularity >= b.popularity ? -1 : 1)
+    );
     const data = populateMedia(sortedByPopularity);
-    res.status(200).json(data);
+    let [mostPopular, ...rest] = data;
+    // const topResColor = await getColor(mostPopular.posterPath);
+    let responseObject = {
+      topResult: {
+        data: mostPopular
+      },
+      person: { popularity: -1, data: [] },
+      movie: { popularity: -1, data: [] },
+      tv: { popularity: -1, data: [] }
+    };
+
+    const filteredRest = rest.filter(item => item.posterPath !== null);
+
+    for (let item of filteredRest) {
+      const { popularity, type } = item;
+      responseObject[type].data.push(item);
+      if (responseObject[type].popularity < popularity) {
+        responseObject[type].popularity = popularity;
+      }
+    }
+    console.timeEnd("Extra parsing");
+
+    res.status(200).json(responseObject);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error occurred" });
