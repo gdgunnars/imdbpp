@@ -25,7 +25,8 @@ const movie = ({
   cast,
   crew,
   similar,
-  trailer
+  trailer,
+  popularity
 }) => ({
   id,
   name: title || original_title || name,
@@ -46,7 +47,8 @@ const movie = ({
   trailer,
   cast: populateMedia(cast),
   crew: populateMedia(crew),
-  similar: populateMedia(similar)
+  similar: populateMedia(similar),
+  popularity
 });
 
 export default movie;
