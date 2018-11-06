@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { from, Subject } from 'rxjs';
 import { debounceTime, switchMap, map } from 'rxjs/operators';
 import styled from 'styled-components';
-import { Header } from 'react-navigation';
 import Search from '../components/search';
 import { getSearchResults } from '../services';
 
@@ -23,7 +22,7 @@ class SearchScreen extends PureComponent {
 
   componentDidMount = () => {
     this.subscription = this.searchSubjectObserver
-      .pipe(debounceTime(200))
+      .pipe(debounceTime(350))
       .pipe(
         map((val) => {
           if (!val || val.trim() === '') {
