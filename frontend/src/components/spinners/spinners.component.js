@@ -1,7 +1,13 @@
+/**
+ * ToDo get view from SpinnerType obj
+ * Set animation to loop
+ * Stop animation on demend
+ */
+
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import * as DimSize from '../../common/dimensionSize';
-import { Animated } from 'react-native';
+import { Animated, View } from 'react-native';
 
 const border = styled.View`
     border-top-width: 10;
@@ -41,11 +47,11 @@ const SpinnerChildOne = styled(SpinnerOne)`
 
 const SpinnerChildTwo = styled(SpinnerOne)`
     margin-top: 10px;    
-    height: 100%;
-    width: 100%;
+    height: 90%;
+    width: 90%;
     align-self: center;
     border-top-color: #d9d9db;
-    border-radius: 80;
+    border-radius: 70;
 `;
 
 
@@ -98,7 +104,7 @@ class Spinners extends PureComponent {
 const SpinnerType = {
     circle: () => (
         <SpinnerWrapper>
-            <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
+            <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]} >
                 <SpinnerOne>
                     <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
                         <SpinnerChildOne>
@@ -115,84 +121,3 @@ const SpinnerType = {
 }
 
 export default Spinners;
-
-
-/**
- * import React from 'react';
-import styled from 'styled-components';
-import * as DimSize from '../../common/dimensionSize';
-import { Animated } from 'react-native';
-
-const border = styled.View`
-    border-top-width: 10;
-    border-bottom-width: 10;
-    border-right-width: 10;
-    border-left-width: 10;
-    border-top-color: #3498db;
-    border-left-color: transparent;
-    border-bottom-color: transparent;
-    border-right-color: transparent;
-`;
-
-const SpinnerWrapper = styled.View`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: ${DimSize.height('100%')};
-    width: ${DimSize.width('100%')};
-    background-color: purple;
-    z-index: 2;
-`;
-
-const SpinnerOne = styled(border)` 
-    height: 200;
-    width: 200;
-    background-color: pink;
-    border-radius: 100;
-`;
-
-const SpinnerChildOne = styled(SpinnerOne)`
-    margin-top: 10px;
-    height: 90%;
-    width: 90%;
-    align-self: center;
-    background-color: blue;
-    border-top-color: #e78c4c;
-    border-radius: 80;
-`;
-
-const SpinnerChildTwo = styled(SpinnerOne)`
-    margin-top: 10px;    
-    height: 80%;
-    width: 80%;
-    align-self: center;
-    background-color: blue;
-    background-color: green;
-    border-top-color: #f9c922;
-    border-radius: 57;
-`;
-
-const text = styled.Text`
-    color: white;
-`;
-this._animatedValue = new Animated.Value(0);
-
-Animated.timing(this._animatedValue, {
-    toValue: 100,
-    duration: 3000
-}).start(); 
-
-const Spinners = {
-    circle: () => (
-        <SpinnerWrapper>
-            <SpinnerOne>
-                <SpinnerChildOne>
-                    <SpinnerChildTwo>
-                    </SpinnerChildTwo>
-                </SpinnerChildOne>
-            </SpinnerOne>
-        </SpinnerWrapper>
-    )
-}
-
-export default Spinners;*/
