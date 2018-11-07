@@ -17,6 +17,13 @@ const NavigationStyle = {
 };
 
 const Routes = {
+  Roulette: {
+    screen: Screen.RouletteScreen,
+    navigationOptions: {
+      title: 'Roulette',
+      ...NavigationStyle,
+    },
+  },
   Search: {
     screen: Screen.SearchScreen,
     navigationOptions: {
@@ -40,13 +47,6 @@ const Routes = {
     screen: Screen.TvShowScreen,
     navigationOptions: {
       title: 'Tv-Show',
-      ...NavigationStyle,
-    },
-  },
-  Roulette: {
-    screen: Screen.RouletteScreen,
-    navigationOptions: {
-      title: 'Roulette',
       ...NavigationStyle,
     },
   },
