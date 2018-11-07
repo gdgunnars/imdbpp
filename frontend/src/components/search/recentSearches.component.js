@@ -4,7 +4,8 @@ import { FlatList } from 'react-native';
 import { Header } from 'react-navigation';
 import { getRecentSearches, removeItemFromRecentSearches } from '../../services';
 import SearchItem from './searchItem.component';
-import { DimSize } from '../../common';
+import { DimSize, MediaLink } from '../../common';
+import { navigate } from '../../navigation';
 
 const RecentSearchContainer = styled.View`
   margin-top: ${Header.HEIGHT + DimSize.windowSidesPadding() * 2};
@@ -73,7 +74,8 @@ class RecentSearches extends PureComponent {
             }
             const { id } = item;
             const remove = () => this.onReomve(id);
-            return <SearchItem key={id} media={item} onRemove={remove} />;
+            const onPress = () => navigate(MediaLink(item));
+            return <SearchItem onPress={onPress} key={id} media={item} onRemove={remove} />;
           }}
         />
       </RecentSearchContainer>

@@ -7,6 +7,7 @@ import { navigate } from '../../navigation';
 import Slider from '../Slider';
 import Poster from '../poster';
 import SearchItem from './searchItem.component';
+import { addItemToRecentSearches } from '../../services';
 
 const NothingFound = styled.Text`
   color: #fefefe;
@@ -44,8 +45,21 @@ const KnownForTitle = styled(TopResult)`
   margin-bottom: ${DimSize.windowSidesPadding()};
 `;
 
+const createSearchResItemLink = (item) => {
+  const Link = async () => {
+    try {
+      await addItemToRecentSearches(item);
+      navigate(MediaLink(item));
+    } catch (error) {
+      console.log(error);
+      navigate(MediaLink(item));
+    }
+  };
+  return Link;
+};
+
 const renderKnownFor = tvShows => tvShows.map((item) => {
-  const link = () => navigate(MediaLink(item));
+  const link = createSearchResItemLink(item);
   return (
     <Poster onPress={link} key={item.id} url={item.posterPath} height={DimSize.height('32%')} />
   );
@@ -69,12 +83,13 @@ const SearchResults = (props) => {
   const { color = '#5CE9AC' } = topResult;
   const colors = [color, 'transparent'];
   const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
+  const TopResLink = createSearchResItemLink(topResult.data);
   return (
     <SearchResultsContainer>
       <LinearGradient locations={[0.1, 1]} style={gradientStyle} colors={colors} />
       <SearchResultWrapper>
         <TopResult>Top result</TopResult>
-        <SearchItem media={topResult.data} />
+        <SearchItem media={topResult.data} onPress={TopResLink} />
         {topResult.data.knownFor && (
           <KnownForTitle>{`Featuring ${topResult.data.name}`}</KnownForTitle>
         )}

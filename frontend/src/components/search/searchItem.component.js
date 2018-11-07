@@ -46,14 +46,13 @@ const SearchItemSubTitleContainer = styled.View`
   margin-top: ${DimSize.width('1.5%')};
 `;
 
-const SearchItem = ({ media }) => {
+const SearchItem = ({ media, onRemove, onPress }) => {
   const {
-    posterPath, type, name, genres = [], id, onRemove,
+    posterPath, type, name, genres = [],
   } = media;
-  const link = () => navigate(MediaLink({ type, id }));
   return (
     <SearchItemContainer>
-      <SearchItemNaviagtionContainer onPress={link}>
+      <SearchItemNaviagtionContainer onPress={onPress}>
         {SearchItemImage[type](posterPath)}
         <SearchTextColumn>
           <SearchItemName>{name}</SearchItemName>
