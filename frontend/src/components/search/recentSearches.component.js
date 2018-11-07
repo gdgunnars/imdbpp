@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Icon } from 'expo';
 import { FlatList } from 'react-native';
+import { Header } from 'react-navigation';
 import * as DimSize from '../../common/dimensionSize';
 import { getRecentSearches, removeItemFromRecentSearches } from '../../services';
 import { navigate } from '../../navigation';
@@ -9,6 +10,7 @@ import typeToRoute from '../../common/typeToRoute';
 import Genre from '../genre';
 
 const RecentSearchContainer = styled.View`
+  margin-top: ${Header.HEIGHT + DimSize.windowSidesPadding() * 2};
   padding-top: ${DimSize.windowSidesPadding()};
   margin-left: ${DimSize.windowSidesPadding()};
   margin-right: ${DimSize.windowSidesPadding()};
@@ -18,11 +20,11 @@ const RecentSearchTitle = styled.Text`
   color: #fefefe;
   font-size: 16;
   text-align: center;
+  margin-bottom: ${DimSize.windowSidesPadding()};
 `;
 
 const SearchItemContainer = styled.View`
   flex-direction: row;
-  margin-top: ${DimSize.windowSidesPadding()};
   margin-top: ${DimSize.windowSidesPadding()};
   align-items: center;
 `;

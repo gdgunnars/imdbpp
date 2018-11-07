@@ -8,12 +8,16 @@ import * as DimSize from '../../common/dimensionSize';
 import { navigate, goBack } from '../../navigation';
 
 const InputContainer = styled.View`
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
   margin-top: ${DimSize.statusBarHeight() + Math.round(DimSize.contentSidesPadding())};
   height: ${Header.HEIGHT - Math.round(DimSize.windowSidesPadding())};
   border-radius: ${DimSize.width('2%')};
   margin-left: ${DimSize.windowSidesPadding() / 1.5};
   margin-right: ${DimSize.windowSidesPadding() / 1.5};
-  background: #424242;
+  background: rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -21,6 +25,7 @@ const InputContainer = styled.View`
   padding-left: ${DimSize.windowSidesPadding()};
   padding-right: ${DimSize.windowSidesPadding()};
   margin-bottom: ${Math.round(DimSize.contentSidesPadding())};
+  z-index: 10;
 `;
 
 const AbsoluteTitleContainer = styled.View`

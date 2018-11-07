@@ -17,6 +17,12 @@ const NavigationStyle = {
 };
 
 const Routes = {
+  Search: {
+    screen: Screen.SearchScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
   Home: {
     screen: Screen.HomeScreen,
     navigationOptions: {
@@ -28,12 +34,6 @@ const Routes = {
     navigationOptions: {
       title: 'Movies',
       ...NavigationStyle,
-    },
-  },
-  Search: {
-    screen: Screen.SearchScreen,
-    navigationOptions: {
-      header: null,
     },
   },
   TvShow: {

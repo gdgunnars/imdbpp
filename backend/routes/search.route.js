@@ -2,6 +2,7 @@ import express from "express";
 import axios from "axios";
 import * as config from "../config.js";
 import populateMedia from "../common/populateMedia";
+import dominantColor from "../dominantColor";
 
 const router = express.Router();
 /**
@@ -21,16 +22,23 @@ router.route("/").get(async (req, res) => {
       `${config.getBasePath()}/search/multi?api_key=${config.getApiKey()}&language=en-US&query=${searchQuery}&page=${page}&include_adult=false}`
     );
     console.timeEnd("Fetching data");
-    console.time("Extra parsing");
     const sortedByPopularity = queryResults.data.results.sort(
       (a, b) => (a.popularity >= b.popularity ? -1 : 1)
     );
     const data = populateMedia(sortedByPopularity);
     let [mostPopular, ...rest] = data;
-    // const topResColor = await getColor(mostPopular.posterPath);
+    if (!mostPopular || !mostPopular.posterPath) {
+      console.log("im HERHEHR");
+      return res.status(404).json({});
+    }
+
+    const [r = 14, g = 14, b = 14] = await dominantColor(
+      mostPopular.posterPath
+    );
     let responseObject = {
       topResult: {
-        data: mostPopular
+        data: mostPopular,
+        color: `rgb(${r},${g},${b})`
       },
       person: { popularity: -1, data: [] },
       movie: { popularity: -1, data: [] },
@@ -46,7 +54,6 @@ router.route("/").get(async (req, res) => {
         responseObject[type].popularity = popularity;
       }
     }
-    console.timeEnd("Extra parsing");
 
     res.status(200).json(responseObject);
   } catch (error) {

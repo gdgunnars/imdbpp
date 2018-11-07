@@ -1,61 +1,52 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FlatList } from 'react-native';
-import { Icon } from 'expo';
+import { Icon, LinearGradient } from 'expo';
+import { Header } from 'react-navigation';
 import * as DimSize from '../../common/dimensionSize';
 import { navigate } from '../../navigation';
 import { addItemToRecentSearches } from '../../services';
 import typeToRoute from '../../common/typeToRoute';
+import Theme from '../../common/theme';
+import Genre from '../genre';
+import Slider from '../Slider';
+import Poster from  '../poster';
 
-const ListItems = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: ${DimSize.width('100%')};
-  padding: 5px;
+const NothingFound = styled.Text`
+  color: #fefefe;
+  font-size: 18;
+  text-align: center;
 `;
 
-const ProfileImgContainer = styled.View`
-  flex: 2;
-  align-items: center;
+const SearchResultWrapper = styled.View`
+  margin-top: ${Header.HEIGHT + DimSize.windowSidesPadding() * 2};
+  padding-top: ${DimSize.windowSidesPadding()};
+  margin-left: ${DimSize.windowSidesPadding()};
+  margin-right: ${DimSize.windowSidesPadding()};
 `;
 
-const NameRole = styled.View`
-  flex: 4;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-`;
+const gradientStyle = {
+  height: DimSize.height('80%'),
+  width: DimSize.width('100%'),
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  opacity: 0.55,
+};
 
-const Remove = styled.View`
+const SearchResultsContainer = styled.View`
   flex: 1;
-  align-items: center;
 `;
 
-const ProfileImg = styled.Image`
-  height: 70px;
-  width: 70px;
-  border-radius: 50;
+const TopResult = styled(NothingFound)`
+  font-weight: bold;
 `;
 
-const Name = styled.Text`
-  font-size: ${DimSize.height('3%')};
-  color: #ffffff;
-`;
-
-const SubTexContainer = styled.Text`
-  font-size: ${DimSize.height('2%')};
-  color: ${props => props.color || '#edeeef'};
-  padding-left: ${props => props.indent || 0};
-`;
-
-const capitalizeFirstLetter = value => value && value.charAt(0).toUpperCase() + value.slice(1);
-const checkIfGenreAvailable = genres => (genres.length > 0 ? genres[0].name : '');
-const getSingleGenre = genres => genres
-  && typeof genres === 'object'
-  && genres.length >= 1
-  && checkIfGenreAvailable(genres.filter(Boolean));
+const KnownForTitle = styled(TopResult)`
+  margin-top: ${DimSize.windowSidesPadding()};
+  margin-bottom: ${DimSize.windowSidesPadding()};
+`
 
 const handleSearchItemPress = async (item) => {
   if (item.type !== 'movie' && item.type !== 'tv') {
@@ -69,38 +60,111 @@ const handleSearchItemPress = async (item) => {
   }
 };
 
+const SearchItemContainer = styled.View`
+  flex-direction: row;
+  margin-top: ${DimSize.windowSidesPadding()};
+  align-items: center;
+`;
+
+const SearchItemNaviagtionContainer = styled.TouchableOpacity`
+  flex: 1;
+  flex-direction: row;
+`;
+
+const SearchImageStyle = styled.Image`
+  width: ${DimSize.width('20%')};
+  height: ${DimSize.width('20%')};
+  border-radius: ${props => (props.round ? DimSize.width('20%') : 0)};
+`;
+
+const SearchItemImage = {
+  tv: url => <SearchImageStyle source={{ uri: url }} resizeMode="cover" />,
+  movie: url => <SearchImageStyle source={{ uri: url }} resizeMode="cover" />,
+  person: url => <SearchImageStyle round source={{ uri: url }} resizeMode="cover" />,
+};
+
+const SearchTextColumn = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: ${DimSize.windowSidesPadding()};
+  margin-right: ${DimSize.windowSidesPadding()};
+`;
+
+const SearchItemName = styled.Text`
+  font-size: 16;
+  color: #fefefe;
+`;
+
+const SearchItemSubTitleContainer = styled.View`
+  flex-direction: row;
+  margin-top: ${DimSize.width('1.5%')};
+`;
+
+const capitalize = (text) => {
+  const [firstLetter, ...rest] = text;
+  return [firstLetter.toUpperCase(), ...rest].join('');
+};
+
+const SearchItem = ({ media }) => {
+  const {
+    posterPath, type, name, genres = [], id,
+  } = media;
+  return (
+    <SearchItemContainer>
+      <SearchItemNaviagtionContainer onPress={() => navigate(typeToRoute(type), { id })}>
+        {SearchItemImage[type](posterPath)}
+        <SearchTextColumn>
+          <SearchItemName>{name}</SearchItemName>
+          <SearchItemSubTitleContainer>
+            <Genre type={type} text={capitalize(type)} withMargin />
+            {genres.slice(0, 2).map(item => (
+              <Genre key={`genre_${item.name}`} text={item.name} withMargin />
+            ))}
+          </SearchItemSubTitleContainer>
+        </SearchTextColumn>
+      </SearchItemNaviagtionContainer>
+    </SearchItemContainer>
+  );
+};
+
+const renderKnownFor = tvShows => tvShows.map(item => (
+  <Poster
+    onPress={() => navigate(typeToRoute(item.type), { id: item.id })}
+    key={item.id}
+    url={item.posterPath}
+    height={DimSize.height('32%')}
+  />
+));
+
 const SearchResults = (props) => {
   const { searchResults } = props;
+  if (!searchResults) {
+    return (
+      <SearchResultsContainer>
+        <SearchResultWrapper>
+          <NothingFound>Nothing found..</NothingFound>
+        </SearchResultWrapper>
+      </SearchResultsContainer>
+    );
+  }
+  const {
+    topResult, person, movie, tv,
+  } = searchResults;
+
+  const { color = '#5CE9AC' } = topResult;
+  const colors = [color, 'transparent'];
+  const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
   return (
-    <FlatList
-      data={searchResults}
-      keyExtractor={item => item.id.toString()}
-      height={DimSize.height('74%')}
-      renderItem={({ item }) => (
-        <ListItems onPress={() => handleSearchItemPress(item)}>
-          <ProfileImgContainer>
-            <ProfileImg source={{ uri: item.posterPath ? item.posterPath : item.profilePath }} />
-          </ProfileImgContainer>
-          <NameRole>
-            <Name>{item.name}</Name>
-            <SubTexContainer>
-              {`${capitalizeFirstLetter(item.type)} ${
-                item.genres ? ` | ${getSingleGenre(item.genres)}` : ''
-              } `}
-            </SubTexContainer>
-            {item.knownFor
-              && item.knownFor.map(obj => (
-                <SubTexContainer key={obj.id.toString()} indent="10" color="gray">
-                  {obj.name}
-                </SubTexContainer>
-              ))}
-          </NameRole>
-          <Remove>
-            <Icon.FontAwesome name="close" color="white" size={32} />
-          </Remove>
-        </ListItems>
-      )}
-    />
+    <SearchResultsContainer>
+      <LinearGradient locations={[0.1, 1]} style={gradientStyle} colors={colors} />
+      <SearchResultWrapper>
+        <TopResult>Top result</TopResult>
+        <SearchItem media={topResult.data} />
+        {topResult.data.knownFor && <KnownForTitle>{`Featuring ${topResult.data.name}`}</KnownForTitle>}
+        {topResult.data.knownFor && <Slider snapWidth={posterSnapWidh} items={renderKnownFor(topResult.data.knownFor)} seperator />}
+      </SearchResultWrapper>
+    </SearchResultsContainer>
   );
 };
 

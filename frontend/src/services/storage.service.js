@@ -115,7 +115,11 @@ const removeItemFromRecentSearches = async (id) => {
   }
 };
 
-const getSearchResults = (query, page = 1) => $get(`${basePath}/search?query=${query}&page=${page}`);
+const getSearchResults = (query, page = 1) => new Promise((resolve) => {
+  $get(`${basePath}/search?query=${query}&page=${page}`)
+    .then(data => resolve(data))
+    .catch(() => resolve(null));
+});
 
 export {
   getMovieById,
