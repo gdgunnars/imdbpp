@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { from, Subject } from 'rxjs';
-import { debounceTime, switchMap, map } from 'rxjs/operators';
+import {
+  debounceTime, switchMap, map, distinctUntilChanged,
+} from 'rxjs/operators';
 import styled from 'styled-components';
 import Search from '../components/search';
 import { getSearchResults } from '../services';
@@ -18,11 +20,12 @@ class SearchScreen extends PureComponent {
     this.searchSubjectObserver = this.searchSubject.asObservable();
   }
 
-  queryChange = newQ => this.searchSubject.next(newQ);
+  queryChange = newQ => this.searchSubject.next(newQ.trim());
 
   componentDidMount = () => {
     this.subscription = this.searchSubjectObserver
-      .pipe(debounceTime(350))
+      .pipe(debounceTime(450))
+      .pipe(distinctUntilChanged())
       .pipe(
         map((val) => {
           if (!val || val.trim() === '') {

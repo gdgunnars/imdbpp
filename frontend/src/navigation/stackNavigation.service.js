@@ -25,8 +25,7 @@ const setTopLevelNavigator = (navigatorRef) => {
 const routeChange = () => defer(() => routingSubject.asObservable());
 
 const navigate = (
-  routeName,
-  params,
+  { routeName, params },
   activeTabName = oneOfMainRoutes(routeName) ? routeName : currentTabName,
 ) => {
   currentTabName = activeTabName;
@@ -40,7 +39,10 @@ const goBack = () => {
   mirrorStack.pop();
   const previousRoute = mirrorStack.pop();
   if (previousRoute) {
-    navigate(previousRoute.routeName, previousRoute.params, previousRoute.activeTabName);
+    navigate(
+      { routeName: previousRoute.routeName, params: previousRoute.params },
+      previousRoute.activeTabName,
+    );
   } else {
     const defaultScreen = 'Home';
     navigate(defaultScreen);

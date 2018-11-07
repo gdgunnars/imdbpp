@@ -2,38 +2,27 @@ import React, { PureComponent } from 'react';
 import { zip } from 'rxjs';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
-import * as DimSize from '../common/dimensionSize';
-import typeToRoutePath from '../common/typeToRoute';
 import { navigate } from '../navigation';
 import { getTopRatedMovies, getMoviesByGenre } from '../services';
-import Podium from '../components/podium';
-import Slider from '../components/Slider';
-import Poster from '../components/poster';
+import { DimSize, MediaLink } from '../common';
+import { Podium, Slider, Poster } from '../components';
 
-const Title = styled.Text`
-  font-size: ${DimSize.height('2.5%')};
-  color: #fefefe;
-  padding-top: ${DimSize.contentSidesPadding() * 2.5};
-  padding-bottom: ${DimSize.contentSidesPadding() * 2.5};
-  padding-left: ${DimSize.windowSidesPadding()};
-`;
+import { Text } from '../general';
 
 const View = styled.View``;
 
 const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
-const renderPoster = movies => movies.map(item => (
-  <Poster
-    onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
-    key={item.id}
-    url={item.posterPath}
-    height={DimSize.height('32%')}
-  />
-));
+const renderPoster = movies => movies.map((item) => {
+  const link = () => navigate(MediaLink(item));
+  return (
+    <Poster onPress={link} key={item.id} url={item.posterPath} height={DimSize.height('32%')} />
+  );
+});
 
 const getMovies = list => list.map(item => (
   <View key={item.title}>
-    <Title>{item.title}</Title>
+    <Text.subTitle>{item.title}</Text.subTitle>
     <Slider snapWidth={posterSnapWidh} items={renderPoster(item.data)} seperator />
   </View>
 ));
@@ -63,7 +52,7 @@ class MovieScreen extends PureComponent {
     this.genresSubscription = genres.subscribe((movies) => {
       this.cleanupSubscription('genresSubscription');
       this.setState({
-        movies: movies.map(item => ({ data: item.data, title: item.title.toUpperCase() })),
+        movies,
       });
     });
   };
@@ -78,7 +67,6 @@ class MovieScreen extends PureComponent {
 
     return (
       <ScreenContainer>
-        <Title style={{ paddingTop: 80 /* TODO */ }}>TOP 3 MOVIES</Title>
         {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
         {movies && getMovies(movies)}
       </ScreenContainer>

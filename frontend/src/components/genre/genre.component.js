@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import * as DimSize from '../../common/dimensionSize';
-import Theme from '../../common/theme';
+import { Theme, DimSize } from '../../common';
+import { Text } from '../../general';
 
 const GenreContainer = styled.View`
   padding-left: ${DimSize.width('1.5%')};
@@ -10,17 +10,12 @@ const GenreContainer = styled.View`
   padding-bottom: ${DimSize.width('1%')};
   background-color: ${props => props.color};
   border-radius: ${DimSize.width('1%')};
-  margin-right: ${props => (props.withMargin ? DimSize.width('1.5%') : '0')};
-`;
-
-const GenreText = styled.Text`
-  font-size: 12;
-  color: ${props => props.color};
+  margin-right: ${props => (props.withMargin ? Theme.sizes.spaces.content.small.right : '0')};
 `;
 
 const GenreComponent = ({ type = 'default', text, withMargin }) => (
   <GenreContainer color={Theme.colors.background[type]} withMargin={withMargin}>
-    <GenreText color={Theme.colors.text[type]}>{text}</GenreText>
+    <Text.caption color={type}>{text}</Text.caption>
   </GenreContainer>
 );
 

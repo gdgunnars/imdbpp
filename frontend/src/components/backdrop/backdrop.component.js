@@ -3,56 +3,21 @@ import styled from 'styled-components';
 import ImageBackdrop from './image.backdrop.component';
 import Poster from '../poster';
 import Rating from '../rating';
-import * as DimSize from '../../common/dimensionSize';
-import dateFormat from '../../common/dateFormat';
+import { DimSize, DateFormat, Theme } from '../../common';
+import { Text, View } from '../../general';
 
 const Container = styled.TouchableOpacity`
   position: relative;
   height: ${props => props.height};
   width: ${props => props.width};
   flex-direction: column;
-`;
-
-const ContentContainer = styled.View`
-  bottom: 0;
-  padding-left: ${DimSize.windowSidesPadding()};
-  padding-right: ${DimSize.windowSidesPadding()};
   z-index: 999;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
 `;
 
 const RatingContainer = styled.View`
   position: absolute;
-  top: ${DimSize.statusBarHeight() + DimSize.contentSidesPadding()};
-  right: ${DimSize.windowSidesPadding()};
-`;
-
-const ContentWrapper = styled.View`
-  flex: 1;
-  margin-left: ${DimSize.contentSidesPadding()};
-  align-self: flex-end;
-  justify-content: space-between;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Title = styled.Text`
-  color: ${props => props.color};
-  font-size: ${DimSize.height('2.5%')};
-  padding-bottom: ${DimSize.contentSidesPadding()};
-`;
-
-const Description = styled.Text`
-  color: rgba(254, 254, 254, 0.48);
-  font-size: ${DimSize.height('2%')};
-  overflow: hidden;
-`;
-
-const FlexRow = styled.View`
-  display: flex;
-  flex-direction: row;
+  top: ${Theme.sizes.spaces.content.small.top + Theme.sizes.statusBar.height};
+  right: ${Theme.sizes.spaces.window.right};
 `;
 
 const ImageBackdropHeight = DimSize.height('38%');
@@ -70,23 +35,24 @@ class Backdrop extends PureComponent {
         height={ContainerHeight}
         width={ContainerWidth}
         onPress={onPress}
+        pointerEvents="box-only"
       >
         <ImageBackdrop height={ImageBackdropHeight} url={backdropPath} />
         <RatingContainer>{score > 0 && <Rating score={score} />}</RatingContainer>
-        <ContentContainer>
+        <View.rowPadding stretch alignItems="flex-end">
           <Poster height={posterHeight} url={posterPath} />
-          <ContentWrapper>
-            <FlexRow>
-              <Title color="#fefefe">
+          <View.columnPadding stretch justifyContent="space-between">
+            <View.basic>
+              <Text.title>
                 {name}
-                <Title color="rgba(254,254,254,0.48)">{` (${dateFormat(date)})`}</Title>
-              </Title>
-            </FlexRow>
-            <FlexRow>
-              <Description>{overview}</Description>
-            </FlexRow>
-          </ContentWrapper>
-        </ContentContainer>
+                <Text.title color={'default'}>{` (${DateFormat(date)})`}</Text.title>
+              </Text.title>
+            </View.basic>
+            <View.basic>
+              <Text.caption>{overview}</Text.caption>
+            </View.basic>
+          </View.columnPadding>
+        </View.rowPadding>
       </Container>
     );
   }

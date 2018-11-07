@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'expo';
-import * as DimSize from '../../common/dimensionSize';
-import Theme from '../../common/theme';
+import { Theme, DimSize } from '../../common';
 
 const Button = styled.TouchableOpacity`
   display: flex;

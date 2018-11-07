@@ -17,48 +17,53 @@ const NavigationStyle = {
 };
 
 const Routes = {
-  Search: {
-    screen: Screen.SearchScreen,
-    navigationOptions: {
-      header: null,
-    },
-  },
   Home: {
     screen: Screen.HomeScreen,
     navigationOptions: {
       ...NavigationStyle,
     },
   },
-  Movies: {
-    screen: Screen.MovieScreen,
+  Search: {
+    screen: Screen.SearchScreen,
     navigationOptions: {
-      title: 'Movies',
+      header: null,
+    },
+  },
+  MovieTvDetail: {
+    screen: Screen.MovieTvDetailScreen,
+    navigationOptions: {
       ...NavigationStyle,
     },
   },
   TvShow: {
     screen: Screen.TvShowScreen,
     navigationOptions: {
-      title: 'Tv-Show',
+      title: 'Top Tv-Shows',
       ...NavigationStyle,
+      headerStyle: {
+        backgroundColor: '#141414',
+        elevation: 0,
+      },
+      headerTransparent: false,
     },
   },
+  Movies: {
+    screen: Screen.MovieScreen,
+    navigationOptions: {
+      title: 'Top Movies',
+      ...NavigationStyle,
+      headerStyle: {
+        backgroundColor: '#141414',
+        elevation: 0,
+      },
+      headerTransparent: false,
+    },
+  },
+
   Roulette: {
     screen: Screen.RouletteScreen,
     navigationOptions: {
       title: 'Roulette',
-      ...NavigationStyle,
-    },
-  },
-  MovieDetail: {
-    screen: Screen.MovieDetailScreen,
-    navigationOptions: {
-      ...NavigationStyle,
-    },
-  },
-  TvShowDetail: {
-    screen: Screen.TvShowDetailScreen,
-    navigationOptions: {
       ...NavigationStyle,
     },
   },

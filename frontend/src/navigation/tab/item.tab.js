@@ -26,8 +26,9 @@ const NavtabItem = ({
   title, iconName, iconSet, focused, onPress,
 }) => {
   const color = getColor(focused);
+  const link = () => onPress({ routeName: title });
   return (
-    <NavItemContainer onPress={() => onPress(title)}>
+    <NavItemContainer onPress={link}>
       <NavTabIcon iconName={iconName} iconSet={iconSet} color={color} />
       <NavItemText color={color}>{title}</NavItemText>
     </NavItemContainer>

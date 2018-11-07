@@ -1,28 +1,16 @@
 /* eslint-disable*/
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import ScreenContainer from './screen.style';
-
-import Slider from '../components/Slider';
-import Poster from '../components/poster';
-import Backdrop from '../components/backdrop';
-import * as DimSize from '../common/dimensionSize';
-import typeToRoutePath from '../common/typeToRoute';
+import { Slider, Poster, Backdrop } from '../components';
+import { Text } from '../general';
 import { getTrendingCombined } from '../services';
 import { navigate } from '../navigation';
-
-const TopRatedTitles = styled.Text`
-  font-size: ${DimSize.height('2.5%')};
-  color: #fefefe;
-  padding-top: ${DimSize.contentSidesPadding() * 2.5};
-  padding-bottom: ${DimSize.contentSidesPadding() * 2.5};
-  padding-left: ${DimSize.windowSidesPadding()};
-`;
+import { DimSize, MediaLink } from '../common';
 
 const renderPoster = movies =>
   movies.map(item => (
     <Poster
-      onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
+      onPress={() => navigate(MediaLink(item))}
       key={item.id}
       url={item.posterPath}
       height={DimSize.height('32%')}
@@ -30,18 +18,22 @@ const renderPoster = movies =>
   ));
 
 const renderBackdrop = movies =>
-  movies.map(({ id, name, score, date, backdropPath, posterPath, overview, type }) => (
-    <Backdrop
-      onPress={() => navigate(typeToRoutePath(type), { id })}
-      key={id}
-      name={name}
-      score={score}
-      date={date}
-      backdropPath={backdropPath}
-      posterPath={posterPath}
-      overview={`${overview.substr(0, 100).trim()}${overview.length > 100 ? '...' : ''}`}
-    />
-  ));
+  movies.map(item => {
+    const { id, name, score, date, backdropPath, posterPath, overview } = item;
+    const link = () => navigate(MediaLink(item));
+    return (
+      <Backdrop
+        onPress={link}
+        key={id}
+        name={name}
+        score={score}
+        date={date}
+        backdropPath={backdropPath}
+        posterPath={posterPath}
+        overview={`${overview.substr(0, 100).trim()}${overview.length > 100 ? '...' : ''}`}
+      />
+    );
+  });
 
 class HomeScreen extends PureComponent {
   state = {
@@ -82,7 +74,7 @@ class HomeScreen extends PureComponent {
         {trendingNow && (
           <Slider snapWidth={backdropSnapWidth} items={renderBackdrop(trendingNow)} />
         )}
-        <TopRatedTitles>TRENDING NOW</TopRatedTitles>
+        <Text.subTitle>TRENDING NOW</Text.subTitle>
         {trendingNow && (
           <Slider snapWidth={posterSnapWidh} items={renderPoster(trendingNow)} seperator />
         )}

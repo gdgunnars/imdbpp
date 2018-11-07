@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Icon } from 'expo';
 import Poster from '../poster';
 import Rating from '../rating';
-import typeToRoutePath from '../../common/typeToRoute';
+import { MediaLink } from '../../common';
 import { navigate } from '../../navigation';
 
 const Container = styled.View`
@@ -14,7 +14,7 @@ const Container = styled.View`
 
 const RatingContainer = styled.View`
   position: relative;
-  background-color: rgba(255, 255, 255, ${props => props.shade});
+  background-color: ${({ shade = 1 }) => `rgba(255, 255, 255, ${shade})`};
   padding-top: 6;
   padding-bottom: 6;
   display: flex;
@@ -28,24 +28,19 @@ const IconContainer = styled.View`
   left: 0;
 `;
 
-const PodiumPoster = ({ item, height, colors }) => (
-  <Container width={height * 0.7}>
-    <Poster
-      url={item.posterPath}
-      height={height}
-      onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
-    />
-    <RatingContainer width={height * 0.7} shade={colors.shade}>
-      <IconContainer size={height * 0.15}>
-        <Icon.Ionicons
-          name="md-trophy"
-          color={colors.icon}
-          size={height * 0.15}
-        />
-      </IconContainer>
-      <Rating score={item.score} />
-    </RatingContainer>
-  </Container>
-);
+const PodiumPoster = ({ item, height, colors }) => {
+  const link = () => navigate(MediaLink(item));
+  return (
+    <Container width={height * 0.7}>
+      <Poster url={item.posterPath} height={height} onPress={link} />
+      <RatingContainer width={height * 0.7} shade={colors.shade}>
+        <IconContainer size={height * 0.15}>
+          <Icon.Ionicons name="md-trophy" color={colors.icon} size={height * 0.15} />
+        </IconContainer>
+        <Rating score={item.score} />
+      </RatingContainer>
+    </Container>
+  );
+};
 
 export default PodiumPoster;

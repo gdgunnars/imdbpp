@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'expo';
-import * as DimSize from '../../common/dimensionSize';
+import { Text } from '../../general';
+import { Theme } from '../../common';
 
 const RatingContainer = styled.View`
   display: flex;
@@ -9,36 +10,46 @@ const RatingContainer = styled.View`
   align-items: center;
 `;
 
-const Score = styled.Text`
-  color: #fefefe;
-  font-size: ${DimSize.height('2%')};
-  padding-left: 5;
-`;
-
 const getStars = (score) => {
-  const IconSize = DimSize.height('2%');
   const fiveStarRating = score / 2;
   const hasDecimal = fiveStarRating % 1 !== 0;
   const flooredRating = Math.floor(fiveStarRating);
-  const starColor = '#E7CF23';
   let stars = new Array(flooredRating).fill(1);
+  stars = stars.map((item, index) => `star_${index}`);
 
-  stars = stars.map((_, index) => (
-    // eslint-disable-next-line
-    <Icon.FontAwesome name="star" size={IconSize} key={`${index}-star`} color={starColor} />
+  stars = stars.map(item => (
+    <Icon.FontAwesome
+      name="star"
+      size={Theme.sizes.text.small}
+      key={item}
+      color={Theme.colors.text.star}
+    />
   ));
   if (hasDecimal) {
     stars.push(
-      <Icon.FontAwesome name="star-half" size={IconSize} key="half-star" color={starColor} />,
+      <Icon.FontAwesome
+        name="star-half"
+        size={Theme.sizes.text.small}
+        key="half-star"
+        color={Theme.colors.text.star}
+      />,
     );
   }
   return stars;
 };
 
+const textStyle = {
+  paddingLeft: Theme.sizes.spaces.content.small.left,
+};
+
 const Rating = ({ score }) => (
   <RatingContainer>
     {getStars(score)}
-    {score && <Score>{score}</Score>}
+    {score && (
+      <Text.caption color="light" style={textStyle}>
+        {score}
+      </Text.caption>
+    )}
   </RatingContainer>
 );
 

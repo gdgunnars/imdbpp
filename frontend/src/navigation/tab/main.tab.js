@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as DimSize from '../../common/dimensionSize';
 import { navigate, routeChange } from '../stackNavigation.service';
 import NavTabItem from './item.tab';
+import Theme from '../../common/theme';
 
 const NavTabContainer = styled.View`
   width: ${DimSize.width('100%')};
@@ -10,6 +11,7 @@ const NavTabContainer = styled.View`
   flex-direction: row;
   justify-content: space-evenly;
   background-color: #252526;
+  height: ${Theme.sizes.tabBar.height};
 `;
 
 const isFocused = (name, selected) => name === selected;
