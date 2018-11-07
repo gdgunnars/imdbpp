@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { zip } from 'rxjs';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import * as DimSize from '../common/dimensionSize';
@@ -43,36 +44,33 @@ class MovieScreen extends PureComponent {
     movies: null,
   };
 
-  componentDidMount = async () => {
-    try {
-      this.subscriptions = [
-        getTopRatedMovies(),
-        getMoviesByGenre(28),
-        getMoviesByGenre(35),
-        getMoviesByGenre(14),
-      ];
-
-      const [topRated, actionData, comedyData, animationData] = await Promise.all(
-        this.subscriptions.map(item => item.promise),
-      );
-
-      // There has to be a more cleaner way to do this..
-      const actionList = { data: actionData, title: 'ACTION' };
-      const comedyList = { data: comedyData, title: 'COMEDY' };
-      const fantasyList = { data: animationData, title: 'FANTASY' };
-      const genres = [actionList, comedyList, fantasyList];
-
-      this.setState({
-        topRated,
-        movies: genres,
-      });
-    } catch (error) {
-      console.log(error);
+  cleanupSubscription = (key) => {
+    if (this[key]) {
+      this[key].unsubscribe();
+      this[key] = null;
     }
   };
 
+  componentDidMount = () => {
+    this.topRatedSubscription = getTopRatedMovies().subscribe((topRated) => {
+      this.cleanupSubscription('topRatedSubscription');
+      this.setState({
+        topRated,
+      });
+    });
+
+    const genres = zip(getMoviesByGenre(28), getMoviesByGenre(35), getMoviesByGenre(14));
+    this.genresSubscription = genres.subscribe((movies) => {
+      this.cleanupSubscription('genresSubscription');
+      this.setState({
+        movies: movies.map(item => ({ data: item.data, title: item.title.toUpperCase() })),
+      });
+    });
+  };
+
   componentWillUnmount = () => {
-    this.subscriptions.forEach(item => item.cancel());
+    this.cleanupSubscription('genresSubscription');
+    this.cleanupSubscription('topRatedSubscription');
   };
 
   render() {

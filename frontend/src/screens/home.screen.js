@@ -49,28 +49,34 @@ class HomeScreen extends PureComponent {
     recommended: null,
   };
 
-  componentDidMount = async () => {
-    try {
-      this.subscription = getTrendingCombined();
-      const data = await this.subscription.promise;
-      this.setState({
-        trendingNow: data,
-      });
-    } catch (error) {
-      console.log(error);
+  cleanupSubscription = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
     }
   };
 
+  componentDidMount = () => {
+    this.subscription = getTrendingCombined().subscribe(data => {
+      this.cleanupSubscription();
+      this.setState({
+        trendingNow: data,
+      });
+    });
+  };
+
   componentWillUnmount = () => {
-    if (this.subscription) {
-      this.subscription.cancel();
-    }
+    this.cleanupSubscription();
   };
 
   render() {
     const { trendingNow, recommended } = this.state;
     const backdropSnapWidth = Math.round(DimSize.width('100%'));
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
+
+    if (!trendingNow) {
+      return <ScreenContainer />;
+    }
     return (
       <ScreenContainer>
         {trendingNow && (

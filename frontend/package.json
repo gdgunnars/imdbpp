@@ -18,9 +18,11 @@
     "babel-eslint": "^10.0.1",
     "expo": "^30.0.1",
     "react": "16.3.1",
+    "react-motion": "^0.5.2",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-carousel-control": "^2.0.1",
     "react-navigation": "^2.16.0",
+    "rxjs": "^6.3.3",
     "styled-components": "^4.0.2",
     "throttle-debounce": "^2.0.1"
   },

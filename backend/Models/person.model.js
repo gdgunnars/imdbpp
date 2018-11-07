@@ -1,14 +1,24 @@
-import populateMedia from '../common/populateMedia';
-import setImagePath from '../common/setImagePath';
-const person = ({ character, id, name, profile_path, department, job, known_for }) => ({
+import populateMedia from "../common/populateMedia";
+import setImagePath from "../common/setImagePath";
+const person = ({
   character,
   id,
   name,
-  profilePath: setImagePath(profile_path),
+  profile_path,
+  department,
+  job,
+  known_for,
+  popularity
+}) => ({
+  character,
+  popularity,
+  id,
+  name,
+  posterPath: setImagePath(profile_path),
   type: "person",
   department,
   job,
-  knownFor: populateMedia(known_for),
+  knownFor: populateMedia(known_for)
 });
 
 export default person;

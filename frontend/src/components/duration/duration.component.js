@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'expo';
 import * as DimSize from '../../common/dimensionSize';
+import Theme from '../../common/theme';
 
 const DurationContainer = styled.View`
   display: flex;
@@ -21,9 +22,11 @@ const formatDuration = (duration) => {
   return `${hours > 0 ? `${hours}h` : ''} ${mins}min`;
 };
 
-const DurationComponent = ({ duration }) => (
+const DurationComponent = ({ duration, type = 'default' }) => (
   <DurationContainer>
-    {duration && <Icon.FontAwesome name="clock-o" size={16} color="#E63B3B" />}
+    {duration && (
+      <Icon.FontAwesome name="clock-o" size={16} color={Theme.colors.background[type]} />
+    )}
     {duration && <DurationText>{formatDuration(duration)}</DurationText>}
   </DurationContainer>
 );
