@@ -1,3 +1,3 @@
 import Spinners from './spinners.component'
 
-export default  Spinners;
+export default Spinners;
