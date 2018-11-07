@@ -6,8 +6,8 @@
 
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import * as DimSize from '../../common/dimensionSize';
 import { Animated, View } from 'react-native';
+import * as DimSize from '../../common/dimensionSize';
 
 const border = styled.View`
     border-top-width: 10;
@@ -56,68 +56,69 @@ const SpinnerChildTwo = styled(SpinnerOne)`
 
 
 class Spinners extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = { isAnimating: true };
-    }
-    componentWillMount() {
-        this._animatedValue = new Animated.Value(0);
-    };
+  constructor(props) {
+    super(props);
+    this.state = { isAnimating: true };
+  }
+
+  componentWillMount() {
+    this._animatedValue = new Animated.Value(0);
+  }
 
     componentDidMount() {
-        Animated.timing(this._animatedValue, {
-            toValue: 100,
-            duration: 3000,
-            delay: 200,
-            useNativeDriver: true,
-            iterations: 5
-        }).start();
-    }
+    Animated.loop(
+      Animated.timing(this._animatedValue, {
+        toValue: 100,
+        duration: 3000,
+        delay: 200,
+        useNativeDriver: true,
+        iterations: 5,
+      })
+).start();
+  }
 
-    render() {
-        var interpolatedRotateAnimation = this._animatedValue.interpolate({
-            inputRange: [0, 100],
-            outputRange: ['0deg', '360deg']
-        });
+  render() {
+    let interpolatedRotateAnimation = this._animatedValue.interpolate({
+      inputRange: [0, 100],
+      outputRange: ['0deg', '360deg'],
+    });
 
-        const { name } = this.props;
+    const { name } = this.props;
 
-        return (
-            <SpinnerWrapper>
-                <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]} >
-                    <SpinnerOne>
-                        <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
-                            <SpinnerChildOne>
-                                <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
-                                    <SpinnerChildTwo>
-                                    </SpinnerChildTwo>
+    return (
+          <SpinnerWrapper>
+              <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
+                  <SpinnerOne>
+                      <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
+                          <SpinnerChildOne>
+                              <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
+                                  <SpinnerChildTwo />
                                 </Animated.View>
                             </SpinnerChildOne>
                         </Animated.View>
                     </SpinnerOne>
                 </Animated.View>
             </SpinnerWrapper>
-        )
-    }
+    );
+  }
 }
 
 const SpinnerType = {
-    circle: () => (
-        <SpinnerWrapper>
-            <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]} >
-                <SpinnerOne>
-                    <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
-                        <SpinnerChildOne>
-                            <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
-                                <SpinnerChildTwo>
-                                </SpinnerChildTwo>
+  circle: () => (
+      <SpinnerWrapper>
+          <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
+              <SpinnerOne>
+                  <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
+                      <SpinnerChildOne>
+                          <Animated.View style={[{ transform: [{ rotate: interpolatedRotateAnimation }] }]}>
+                              <SpinnerChildTwo />
                             </Animated.View>
                         </SpinnerChildOne>
                     </Animated.View>
                 </SpinnerOne>
             </Animated.View>
         </SpinnerWrapper>
-    )
-}
+  ),
+};
 
 export default Spinners;

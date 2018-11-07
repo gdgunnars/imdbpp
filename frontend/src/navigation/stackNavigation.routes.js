@@ -41,6 +41,8 @@ const Routes = {
       title: 'Top Tv-Shows',
       ...NavigationStyle,
       headerStyle: {
+        borderBottomColor: 'transparent',
+        borderBottomWidth: 0,
         backgroundColor: '#141414',
         elevation: 0,
       },
@@ -53,6 +55,8 @@ const Routes = {
       title: 'Top Movies',
       ...NavigationStyle,
       headerStyle: {
+        borderBottomColor: 'transparent',
+        borderBottomWidth: 0,
         backgroundColor: '#141414',
         elevation: 0,
       },
