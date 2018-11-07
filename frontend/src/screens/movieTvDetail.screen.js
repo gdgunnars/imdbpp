@@ -1,22 +1,16 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
-import Trailer from '../components/trailer';
-import { getMovieById } from '../services';
-import * as DimSize from '../common/dimensionSize';
-import dateFormat from '../common/dateFormat';
-import Duration from '../components/duration';
-import Genre from '../components/genre';
-import Poster from '../components/poster';
-import Slider from '../components/Slider';
-import typeToRoutePath from '../common/typeToRoute';
-import Buttons from '../components/buttons';
+import { getMovieById, getTvShowById } from '../services';
 import { navigate } from '../navigation';
+import { Text } from '../general';
 
-const MovieTitle = styled.Text`
-  font-size: 24;
-  color: #fefefe;
-`;
+import {
+  Trailer, Duration, Genre, Poster, Slider, Buttons,
+} from '../components';
+import {
+  DimSize, DateFormat, Capitalize, MediaLink,
+} from '../common';
 
 const Row = styled.View`
   display: flex;
@@ -34,40 +28,24 @@ const ButtonGroupContainer = styled(Row)`
   margin-bottom: ${DimSize.height('2%')};
 `;
 
-const SeactionHeader = styled.Text`
-  font-size: 16;
-  color: #fefefe;
-`;
+const renderPoster = (media, caption = false) => media.map((item) => {
+  const link = () => navigate(MediaLink(item));
+  const cap = caption ? item.name : null;
+  return (
+    <Poster caption={cap} onPress={link} key={item.id} url={item.posterPath} height={DimSize.height('32%')} />
+  );
+});
 
-const OverviewText = styled.Text`
-  font-size: 14;
-  color: #bababa;
-`;
+const getSubscription = (type) => {
+  if (type === 'tv') {
+    return getTvShowById;
+  }
+  return getMovieById;
+};
 
-const renderCast = cast => cast.map(({ name, profilePath, id }) => (
-  <Poster
-    height={DimSize.height('32%')}
-    key={`cast_${id}`}
-    caption={name}
-    url={profilePath}
-    onPress={() => {}}
-  />
-));
-
-const renderSimilar = tvShows => tvShows.map(item => (
-  <Poster
-    onPress={() => navigate(typeToRoutePath(item.type), { id: item.id })}
-    key={item.id}
-    url={item.posterPath}
-    height={DimSize.height('32%')}
-  />
-));
-
-class MovieDetailScreen extends PureComponent {
+class MovieTvDetail extends PureComponent {
   state = {
-    movie: null,
-    markAsWatched: false,
-    addToWatchList: false,
+    media: null,
   };
 
   cleanupSubscription = () => {
@@ -77,23 +55,20 @@ class MovieDetailScreen extends PureComponent {
     }
   };
 
-  componentDidUpdate = () => {
-    console.log('UPDATED');
-  };
-
   componentDidMount = () => {
     const { navigation } = this.props;
-    const id = navigation.getParam('id');
+    const mediaData = navigation.getParam('data') || { id: 1420, type: 'tv' };
 
-    if (!id) {
+    if (!mediaData) {
       console.warn('No id was provided!');
       return;
     }
-    console.log(`MovieDetailScreen - getMovieById: ${id}`);
-    this.subscription = getMovieById(id).subscribe((data) => {
+    const { id, type } = mediaData;
+
+    this.subscription = getSubscription(type)(id).subscribe((media) => {
       this.cleanupSubscription();
       this.setState({
-        movie: data,
+        media,
       });
     });
   };
@@ -104,9 +79,9 @@ class MovieDetailScreen extends PureComponent {
   };
 
   render() {
-    const { movie,  addToWatchList } = this.state;
+    const { media } = this.state;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
-    if (!movie) {
+    if (!media) {
       // Todo: Add preloader
       return <ScreenContainer />;
     }
@@ -123,7 +98,7 @@ class MovieDetailScreen extends PureComponent {
       similar,
       duration,
       type,
-    } = movie;
+    } = media;
     return (
       <ScreenContainer>
         <Trailer
@@ -134,15 +109,15 @@ class MovieDetailScreen extends PureComponent {
           width={DimSize.width('100%')}
         />
         <Row>
-          <MovieTitle>{name}</MovieTitle>
+          <Text.huge>{name}</Text.huge>
         </Row>
         <Row justifyContent="space-between">
           <Duration type={type} duration={duration} />
-          <Genre type={type} text={dateFormat(date)} />
+          <Genre type={type} text={DateFormat(date)} />
         </Row>
         <Row>
           {[
-            <Genre type="movie" text="Movie" light withMargin key="genre_movie" />,
+            <Genre type={type} text={Capitalize(type)} light withMargin key={`genre_${type}`} />,
             ...genres
               .slice(0, 3)
               .sort((a, b) => (a.id || b.id > 0 || 1 ? 1 : -1))
@@ -152,33 +127,24 @@ class MovieDetailScreen extends PureComponent {
         <ButtonGroupContainer justifyContent="space-between">
           <Buttons.addToWatchList
             type={type}
-            active={addToWatchList}
             size={DimSize.width('100%') - DimSize.windowSidesPadding() * 2}
-            onPress={() => this.setState({ addToWatchList: !addToWatchList })}
+            onPress={() => {}}
           />
         </ButtonGroupContainer>
-        <Row marginBottom="0">
-          <SeactionHeader>STORYLINE</SeactionHeader>
-        </Row>
+        <Text.subTitle>StoryLine</Text.subTitle>
         <Row>
-          <OverviewText>{overview}</OverviewText>
+          <Text.body1>{overview}</Text.body1>
         </Row>
         {/* Todo: Add preloader */}
-        {cast && (
-          <Row>
-            <SeactionHeader>CAST</SeactionHeader>
-          </Row>
-        )}
-        {cast && <Slider snapWidth={posterSnapWidh} items={renderCast(cast)} seperator />}
+        {cast && <Text.subTitle>Cast</Text.subTitle>}
+        {cast && <Slider snapWidth={posterSnapWidh} items={renderPoster(cast, true)} seperator />}
         {similar && (
-          <Row>
-            <SeactionHeader>SIMILAR MOVIES</SeactionHeader>
-          </Row>
+          <Text.subTitle>{`similar ${type === 'tv' ? 'tv-shows' : 'movies'}`}</Text.subTitle>
         )}
-        {similar && <Slider snapWidth={posterSnapWidh} items={renderSimilar(similar)} seperator />}
+        {similar && <Slider snapWidth={posterSnapWidh} items={renderPoster(similar)} seperator />}
       </ScreenContainer>
     );
   }
 }
 
-export default MovieDetailScreen;
+export default MovieTvDetail;
