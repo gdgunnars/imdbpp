@@ -1,58 +1,72 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Text, View } from 'react-native';
+import { Text, View, ImageStore } from 'react-native';
 import {
   Camera, Permissions, ImageManipulator, Icon,
 } from 'expo';
+import { Theme } from '../../common';
 
-const Container = styled.View`
-  flex: 1;
+const Img = styled.Image`
+  width: 250;
+  height: 250;
 `;
 
 const Cam = styled.View`
+  padding-top: ${Theme.sizes.statusBar.height};
+  padding-left: ${Theme.sizes.spaces.window.left};
+  padding-right: ${Theme.sizes.spaces.window.right};
   flex: 1;
   background-color: transparent;
   flex-direction: row;
-  position: relative;
 `;
 
 const Flip = styled.TouchableOpacity`
-  flex: 0.1;
-  alignself: flex-end;
-  alignitems: center;
+  align-self: flex-end;
 `;
 
 const FlipContainer = styled.View`
   position: absolute;
-  top: 0;
-  width: 100%;
-  justify-content: center;
-  padding-top: 20;
-  padding-right: 20;
+  top: ${Theme.sizes.spaces.window.top};
+  right: ${Theme.sizes.spaces.window.right};
+  padding-top: ${Theme.sizes.spaces.window.top};
 `;
 
 const SnapContainer = styled.View`
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
   justify-content: center;
   align-items: center;
 `;
 
 const TakePicture = styled.TouchableOpacity`
-  flex: 0.2;
   align-items: center;
 `;
 
+const ImageResContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Btn = styled.Button`
+  margin-top: ${Theme.sizes.spaces.content.medium.top};
+  background-color: ${Theme.colors.background.tv};
+`;
+
+// Todo: Remember to comment out TabNavigation in frontend/src/navigation/index.js to see the camera button.
 export default class SearchCamera extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
+    parsingImage: false,
+    imgUrl: null,
   };
 
   camera = null;
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
       hasCameraPermission: status === 'granted',
@@ -60,28 +74,37 @@ export default class SearchCamera extends React.Component {
   }
 
   snap = async () => {
-    if (this.camera) {
-      let photo = await this.camera.takePictureAsync({ exif: true });
+    try {
+      const { parsingImage } = this.state;
 
-      // We need to orientate the picture correctly based on EXIF metadata
-      // Otherwise it's always in landscape orientation
-      photo = await ImageManipulator.manipulate(
-        photo.uri,
-        [
-          {
-            rotate: -photo.exif.Orientation,
-          },
-          {
-            resize: {
-              width: photo.width,
-              height: photo.height,
+      if (this.camera && !parsingImage) {
+        this.setState({
+          parsingImage: true,
+        });
+        let photo = await this.camera.takePictureAsync({ exif: true });
+
+        // We need to orientate the picture correctly based on EXIF metadata
+        // Otherwise it's always in landscape orientation
+        // More info: https://docs.expo.io/versions/v31.0.0/sdk/imagemanipulator
+        photo = await ImageManipulator.manipulate(
+          photo.uri,
+          [
+            {
+              resize: {
+                width: photo.width / 10, // The resize mode keeps ratio if we only specify width or height
+              },
             },
-          },
-        ],
-        { compress: 1 },
-      );
+          ],
+          { compress: 1, base64: true },
+        );
 
-      console.log(photo);
+        this.setState({
+          parsingImage: false,
+          imgUrl: photo.base64,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -96,8 +119,14 @@ export default class SearchCamera extends React.Component {
     });
   };
 
+  onImageBtnPressHandler = () => {
+    // imgUrl is base64
+    const { imgUrl } = this.state;
+    console.log(encodeURI(imgUrl)); // I have no clue what format this should be sent on.,. :S
+  };
+
   render() {
-    const { hasCameraPermission, type } = this.state;
+    const { hasCameraPermission, type, imgUrl } = this.state;
 
     if (hasCameraPermission === null) {
       return <View />;
@@ -105,34 +134,40 @@ export default class SearchCamera extends React.Component {
     if (hasCameraPermission === false) {
       return <Text>No access to the camera.</Text>;
     }
+    if (imgUrl) {
+      return (
+        <ImageResContainer>
+          <Img source={{ uri: `data:image/jpeg;base64,${imgUrl}` }} resizeMode="contain" />
+          <Btn onPress={this.onImageBtnPressHandler} title="Send image" />
+        </ImageResContainer>
+      );
+    }
 
     return (
-      <Container>
-        <Camera
-          style={{ flex: 1 }}
-          type={type}
-          ref={(ref) => {
-            this.camera = ref;
-          }}
-        >
-          <Cam>
-            <FlipContainer>
-              <Flip onPress={this.flip}>
-                <Icon.Ionicons
-                  name="ios-reverse-camera"
-                  color="white"
-                  size={36}
-                />
-              </Flip>
-            </FlipContainer>
-            <SnapContainer>
-              <TakePicture onPress={this.snap}>
-                <Icon.Ionicons name="ios-camera" color="white" size={64} />
-              </TakePicture>
-            </SnapContainer>
-          </Cam>
-        </Camera>
-      </Container>
+      <Camera
+        style={{ flex: 1 }}
+        type={type}
+        ref={(ref) => {
+          this.camera = ref;
+        }}
+      >
+        <Cam>
+          <FlipContainer>
+            <Flip onPress={this.flip}>
+              <Icon.Ionicons
+                name="ios-reverse-camera"
+                color={Theme.colors.text.default}
+                size={Theme.sizes.text.grand}
+              />
+            </Flip>
+          </FlipContainer>
+          <SnapContainer>
+            <TakePicture onPress={this.snap}>
+              <Icon.Ionicons name="ios-camera" color={Theme.colors.text.light} size={64} />
+            </TakePicture>
+          </SnapContainer>
+        </Cam>
+      </Camera>
     );
   }
 }
