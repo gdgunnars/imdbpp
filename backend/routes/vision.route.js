@@ -30,13 +30,16 @@ const visionObject = (bestGuess = {}, topEntities, logoAnnotations) => {
 
 const router = express.Router();
 router.route("/").get(async (req, res) => {
+
   try {
     const { query } = req.query;
-    const base64str = await base64_encode(query)
+    //const base64str = await base64_encode(query)
+    console.log('In vision route');
+    console.log(query);
     const client = new vision.ImageAnnotatorClient();
 
     const request = {
-      image: { content: base64str },
+      image: { content: query },
       features: [
         {
           type: "WEB_DETECTION",
@@ -59,19 +62,19 @@ router.route("/").get(async (req, res) => {
   }
 });
 
-const base64_encode = (image) => {
-  return new Promise((resolve, reject) => {
-    try {
-      // read binary data
-      var bitmap = fs.readFileSync(image);
-      // Performs label detection on the image file
-      const encoded = Buffer.from(bitmap).toString('base64')
-      encoded ? resolve(encoded) : reject('Error, file was not found or encoding failed');
-    } catch (error) {
-      console.error('Error converting image to base64:', error);
-      reject('Error, file was not found or encoding failed');
-    }
-  });
-}
+// const base64_encode = (image) => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       // read binary data
+//       var bitmap = fs.readFileSync(image);
+//       // Performs label detection on the image file
+//       const encoded = Buffer.from(bitmap).toString('base64')
+//       encoded ? resolve(encoded) : reject('Error, file was not found or encoding failed');
+//     } catch (error) {
+//       console.error('Error converting image to base64:', error);
+//       reject('Error, file was not found or encoding failed');
+//     }
+//   });
+// }
 
 module.exports = router;

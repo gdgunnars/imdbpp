@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Text, View, ImageStore } from 'react-native';
+import { getVisionResults } from '../../services';
 
 import {
   Camera, Permissions, ImageManipulator, Icon,
@@ -120,10 +121,15 @@ export default class SearchCamera extends React.Component {
     });
   };
 
-  onImageBtnPressHandler = () => {
+  onImageBtnPressHandler = async () => {
     // imgUrl is base64
+    console.log('Send button pushed');
     const { imgUrl } = this.state;
-    // console.log(encodeURI(imgUrl)); // I have no clue what format this should be sent on.,. :S
+    await getVisionResults(imgUrl).then(data => {
+      console.log('Got somthing back from api.')
+      console.log(data);
+    })
+    // console.log(imgUrl); // I have no clue what format this should be sent on.,. :S
 
   };
 
