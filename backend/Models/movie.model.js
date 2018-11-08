@@ -31,7 +31,10 @@ const movie = ({
   id,
   name: title || original_title || name,
   score: vote_average,
-  genres: genre_ids ? genre_ids.map(item => allGenres[type][item]) : genres,
+  genres: (genre_ids
+    ? genre_ids.map(item => allGenres[type][item])
+    : genres
+  ).filter(item => typeof item === "object"),
   overview,
   posterPath: setImagePath(poster_path),
   date: release_date,

@@ -32,7 +32,10 @@ const tv = ({
   name: name || original_name,
   score: vote_average,
   posterPath: setImagePath(poster_path),
-  genres: genre_ids ? genre_ids.map(item => allGenres[type][item]) : genres,
+  genres: (genre_ids
+    ? genre_ids.map(item => allGenres[type][item])
+    : genres
+  ).filter(item => typeof item === "object"),
   overview,
   date: first_air_date,
   backdropPath: setImagePath(backdrop_path),
