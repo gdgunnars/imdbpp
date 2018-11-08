@@ -168,7 +168,7 @@ class SearchInput extends PureComponent {
                 name="camera"
                 color="#C1C1C1"
                 size={DimSize.height('3%')}
-                onPress={() => navigate('Camera', {})}
+                onPress={() => navigate({ routeName: 'Camera' })}
               />
             )}
             {inputText !== '' && (
