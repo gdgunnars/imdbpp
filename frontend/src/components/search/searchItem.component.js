@@ -1,9 +1,8 @@
 import React from 'react';
 import { Icon } from 'expo';
 import styled from 'styled-components';
-import { navigate } from '../../navigation';
 import Genre from '../genre';
-import { DimSize, Capitalize, MediaLink } from '../../common';
+import { DimSize, Capitalize } from '../../common';
 
 const SearchItemContainer = styled.View`
   flex-direction: row;
