@@ -15,69 +15,63 @@ const vision = require('@google-cloud/vision');
 const testFile = 'assets/morgan.jpg';
 
 const visionObject = (bestGuess = {}, topEntities, logoAnnotations) => {
-    const bestGuessInfo = ptt.parse(bestGuess.label);
-    const logo = (logoAnnotations.length > 0 ? logoAnnotations[0].description : '').replace(/\([0-9]{4}\)$/, '').trim();
-    return {
-        bestGuess: logo ? logo : (bestGuessInfo.title.toLowerCase().includes(topEntities[0].description.toLowerCase()) ? topEntities[0].description : bestGuessInfo.title),
-        googleGuess: bestGuess.label,
-        topEntities: topEntities.map(({ score = 0, description = '' }) => {
-            const info = ptt.parse(description);
-            return { score, description: info.title || description };
-        }),
-        logo,
-    }
+  const bestGuessInfo = ptt.parse(bestGuess.label);
+  const logo = (logoAnnotations.length > 0 ? logoAnnotations[0].description : '').replace(/\([0-9]{4}\)$/, '').trim();
+  return {
+    bestGuess: logo ? logo : (bestGuessInfo.title.toLowerCase().includes(topEntities[0].description.toLowerCase()) ? topEntities[0].description : bestGuessInfo.title),
+    googleGuess: bestGuess.label,
+    topEntities: topEntities.map(({ score = 0, description = '' }) => {
+      const info = ptt.parse(description);
+      return { score, description: info.title || description };
+    }),
+    logo,
+  }
 }
 
 const router = express.Router();
 router.route("/").get(async (req, res) => {
+  try {
     const { query } = req.query;
-
-    const base64str = await base64_encode(query).catch(error => {
-        return res.sendStatus(500).json({ message: "SHIT FAILED" });
-    });
+    const base64str = await base64_encode(query)
     const client = new vision.ImageAnnotatorClient();
+
     const request = {
-        image: { content: base64str },
-        features: [
-            {
-                type: "WEB_DETECTION",
-            },
-            {
-                type: "LOGO_DETECTION",
-            },
-        ],
+      image: { content: base64str },
+      features: [
+        {
+          type: "WEB_DETECTION",
+        },
+        {
+          type: "LOGO_DETECTION",
+        },
+      ],
     };
-    client
-        .annotateImage(request)
-        .then(response => {
-            // doThingsWith(response);
-            const { webDetection, logoAnnotations } = response[0];
-            const obj = visionObject(webDetection.bestGuessLabels[0], webDetection.webEntities.splice(0, 3), logoAnnotations.splice(0, 1))
 
-            console.log(obj);
-        })
-        .catch(err => {
-            console.error(err);
-        });
+    const imageData = await client.annotateImage(request);
+    const { webDetection, logoAnnotations } = imageData[0];
+    const obj = visionObject(webDetection.bestGuessLabels[0], webDetection.webEntities.splice(0, 3), logoAnnotations.splice(0, 1))
 
+    //res.json(obj);
+    res.redirect(`../search?query=${obj.bestGuess}`);
+  } catch (error) {
+    console.error('/vision -> Got an error processing vision endpoint:', error);
+    return res.status(500).json({ message: "Got an error processing vision endpoint" });
+  }
 });
 
-// Þarf Try/Catch, er nóg að vera með resolve, reject?
 const base64_encode = (image) => {
-    return new Promise((resolve, reject) => {
-        try {
-            // read binary data
-            var bitmap = fs.readFileSync(image);
-            // Performs label detection on the image file
-            const encoded = Buffer.from(bitmap).toString('base64')
-            encoded ? resolve(encoded) : reject('Error, file was not found or encoding failed');
-        } catch (error) {
-            // Þarf að höndla headers after they are sent error
-            console.log('Error in base 64')
-            console.log(error)
-            // reject('Error, file was not found or encoding failed');
-        }
-    });
+  return new Promise((resolve, reject) => {
+    try {
+      // read binary data
+      var bitmap = fs.readFileSync(image);
+      // Performs label detection on the image file
+      const encoded = Buffer.from(bitmap).toString('base64')
+      encoded ? resolve(encoded) : reject('Error, file was not found or encoding failed');
+    } catch (error) {
+      console.error('Error converting image to base64:', error);
+      reject('Error, file was not found or encoding failed');
+    }
+  });
 }
 
 module.exports = router;
