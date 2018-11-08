@@ -12,6 +12,7 @@ const theme = {
       normal: DimSize.height('2.4%'),
       large: DimSize.height('2.8%'),
       huge: DimSize.height('3.4%'),
+      grand: DimSize.height('5.4%'),
       enormous: DimSize.height('12%'),
     },
     statusBar: {
