@@ -12,6 +12,7 @@ const theme = {
       normal: DimSize.height('2.4%'),
       large: DimSize.height('2.8%'),
       huge: DimSize.height('3.4%'),
+      enormous: DimSize.height('12%'),
     },
     statusBar: {
       height: StatusBar.currentHeight || 30, // For ios
@@ -64,6 +65,7 @@ const theme = {
       movie: '#E63B3B',
       person: '#DF9738',
       default: '#2C2C2C',
+      dark: '#141414',
     },
     text: {
       light: '#fefefe',
