@@ -30,7 +30,6 @@ const visionObject = (bestGuess = {}, topEntities, logoAnnotations) => {
 
 const router = express.Router();
 router.route("/").get(async (req, res) => {
-
   try {
     const { query } = req.query;
     //const base64str = await base64_encode(query)
@@ -55,26 +54,27 @@ router.route("/").get(async (req, res) => {
     const obj = visionObject(webDetection.bestGuessLabels[0], webDetection.webEntities.splice(0, 3), logoAnnotations.splice(0, 1))
 
     //res.json(obj);
-    res.redirect(`../search?query=${obj.bestGuess}`);
+    //res.redirect(`../search?query=${obj.bestGuess}`);
+    res.json(obj);
   } catch (error) {
     console.error('/vision -> Got an error processing vision endpoint:', error);
     return res.status(500).json({ message: "Got an error processing vision endpoint" });
   }
 });
 
-// const base64_encode = (image) => {
-//   return new Promise((resolve, reject) => {
-//     try {
-//       // read binary data
-//       var bitmap = fs.readFileSync(image);
-//       // Performs label detection on the image file
-//       const encoded = Buffer.from(bitmap).toString('base64')
-//       encoded ? resolve(encoded) : reject('Error, file was not found or encoding failed');
-//     } catch (error) {
-//       console.error('Error converting image to base64:', error);
-//       reject('Error, file was not found or encoding failed');
-//     }
-//   });
-// }
+/*const base64_encode = (image) => {
+  return new Promise((resolve, reject) => {
+    try {
+      // read binary data
+      var bitmap = fs.readFileSync(image);
+      // Performs label detection on the image file
+      const encoded = Buffer.from(bitmap).toString('base64')
+      encoded ? resolve(encoded) : reject('Error, file was not found or encoding failed');
+    } catch (error) {
+      console.error('Error converting image to base64:', error);
+      reject('Error, file was not found or encoding failed');
+    }
+  });
+}*/
 
 module.exports = router;

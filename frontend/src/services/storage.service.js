@@ -122,11 +122,11 @@ const getSearchResults = (query, page = 1) => new Promise((resolve) => {
 });
 
 const getVisionResults = query => new Promise((resolve) => {
-  console.log('In get Vision Results')
+  console.log('In get Vision Results');
   $get(`${basePath}/vision?query=${query}`)
     .then(data => resolve(data))
-    .catch(() => resolve(null));
-})
+    .catch(err => resolve(err));
+});
 
 export {
   getMovieById,
