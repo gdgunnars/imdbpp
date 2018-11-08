@@ -121,6 +121,13 @@ const getSearchResults = (query, page = 1) => new Promise((resolve) => {
     .catch(() => resolve(null));
 });
 
+const getVisionResults = query => new Promise((resolve) => {
+  console.log('In get Vision Results')
+  $get(`${basePath}/vision?query=${query}`)
+    .then(data => resolve(data))
+    .catch(() => resolve(null));
+})
+
 export {
   getMovieById,
   getTvShowById,
@@ -133,4 +140,5 @@ export {
   addItemToRecentSearches,
   getRecentSearches,
   removeItemFromRecentSearches,
+  getVisionResults,
 };

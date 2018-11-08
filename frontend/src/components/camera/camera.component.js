@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Text, View, ImageStore } from 'react-native';
+
 import {
   Camera, Permissions, ImageManipulator, Icon,
 } from 'expo';
@@ -122,7 +123,8 @@ export default class SearchCamera extends React.Component {
   onImageBtnPressHandler = () => {
     // imgUrl is base64
     const { imgUrl } = this.state;
-    console.log(encodeURI(imgUrl)); // I have no clue what format this should be sent on.,. :S
+    // console.log(encodeURI(imgUrl)); // I have no clue what format this should be sent on.,. :S
+
   };
 
   render() {
