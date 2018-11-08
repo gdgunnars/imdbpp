@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { LinearGradient } from 'expo';
-import { Header } from 'react-navigation';
+import { LinearGradient, Icon } from 'expo';
 import { DimSize, MediaLink, Theme } from '../../common';
 import { navigate } from '../../navigation';
 import Slider from '../Slider';
 import Poster from '../poster';
 import SearchItem from './searchItem.component';
 import { addItemToRecentSearches } from '../../services';
-import { View } from '../../general';
+import { View, Text } from '../../general';
 
 const NothingFound = styled.Text`
   color: #fefefe;
@@ -20,7 +19,7 @@ const SearchResultWrapper = styled.ScrollView`
   margin-top: ${Theme.sizes.statusBar.height + Theme.sizes.navBar.height};
   margin-left: ${DimSize.windowSidesPadding()};
   margin-right: ${DimSize.windowSidesPadding()};
-  padding-bottom: ${Theme.sizes.spaces.content.large.bottom};  
+  padding-bottom: ${Theme.sizes.spaces.content.large.bottom};
 `;
 
 const gradientStyle = {
@@ -31,7 +30,7 @@ const gradientStyle = {
 
 const LastItem = styled.View`
   margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
-`
+`;
 
 const SectionView = styled.View`
   margin-top: ${Theme.sizes.spaces.content.large.top};
@@ -108,28 +107,34 @@ class SearchResults extends React.PureComponent {
 
   setScrollViewHeight = (event) => {
     const { height } = event.nativeEvent.layout;
-    const { mirrorScrollHeight } = this.state;
-    console.log('HEIGHT: ', mirrorScrollHeight);
-    console.log('containerHeiught: ', height);
     this.setState({
       mirrorScrollHeight: height,
     });
   };
 
   handleScrollViewScroll = (event) => {
-    const {y} = event.nativeEvent.contentOffset;
-    this.mirrorScrollRef.current.scrollTo({y});
+    const { y } = event.nativeEvent.contentOffset;
+    this.mirrorScrollRef.current.scrollTo({ y });
   };
 
   render() {
     const { searchResults } = this.props;
     if (!searchResults) {
       return (
-        <SearchResultsContainer>
-          <SearchResultWrapper>
-            <NothingFound>Nothing found..</NothingFound>
-          </SearchResultWrapper>
-        </SearchResultsContainer>
+        <View.column justifyContent="center" alignItems="center" stretch>
+          <View.column justifyContent="center" alignItems="center">
+            <Icon.Entypo
+              style={{ marginBottom: Theme.sizes.text.large }}
+              name="emoji-sad"
+              color={Theme.colors.text.default}
+              size={Theme.sizes.text.enormous}
+            />
+            <Text.body2 color="light">No results found</Text.body2>
+            {/** eslint-disable-nextline */}
+            <Text.caption color="light">Please check if you have the right spelling, or</Text.caption>
+            <Text.caption color="light">try different keywords.</Text.caption>
+          </View.column>
+        </View.column>
       );
     }
     const {
@@ -145,9 +150,13 @@ class SearchResults extends React.PureComponent {
     return (
       <SearchResultsContainer>
         <MirrorScrollAbsoluteWrapper>
-          <MirrorScroll ref={this.mirrorScrollRef} style={{ height: mirrorScrollHeight }} scrollEnabled={false}>
+          <MirrorScroll
+            ref={this.mirrorScrollRef}
+            style={{ height: mirrorScrollHeight }}
+            scrollEnabled={false}
+          >
             <LinearGradient locations={[0.1, 1]} style={gradientStyle} colors={colors} />
-            <FillContent style={{ height: mirrorScrollHeight * 2}} />
+            <FillContent style={{ height: mirrorScrollHeight * 2 }} />
           </MirrorScroll>
         </MirrorScrollAbsoluteWrapper>
         <SearchResultWrapper
