@@ -70,10 +70,10 @@ class MainTab extends Component {
         />
         <NavTabItem
           onPress={navigate}
-          title="Roulette"
-          iconName="random"
-          iconSet="FontAwesome"
-          focused={isFocused('Roulette', activeTabName)}
+          title="WatchList"
+          iconName="restore"
+          iconSet="MaterialCommunityIcons"
+          focused={isFocused('WatchList', activeTabName)}
         />
       </NavTabContainer>
     );

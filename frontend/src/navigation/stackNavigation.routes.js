@@ -17,10 +17,18 @@ const NavigationStyle = {
 };
 
 const Routes = {
-  Home: {
-    screen: Screen.HomeScreen,
+  WatchList: {
+    screen: Screen.WatchLaterScreen,
     navigationOptions: {
+      title: 'My WatchList',
       ...NavigationStyle,
+      headerStyle: {
+        borderBottomColor: 'transparent',
+        borderBottomWidth: 0,
+        backgroundColor: '#141414',
+        elevation: 0,
+      },
+      headerTransparent: false,
     },
   },
   Search: {
@@ -29,6 +37,13 @@ const Routes = {
       header: null,
     },
   },
+  Home: {
+    screen: Screen.HomeScreen,
+    navigationOptions: {
+      ...NavigationStyle,
+    },
+  },
+
   MovieTvDetail: {
     screen: Screen.MovieTvDetailScreen,
     navigationOptions: {

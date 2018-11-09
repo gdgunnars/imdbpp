@@ -4,11 +4,9 @@ import NavTabIcon from './icon.tab';
 import * as DimSize from '../../common/dimensionSize';
 
 const itemWidth = Math.floor(DimSize.width('100%') / 5);
-const itemHeight = Math.floor(DimSize.height('9%'));
 
 const NavItemContainer = styled.TouchableOpacity`
   width: ${itemWidth};
-  height: ${itemHeight};
   display: flex;
   justify-content: center;
   flex-direction: column;

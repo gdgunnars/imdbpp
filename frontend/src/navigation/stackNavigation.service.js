@@ -13,7 +13,7 @@ const mainRoutes = {
   Movies: 'Movies',
   Search: 'Search',
   TvShow: 'TvShow',
-  Roulette: 'Roulette',
+  WatchList: 'WatchList',
 };
 
 const oneOfMainRoutes = routeName => mainRoutes[routeName];
