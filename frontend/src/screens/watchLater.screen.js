@@ -10,17 +10,16 @@ import { navigate } from '../navigation';
 
 const WatchLaterContainer = styled.View`
   flex: 1;
-  padding-bottom: ${Theme.sizes.statusBar.height + Theme.sizes.navBar.height};
+  padding-top: ${Theme.sizes.spaces.content.medium.top};
+  padding-bottom: ${Theme.sizes.spaces.content.large.bottom};
   background-color: ${Theme.colors.background.dark};
-`;
-
-const LastItem = styled.View`
-  margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
+  padding-left: ${Theme.sizes.spaces.window.left};
+  padding-right: ${Theme.sizes.spaces.window.right};
 `;
 
 class WatchListScreen extends PureComponent {
   state = {
-    watchList: [],
+    watchList: null,
   };
 
   componentDidMount = () => {
@@ -70,7 +69,12 @@ class WatchListScreen extends PureComponent {
   /*eslint-disable */
   render() {
     const { watchList } = this.state;
-    if (!watchList || watchList.length === 0) {
+    if (!watchList) {
+      // Content Loading
+      return <ScreenConainer />;
+    }
+    if (watchList && watchList.length === 0) {
+      // Content loaded but list is empty
       return (
         <WatchLaterContainer>
           <View.column justifyContent="center" alignItems="center" stretch>
@@ -80,15 +84,15 @@ class WatchListScreen extends PureComponent {
               color={Theme.colors.text.default}
               size={Theme.sizes.text.enormous}
             />
-            <Text.body2 color="light">No media has been added</Text.body2>
+            <Text.body2 color="default">No media has been added</Text.body2>
           </View.column>
         </WatchLaterContainer>
       );
     }
     return (
+      // Content loaded and list as items.
       <ScreenConainer>
-        <View.columnPadding stretch>{this.renderWatchList()}</View.columnPadding>
-        <LastItem />
+        <WatchLaterContainer>{this.renderWatchList()}</WatchLaterContainer>
       </ScreenConainer>
     );
   }

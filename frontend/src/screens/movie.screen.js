@@ -4,12 +4,17 @@ import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import { navigate } from '../navigation';
 import { getTopRatedMovies, getMoviesByGenre } from '../services';
-import { DimSize, MediaLink } from '../common';
+import { DimSize, MediaLink, Theme } from '../common';
 import { Podium, Slider, Poster } from '../components';
 
 import { Text } from '../general';
 
 const View = styled.View``;
+
+const MovieContainer = styled.View`
+  margin-top: ${Theme.sizes.spaces.content.large.top};
+  margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
+`;
 
 const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
@@ -67,8 +72,10 @@ class MovieScreen extends PureComponent {
 
     return (
       <ScreenContainer>
-        {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
-        {movies && getMovies(movies)}
+        <MovieContainer>
+          {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
+          {movies && getMovies(movies)}
+        </MovieContainer>
       </ScreenContainer>
     );
   }

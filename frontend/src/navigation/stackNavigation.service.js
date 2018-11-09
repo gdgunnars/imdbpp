@@ -66,7 +66,7 @@ const FadeTransition = (index, position) => {
   const inputRange = [index - 1, index, index + 1];
   const opacity = position.interpolate({
     inputRange,
-    outputRange: [1, 1, 1],
+    outputRange: [0, 1, 0],
   });
   return {
     opacity,

@@ -16,27 +16,35 @@ const NavigationStyle = {
   headerTintColor: '#fefefe',
 };
 
+const withNav = {
+  headerTitleStyle: {
+    ...NavigationStyle.headerTitleStyle,
+  },
+  headerStyle: {
+    borderBottomColor: 'transparent',
+    borderBottomWidth: 0,
+    backgroundColor: '#313131',
+    elevation: 0,
+  },
+  headerTransparent: false,
+  headerTintColor: '#fefefe',
+};
+
 const Routes = {
+  WatchList: {
+    screen: Screen.WatchLaterScreen,
+    navigationOptions: {
+      title: 'My WatchList',
+      ...withNav,
+    },
+  },
   Home: {
     screen: Screen.HomeScreen,
     navigationOptions: {
       ...NavigationStyle,
     },
   },
-  WatchList: {
-    screen: Screen.WatchLaterScreen,
-    navigationOptions: {
-      title: 'My WatchList',
-      ...NavigationStyle,
-      headerStyle: {
-        borderBottomColor: 'transparent',
-        borderBottomWidth: 0,
-        backgroundColor: '#141414',
-        elevation: 0,
-      },
-      headerTransparent: false,
-    },
-  },
+
   Search: {
     screen: Screen.SearchScreen,
     navigationOptions: {
@@ -48,14 +56,7 @@ const Routes = {
     screen: Screen.MovieScreen,
     navigationOptions: {
       title: 'Top Movies',
-      ...NavigationStyle,
-      headerStyle: {
-        borderBottomColor: 'transparent',
-        borderBottomWidth: 0,
-        backgroundColor: '#141414',
-        elevation: 0,
-      },
-      headerTransparent: false,
+      ...withNav,
     },
   },
 
@@ -63,14 +64,7 @@ const Routes = {
     screen: Screen.TvShowScreen,
     navigationOptions: {
       title: 'Top Tv-Shows',
-      ...NavigationStyle,
-      headerStyle: {
-        borderBottomColor: 'transparent',
-        borderBottomWidth: 0,
-        backgroundColor: '#141414',
-        elevation: 0,
-      },
-      headerTransparent: false,
+      ...withNav,
     },
   },
   MovieTvDetail: {
