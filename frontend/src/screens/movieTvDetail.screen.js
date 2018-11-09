@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
-import { getMovieById, getTvShowById } from '../services';
+import { getMovieById, getTvShowById, toggleItemToWatchList } from '../services';
 import { navigate } from '../navigation';
 import { Text } from '../general';
 
@@ -43,6 +43,8 @@ const getSubscription = (type) => {
   return getMovieById;
 };
 
+
+
 class MovieTvDetail extends PureComponent {
   state = {
     media: null,
@@ -53,7 +55,21 @@ class MovieTvDetail extends PureComponent {
       this.subscription.unsubscribe();
       this.subscription = null;
     }
+    if (this.addRemoveSubscription) {
+      this.addRemoveSubscription.unsubscribe();
+      this.addRemoveSubscription = null;
+    }
   };
+
+  addRemoveFromWatchList = () => {
+    const { media } = this.state;
+    this.addRemoveSubscription = toggleItemToWatchList(media).subscribe((newMedia) => {
+      this.cleanupSubscription();
+      this.setState({
+        media: newMedia,
+      });
+    });
+  }
 
   componentDidMount = () => {
     const { navigation } = this.props;
@@ -98,6 +114,7 @@ class MovieTvDetail extends PureComponent {
       similar,
       duration,
       type,
+      onWatchList,
     } = media;
     return (
       <ScreenContainer>
@@ -126,9 +143,10 @@ class MovieTvDetail extends PureComponent {
         </Row>
         <ButtonGroupContainer justifyContent="space-between">
           <Buttons.addToWatchList
+            active={onWatchList}
             type={type}
             size={DimSize.width('100%') - DimSize.windowSidesPadding() * 2}
-            onPress={() => {}}
+            onPress={this.addRemoveFromWatchList}
           />
         </ButtonGroupContainer>
         <Text.subTitle>StoryLine</Text.subTitle>

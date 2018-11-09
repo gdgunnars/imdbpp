@@ -1,6 +1,7 @@
 const storageKeys = {
   movie: id => `movie_${id}`,
   tv: id => `movie_${id}`,
+  person: id => `person_${id}`,
   recentSearches: () => 'recentSearches',
   watchList: () => 'watchList',
   sessionToken: () => 'sessionToken',
