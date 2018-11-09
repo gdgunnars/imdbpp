@@ -70,7 +70,7 @@ class WatchListScreen extends PureComponent {
   /*eslint-disable */
   render() {
     const { watchList } = this.state;
-    if (!watchList) {
+    if (!watchList || watchList.length === 0) {
       return (
         <WatchLaterContainer>
           <View.column justifyContent="center" alignItems="center" stretch>

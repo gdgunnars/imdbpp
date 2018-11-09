@@ -17,6 +17,12 @@ const NavigationStyle = {
 };
 
 const Routes = {
+  Home: {
+    screen: Screen.HomeScreen,
+    navigationOptions: {
+      ...NavigationStyle,
+    },
+  },
   WatchList: {
     screen: Screen.WatchLaterScreen,
     navigationOptions: {
@@ -37,13 +43,6 @@ const Routes = {
       header: null,
     },
   },
-  Home: {
-    screen: Screen.HomeScreen,
-    navigationOptions: {
-      ...NavigationStyle,
-    },
-  },
-
   MovieTvDetail: {
     screen: Screen.MovieTvDetailScreen,
     navigationOptions: {
