@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Platform } from 'react-native';
 import { Theme } from '../../common';
 import OverlayEdges from '../../../assets/images/overlay-edges.png';
 import FakeShadow from './fakeShadow.backdrop.component';
@@ -30,7 +31,7 @@ const BackdropImageContainer = (props) => {
     <Container height={height}>
       <BackdropImage source={{ uri: url }} height={height} resizeMode="cover" />
       <OverlayImage source={OverlayEdges} height={height} resizeMode="stretch" />
-      <FakeShadow height={height * 0.05} position="bot" />
+      {Platform.OS !== 'ios' && <FakeShadow height={height * 0.05} position="bot" />}
     </Container>
   );
 };
