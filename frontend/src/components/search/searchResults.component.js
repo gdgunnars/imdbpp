@@ -17,9 +17,12 @@ const NothingFound = styled.Text`
 
 const SearchResultWrapper = styled.ScrollView`
   margin-top: ${Theme.sizes.statusBar.height + Theme.sizes.navBar.height};
+  padding-bottom: ${Theme.sizes.spaces.content.large.bottom};
+`;
+
+const ContentContainer = styled.View`
   margin-left: ${DimSize.windowSidesPadding()};
   margin-right: ${DimSize.windowSidesPadding()};
-  padding-bottom: ${Theme.sizes.spaces.content.large.bottom};
 `;
 
 const gradientStyle = {
@@ -131,7 +134,14 @@ class SearchResults extends React.PureComponent {
             />
             <Text.body2 color="light">No results found</Text.body2>
             {/** eslint-disable-nextline */}
-            <Text.caption color="light">Please check if you have the right spelling, or</Text.caption>
+            <Text.caption color="light">
+
+
+
+
+
+              Please check if you have the right spelling, or
+            </Text.caption>
             <Text.caption color="light">try different keywords.</Text.caption>
           </View.column>
         </View.column>
@@ -164,9 +174,11 @@ class SearchResults extends React.PureComponent {
           onScroll={this.handleScrollViewScroll}
           onLayout={this.setScrollViewHeight}
         >
-          <TopResult>Top result</TopResult>
-          <SearchItem media={topResult.data} onPress={TopResLink} />
-          {topResult.data.knownFor && <SubTitle>{`Featuring ${topResult.data.name}`}</SubTitle>}
+          <ContentContainer>
+            <TopResult>Top result</TopResult>
+            <SearchItem media={topResult.data} onPress={TopResLink} />
+            {topResult.data.knownFor && <SubTitle>{`Featuring ${topResult.data.name}`}</SubTitle>}
+          </ContentContainer>
           {topResult.data.knownFor && (
             <Slider
               snapWidth={posterSnapWidh}
@@ -174,11 +186,13 @@ class SearchResults extends React.PureComponent {
               seperator
             />
           )}
-          {renderOtherContent([
-            { subTitle: 'People', data: person.data },
-            { subTitle: 'Movies', data: movie.data },
-            { subTitle: 'Tv-Shows', data: tv.data },
-          ])}
+          <ContentContainer>
+            {renderOtherContent([
+              { subTitle: 'People', data: person.data },
+              { subTitle: 'Movies', data: movie.data },
+              { subTitle: 'Tv-Shows', data: tv.data },
+            ])}
+          </ContentContainer>
           <LastItem />
         </SearchResultWrapper>
       </SearchResultsContainer>
