@@ -5,7 +5,7 @@ import Routes from './stackNavigation.routes';
 
 let navigator;
 const defaultRoute = { routeName: 'Home', params: null, activeTabName: 'Home' };
-let currentTabName = defaultRoute.routeName;
+const currentRouteObject = { ...defaultRoute };
 const routingSubject = new BehaviorSubject(defaultRoute.routeName);
 const mirrorStack = [{ ...defaultRoute }];
 const mainRoutes = {
@@ -26,16 +26,22 @@ const routeChange = () => defer(() => routingSubject.asObservable());
 
 const navigate = (
   { routeName, params },
-  activeTabName = oneOfMainRoutes(routeName) ? routeName : currentTabName,
+  activeTabName = oneOfMainRoutes(routeName) ? routeName : currentRouteObject.currentTabName,
 ) => {
-  if (currentTabName === activeTabName && activeTabName === 'Search') {
-    routingSubject.next(currentTabName);
+  if (
+    currentRouteObject.currentTabName === activeTabName
+    && (activeTabName === 'Search' && params === currentRouteObject.params)
+  ) {
+    console.log('im just here again...');
+    routingSubject.next(currentRouteObject.currentTabName);
     return;
   }
-  currentTabName = activeTabName;
+  currentRouteObject.currentTabName = activeTabName;
+  currentRouteObject.routeName = routeName;
+  currentRouteObject.params = params;
   const options = { routeName, params, activeTabName };
   mirrorStack.push(options);
-  routingSubject.next(currentTabName);
+  routingSubject.next(currentRouteObject.currentTabName);
   navigator.dispatch(StackActions.replace(options));
 };
 
