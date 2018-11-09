@@ -31,17 +31,24 @@ const withNav = {
 };
 
 const Routes = {
+  Home: {
+    screen: Screen.HomeScreen,
+    navigationOptions: {
+      ...NavigationStyle,
+    },
+  },
+
+  Camera: {
+    screen: Screen.CameraScreen,
+    navigationOptions: {
+      ...NavigationStyle,
+    },
+  },
   WatchList: {
     screen: Screen.WatchLaterScreen,
     navigationOptions: {
       title: 'My WatchList',
       ...withNav,
-    },
-  },
-  Home: {
-    screen: Screen.HomeScreen,
-    navigationOptions: {
-      ...NavigationStyle,
     },
   },
 
@@ -83,12 +90,6 @@ const Routes = {
   },
   PersonDetail: {
     screen: Screen.PersonDetailScreen,
-    navigationOptions: {
-      ...NavigationStyle,
-    },
-  },
-  Camera: {
-    screen: Screen.CameraScreen,
     navigationOptions: {
       ...NavigationStyle,
     },

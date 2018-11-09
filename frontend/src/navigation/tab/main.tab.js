@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Motion, spring } from 'react-motion';
 import * as DimSize from '../../common/dimensionSize';
 import { navigate, routeChange } from '../stackNavigation.service';
 import NavTabItem from './item.tab';
@@ -18,17 +19,16 @@ const isFocused = (name, selected) => name === selected;
 
 class MainTab extends Component {
   state = {
-    activeTabName: 'Home',
+    currentTabName: 'Home',
+    hidden: false,
   };
 
   componentDidMount = () => {
-    this.subscription = routeChange().subscribe((newTabName) => {
-      const { activeTabName } = this.state;
-      if (newTabName !== activeTabName) {
-        this.setState({
-          activeTabName: newTabName,
-        });
-      }
+    this.subscription = routeChange().subscribe(({ routeName, activeTabName }) => {
+      this.setState({
+        currentTabName: activeTabName,
+        hidden: routeName === 'Camera',
+      });
     });
   };
 
@@ -37,43 +37,43 @@ class MainTab extends Component {
   };
 
   render() {
-    const { activeTabName } = this.state;
+    const { currentTabName, hidden } = this.state;
     return (
-      <NavTabContainer>
+      <NavTabContainer style={{ display: hidden ? 'none' : 'flex' }}>
         <NavTabItem
           onPress={navigate}
           title="Home"
           iconName="home"
           iconSet="FontAwesome"
-          focused={isFocused('Home', activeTabName)}
+          focused={isFocused('Home', currentTabName)}
         />
         <NavTabItem
           onPress={navigate}
           title="Movies"
           iconName="film"
           iconSet="FontAwesome"
-          focused={isFocused('Movies', activeTabName)}
+          focused={isFocused('Movies', currentTabName)}
         />
         <NavTabItem
           onPress={navigate}
           title="Search"
           iconName="search"
           iconSet="FontAwesome"
-          focused={isFocused('Search', activeTabName)}
+          focused={isFocused('Search', currentTabName)}
         />
         <NavTabItem
           onPress={navigate}
           title="TvShow"
           iconName="television-classic"
           iconSet="MaterialCommunityIcons"
-          focused={isFocused('TvShow', activeTabName)}
+          focused={isFocused('TvShow', currentTabName)}
         />
         <NavTabItem
           onPress={navigate}
           title="WatchList"
           iconName="restore"
           iconSet="MaterialCommunityIcons"
-          focused={isFocused('WatchList', activeTabName)}
+          focused={isFocused('WatchList', currentTabName)}
         />
       </NavTabContainer>
     );

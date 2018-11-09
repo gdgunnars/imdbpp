@@ -6,7 +6,7 @@ import Routes from './stackNavigation.routes';
 let navigator;
 const defaultRoute = { routeName: 'Home', params: null, activeTabName: 'Home' };
 const currentRouteObject = { ...defaultRoute };
-const routingSubject = new BehaviorSubject(defaultRoute.routeName);
+const routingSubject = new BehaviorSubject({ ...defaultRoute });
 const mirrorStack = [{ ...defaultRoute }];
 const mainRoutes = {
   Home: 'Home',
@@ -29,9 +29,10 @@ const navigate = (
   activeTabName = oneOfMainRoutes(routeName) ? routeName : currentRouteObject.currentTabName,
 ) => {
   if (
-    currentRouteObject.currentTabName === activeTabName
-    && (activeTabName === 'Search' && params === currentRouteObject.params)
+    currentRouteObject.routeName === routeName
+    && (routeName === 'Search' && params === currentRouteObject.params)
   ) {
+    console.log(`Route name : ${routeName}, params: ${params}`);
     console.log('im just here again...');
     routingSubject.next(currentRouteObject.currentTabName);
     return;
@@ -41,7 +42,7 @@ const navigate = (
   currentRouteObject.params = params;
   const options = { routeName, params, activeTabName };
   mirrorStack.push(options);
-  routingSubject.next(currentRouteObject.currentTabName);
+  routingSubject.next(options);
   navigator.dispatch(StackActions.replace(options));
 };
 
@@ -54,8 +55,7 @@ const goBack = () => {
       previousRoute.activeTabName,
     );
   } else {
-    const defaultScreen = 'Home';
-    navigate(defaultScreen);
+    navigate(defaultRoute);
   }
   return true;
 };
