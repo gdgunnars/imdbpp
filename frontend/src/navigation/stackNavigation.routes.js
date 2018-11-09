@@ -17,26 +17,6 @@ const NavigationStyle = {
 };
 
 const Routes = {
-  TvShow: {
-    screen: Screen.TvShowScreen,
-    navigationOptions: {
-      title: 'Top Tv-Shows',
-      ...NavigationStyle,
-      headerStyle: {
-        borderBottomColor: 'transparent',
-        borderBottomWidth: 0,
-        backgroundColor: '#141414',
-        elevation: 0,
-      },
-      headerTransparent: false,
-    },
-  },
-  MovieTvDetail: {
-    screen: Screen.MovieTvDetailScreen,
-    navigationOptions: {
-      ...NavigationStyle,
-    },
-  },
   Home: {
     screen: Screen.HomeScreen,
     navigationOptions: {
@@ -76,6 +56,27 @@ const Routes = {
         elevation: 0,
       },
       headerTransparent: false,
+    },
+  },
+
+  TvShow: {
+    screen: Screen.TvShowScreen,
+    navigationOptions: {
+      title: 'Top Tv-Shows',
+      ...NavigationStyle,
+      headerStyle: {
+        borderBottomColor: 'transparent',
+        borderBottomWidth: 0,
+        backgroundColor: '#141414',
+        elevation: 0,
+      },
+      headerTransparent: false,
+    },
+  },
+  MovieTvDetail: {
+    screen: Screen.MovieTvDetailScreen,
+    navigationOptions: {
+      ...NavigationStyle,
     },
   },
 
