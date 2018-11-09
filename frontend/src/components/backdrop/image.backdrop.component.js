@@ -8,7 +8,6 @@ const Container = styled.View`
   height: ${props => props.height};
   width: 100%;
   background-color: #141414;
-  background-color: #fefefe;
   position: relative;
 `;
 
