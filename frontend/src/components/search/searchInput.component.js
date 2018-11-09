@@ -4,8 +4,9 @@ import { Icon } from 'expo';
 import { Header } from 'react-navigation';
 import { Keyboard } from 'react-native';
 import { Motion, spring } from 'react-motion';
+import { skip } from 'rxjs/operators';
 import * as DimSize from '../../common/dimensionSize';
-import { navigate, goBack } from '../../navigation';
+import { navigate, goBack, routeChange } from '../../navigation';
 
 const InputContainer = styled.View`
   position: absolute;
@@ -62,12 +63,20 @@ class SearchInput extends PureComponent {
   };
 
   componentDidMount() {
+    this.navigationSubscription = routeChange()
+      .pipe(skip(1))
+      .subscribe(this.handleRouteChange);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyBoardDidHide);
   }
 
   componentWillUnmount() {
     this.keyboardDidHideListener.remove();
+    this.navigationSubscription.unsubscribe();
   }
+
+  handleRouteChange = () => {
+    this.inputRef.current.focus();
+  };
 
   shouldBlurInput = () => {
     const { inputText } = this.state;

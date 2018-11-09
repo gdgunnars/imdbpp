@@ -28,6 +28,10 @@ const navigate = (
   { routeName, params },
   activeTabName = oneOfMainRoutes(routeName) ? routeName : currentTabName,
 ) => {
+  if (currentTabName === activeTabName && activeTabName === 'Search') {
+    routingSubject.next(currentTabName);
+    return;
+  }
   currentTabName = activeTabName;
   const options = { routeName, params, activeTabName };
   mirrorStack.push(options);
