@@ -8,7 +8,9 @@ const person = ({
   department,
   job,
   known_for,
-  popularity
+  popularity,
+  biography,
+  combined_credits = { cast: [], crew: [] }
 }) => ({
   character,
   popularity,
@@ -18,7 +20,17 @@ const person = ({
   type: "person",
   department,
   job,
-  knownFor: populateMedia(known_for)
+  biography,
+  knownFor: populateMedia(known_for),
+  cast: combined_credits.cast
+    .sort((a, b) => (a.popularity < b.popularity ? 1 : -1))
+    .map(item => ({
+      character: item.character || name,
+      ...populateMedia(item)
+    })),
+  crew: combined_credits.crew
+    .sort((a, b) => (a.popularity < b.popularity ? 1 : -1))
+    .map(item => ({ job: item.job, ...populateMedia(item) }))
 });
 
 export default person;
