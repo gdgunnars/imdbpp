@@ -50,8 +50,14 @@ const TopResult = styled(NothingFound)`
 
 const SubTitle = styled(NothingFound)`
   font-weight: bold;
+  margin-top: ${Theme.sizes.spaces.content.large.top};
+  margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
+`;
+
+const SecondarySubTitle = styled(NothingFound)`
+  font-weight: bold;
   margin-top: ${Theme.sizes.spaces.content.medium.top};
-  margin-bottom: ${Theme.sizes.spaces.content.small.bottom};
+  margin-bottom: ${Theme.sizes.spaces.content.medium.bottom};
 `;
 
 const MirrorScroll = styled.ScrollView`
@@ -91,7 +97,7 @@ const renderOtherContent = list => list
   .filter(item => item.data.length > 0)
   .map(item => (
     <SectionView key={item.subTitle}>
-      <SubTitle>{item.subTitle}</SubTitle>
+      <SecondarySubTitle>{item.subTitle}</SecondarySubTitle>
       {item.data.map((innerItem) => {
         const link = createSearchResItemLink(innerItem);
         return <SearchItem key={innerItem.id} media={innerItem} onPress={link} />;

@@ -6168,6 +6168,10 @@ raf@^3.1.0:
   dependencies:
     performance-now "^2.1.0"
 
+rambda@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/rambda/-/rambda-1.2.6.tgz#5feed8039369b65c389ee1e02db9527695d30e83"
+
 randomatic@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-3.1.1.tgz#b776efc59375984e36c537b2f51a1f0aff0da1ed"
