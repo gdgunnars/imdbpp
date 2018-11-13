@@ -16,6 +16,20 @@ const NavigationStyle = {
   headerTintColor: '#fefefe',
 };
 
+const withNav = {
+  headerTitleStyle: {
+    ...NavigationStyle.headerTitleStyle,
+  },
+  headerStyle: {
+    borderBottomColor: 'transparent',
+    borderBottomWidth: 0,
+    backgroundColor: '#313131',
+    elevation: 0,
+  },
+  headerTransparent: false,
+  headerTintColor: '#fefefe',
+};
+
 const Routes = {
   Home: {
     screen: Screen.HomeScreen,
@@ -23,44 +37,47 @@ const Routes = {
       ...NavigationStyle,
     },
   },
+
+  Camera: {
+    screen: Screen.CameraScreen,
+    navigationOptions: {
+      ...NavigationStyle,
+    },
+  },
+  WatchList: {
+    screen: Screen.WatchLaterScreen,
+    navigationOptions: {
+      title: 'My WatchList',
+      ...withNav,
+    },
+  },
+
   Search: {
     screen: Screen.SearchScreen,
     navigationOptions: {
       header: null,
     },
   },
-  MovieTvDetail: {
-    screen: Screen.MovieTvDetailScreen,
-    navigationOptions: {
-      ...NavigationStyle,
-    },
-  },
-  TvShow: {
-    screen: Screen.TvShowScreen,
-    navigationOptions: {
-      title: 'Top Tv-Shows',
-      ...NavigationStyle,
-      headerStyle: {
-        borderBottomColor: 'transparent',
-        borderBottomWidth: 0,
-        backgroundColor: '#141414',
-        elevation: 0,
-      },
-      headerTransparent: false,
-    },
-  },
+
   Movies: {
     screen: Screen.MovieScreen,
     navigationOptions: {
       title: 'Top Movies',
+      ...withNav,
+    },
+  },
+
+  TvShow: {
+    screen: Screen.TvShowScreen,
+    navigationOptions: {
+      title: 'Top Tv-Shows',
+      ...withNav,
+    },
+  },
+  MovieTvDetail: {
+    screen: Screen.MovieTvDetailScreen,
+    navigationOptions: {
       ...NavigationStyle,
-      headerStyle: {
-        borderBottomColor: 'transparent',
-        borderBottomWidth: 0,
-        backgroundColor: '#141414',
-        elevation: 0,
-      },
-      headerTransparent: false,
     },
   },
 
@@ -73,12 +90,6 @@ const Routes = {
   },
   PersonDetail: {
     screen: Screen.PersonDetailScreen,
-    navigationOptions: {
-      ...NavigationStyle,
-    },
-  },
-  Camera: {
-    screen: Screen.CameraScreen,
     navigationOptions: {
       ...NavigationStyle,
     },

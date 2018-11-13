@@ -3,12 +3,17 @@ import { zip } from 'rxjs';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import { navigate } from '../navigation';
-import { DimSize, MediaLink } from '../common';
+import { DimSize, MediaLink, Theme } from '../common';
 import { getTopRatedTv, getTvByGenre } from '../services';
 import { Podium, Slider, Poster } from '../components';
 import { Text } from '../general';
 
 const View = styled.View``;
+
+const TvShwoContainer = styled.View`
+  margin-top: ${Theme.sizes.spaces.content.large.top};
+  margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
+`;
 
 const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
@@ -67,8 +72,10 @@ class TvShowScreen extends PureComponent {
 
     return (
       <ScreenContainer>
-        {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
-        {shows && getMovies(shows)}
+        <TvShwoContainer>
+          {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
+          {shows && getMovies(shows)}
+        </TvShwoContainer>
       </ScreenContainer>
     );
   }

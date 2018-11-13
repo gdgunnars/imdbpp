@@ -5,15 +5,15 @@ import Routes from './stackNavigation.routes';
 
 let navigator;
 const defaultRoute = { routeName: 'Home', params: null, activeTabName: 'Home' };
-let currentTabName = defaultRoute.routeName;
-const routingSubject = new BehaviorSubject(defaultRoute.routeName);
+const currentRouteObject = { ...defaultRoute };
+const routingSubject = new BehaviorSubject({ ...defaultRoute });
 const mirrorStack = [{ ...defaultRoute }];
 const mainRoutes = {
   Home: 'Home',
   Movies: 'Movies',
   Search: 'Search',
   TvShow: 'TvShow',
-  Roulette: 'Roulette',
+  WatchList: 'WatchList',
 };
 
 const oneOfMainRoutes = routeName => mainRoutes[routeName];
@@ -26,12 +26,23 @@ const routeChange = () => defer(() => routingSubject.asObservable());
 
 const navigate = (
   { routeName, params },
-  activeTabName = oneOfMainRoutes(routeName) ? routeName : currentTabName,
+  activeTabName = oneOfMainRoutes(routeName) ? routeName : currentRouteObject.currentTabName,
 ) => {
-  currentTabName = activeTabName;
+  if (
+    currentRouteObject.routeName === routeName
+    && (routeName === 'Search' && params === currentRouteObject.params)
+  ) {
+    console.log(`Route name : ${routeName}, params: ${params}`);
+    console.log('im just here again...');
+    routingSubject.next(currentRouteObject.currentTabName);
+    return;
+  }
+  currentRouteObject.currentTabName = activeTabName;
+  currentRouteObject.routeName = routeName;
+  currentRouteObject.params = params;
   const options = { routeName, params, activeTabName };
   mirrorStack.push(options);
-  routingSubject.next(currentTabName);
+  routingSubject.next(options);
   navigator.dispatch(StackActions.replace(options));
 };
 
@@ -44,8 +55,7 @@ const goBack = () => {
       previousRoute.activeTabName,
     );
   } else {
-    const defaultScreen = 'Home';
-    navigate(defaultScreen);
+    navigate(defaultRoute);
   }
   return true;
 };
@@ -56,7 +66,7 @@ const FadeTransition = (index, position) => {
   const inputRange = [index - 1, index, index + 1];
   const opacity = position.interpolate({
     inputRange,
-    outputRange: [1, 1, 1],
+    outputRange: [0, 1, 0],
   });
   return {
     opacity,

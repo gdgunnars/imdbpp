@@ -6,6 +6,7 @@ import {
   Camera, Permissions, ImageManipulator, Icon,
 } from 'expo';
 import { Theme } from '../../common';
+import { goBack } from '../../navigation';
 
 const Img = styled.Image`
   width: 250;
@@ -21,15 +22,16 @@ const Cam = styled.View`
   flex-direction: row;
 `;
 
-const Flip = styled.TouchableOpacity`
-  align-self: flex-end;
-`;
-
-const FlipContainer = styled.View`
+const TopIconsContainer = styled.View`
   position: absolute;
+  flex-direction: row;
+  justify-content: space-between;
   top: ${Theme.sizes.spaces.window.top};
-  right: ${Theme.sizes.spaces.window.right};
-  padding-top: ${Theme.sizes.spaces.window.top};
+  padding-top: ${Theme.sizes.spaces.content.medium.top};
+  left: 0;
+  right: 0;
+  padding-left: ${Theme.sizes.spaces.window.left};
+  padding-right: ${Theme.sizes.spaces.window.right};
 `;
 
 const SnapContainer = styled.View`
@@ -147,22 +149,27 @@ export default class SearchCamera extends React.Component {
 
     return (
       <Camera
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: Theme.colors.background.dark }}
         type={type}
         ref={(ref) => {
           this.camera = ref;
         }}
       >
         <Cam>
-          <FlipContainer>
-            <Flip onPress={this.flip}>
-              <Icon.Ionicons
-                name="ios-reverse-camera"
-                color={Theme.colors.text.default}
-                size={Theme.sizes.text.grand}
-              />
-            </Flip>
-          </FlipContainer>
+          <TopIconsContainer>
+            <Icon.EvilIcons
+              name="close"
+              color={Theme.colors.text.default}
+              size={Theme.sizes.text.grand}
+              onPress={() => goBack()}
+            />
+            <Icon.Ionicons
+              name="ios-reverse-camera"
+              color={Theme.colors.text.default}
+              size={Theme.sizes.text.grand}
+              onPress={this.flip}
+            />
+          </TopIconsContainer>
           <SnapContainer>
             <TakePicture onPress={this.snap}>
               <Icon.Ionicons name="ios-camera" color={Theme.colors.text.light} size={64} />

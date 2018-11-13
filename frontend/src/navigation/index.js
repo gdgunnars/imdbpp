@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  setTopLevelNavigator, navigate, goBack, StackNavigator,
+  setTopLevelNavigator,
+  navigate,
+  goBack,
+  StackNavigator,
+  routeChange,
 } from './stackNavigation.service';
 import TabNavigation from './tab/main.tab';
 import * as DimSize from '../common/dimensionSize';
@@ -22,4 +26,6 @@ const Navigation = () => (
   </MainContainer>
 );
 
-export { navigate, goBack, Navigation };
+export {
+  navigate, goBack, Navigation, routeChange,
+};

@@ -11,6 +11,9 @@ import {
   getRecentSearches,
   removeItemFromRecentSearches,
   getVisionResults,
+  toggleItemToWatchList,
+  getWatchList,
+
 } from './storage.service';
 
 export {
@@ -26,4 +29,7 @@ export {
   getRecentSearches,
   removeItemFromRecentSearches,
   getVisionResults,
+  toggleItemToWatchList,
+  getWatchList,
+
 };
