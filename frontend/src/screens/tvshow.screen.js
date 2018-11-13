@@ -5,7 +5,9 @@ import ScreenContainer from './screen.style';
 import { navigate } from '../navigation';
 import { DimSize, MediaLink, Theme } from '../common';
 import { getTopRatedTv, getTvByGenre } from '../services';
-import { Podium, Slider, Poster } from '../components';
+import {
+  Podium, Slider, Poster, Loading,
+} from '../components';
 import { Text } from '../general';
 
 const View = styled.View``;
@@ -36,6 +38,7 @@ class TvShowScreen extends PureComponent {
   state = {
     topRated: null,
     shows: null,
+    loading: false,
   };
 
   cleanupSubscription = (key) => {
@@ -46,6 +49,7 @@ class TvShowScreen extends PureComponent {
   };
 
   componentDidMount = () => {
+    this.setState({ loading: true });
     this.topRatedSubscription = getTopRatedTv().subscribe((topRated) => {
       this.cleanupSubscription('topRatedSubscription');
       this.setState({
@@ -58,6 +62,7 @@ class TvShowScreen extends PureComponent {
       this.cleanupSubscription('genresSubscription');
       this.setState({
         shows,
+        loading: false,
       });
     });
   };
@@ -68,10 +73,11 @@ class TvShowScreen extends PureComponent {
   };
 
   render() {
-    const { topRated, shows } = this.state;
+    const { topRated, shows, loading } = this.state;
 
     return (
       <ScreenContainer>
+        <Loading isLoading={loading} screenHasNavbar />
         <TvShwoContainer>
           {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
           {shows && getMovies(shows)}

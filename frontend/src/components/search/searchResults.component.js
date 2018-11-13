@@ -6,6 +6,7 @@ import { navigate } from '../../navigation';
 import Slider from '../Slider';
 import Poster from '../poster';
 import SearchItem from './searchItem.component';
+import Loading from '../loading';
 import { addItemToRecentSearches } from '../../services';
 import { View, Text } from '../../general';
 
@@ -127,8 +128,17 @@ class SearchResults extends React.PureComponent {
   };
 
   render() {
-    const { searchResults } = this.props;
-    if (!searchResults) {
+    const { searchResults, isLoading } = this.props;
+
+    if (isLoading) {
+      return (
+        <SearchResultsContainer>
+          <Loading isLoading />
+        </SearchResultsContainer>
+      );
+    }
+
+    if (!searchResults && !isLoading) {
       return (
         <View.column justifyContent="center" alignItems="center" stretch>
           <View.column justifyContent="center" alignItems="center">
@@ -141,11 +151,6 @@ class SearchResults extends React.PureComponent {
             <Text.body2 color="light">No results found</Text.body2>
             {/** eslint-disable-nextline */}
             <Text.caption color="light">
-
-
-
-
-
               Please check if you have the right spelling, or
             </Text.caption>
             <Text.caption color="light">try different keywords.</Text.caption>

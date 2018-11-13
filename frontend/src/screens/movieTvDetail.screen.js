@@ -6,7 +6,7 @@ import { navigate } from '../navigation';
 import { Text } from '../general';
 
 import {
-  Trailer, Duration, Genre, Poster, Slider, Buttons,
+  Trailer, Duration, Genre, Poster, Slider, Buttons, Loading,
 } from '../components';
 import {
   DimSize, DateFormat, Capitalize, MediaLink,
@@ -98,8 +98,7 @@ class MovieTvDetail extends PureComponent {
     const { media } = this.state;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
     if (!media) {
-      // Todo: Add preloader
-      return <ScreenContainer />;
+      return <ScreenContainer><Loading isLoading /></ScreenContainer>;
     }
 
     const {

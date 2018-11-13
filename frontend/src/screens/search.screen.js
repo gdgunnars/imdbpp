@@ -15,12 +15,15 @@ const SearchScreenContainer = styled.View`
 class SearchScreen extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { searchResults: [], showRecentSearch: true };
+    this.state = { searchResults: [], showRecentSearch: true, loading: false };
     this.searchSubject = new Subject();
     this.searchSubjectObserver = this.searchSubject.asObservable();
   }
 
-  queryChange = newQ => this.searchSubject.next(newQ.trim());
+  queryChange = (newQ) => {
+    this.setState({ loading: true });
+    return this.searchSubject.next(newQ.trim());
+  };
 
   componentDidMount = () => {
     this.subscription = this.searchSubjectObserver
@@ -31,6 +34,7 @@ class SearchScreen extends PureComponent {
           if (!val || val.trim() === '') {
             this.setState({
               showRecentSearch: true,
+              loading: false,
             });
           }
           return val.trim();
@@ -38,7 +42,7 @@ class SearchScreen extends PureComponent {
       )
       .pipe(switchMap(query => (query ? from(getSearchResults(query)) : [])))
       .subscribe((data) => {
-        this.setState({ searchResults: data, showRecentSearch: false });
+        this.setState({ searchResults: data, showRecentSearch: false, loading: false });
       });
   };
 
@@ -47,11 +51,13 @@ class SearchScreen extends PureComponent {
   };
 
   render() {
-    const { searchResults, showRecentSearch } = this.state;
+    const { searchResults, showRecentSearch, loading } = this.state;
     return (
       <SearchScreenContainer>
         <Search.SearchInput onSearch={this.queryChange} />
-        {!showRecentSearch && <Search.SearchResults searchResults={searchResults} />}
+        {!showRecentSearch && (
+          <Search.SearchResults searchResults={searchResults} isLoading={loading} />
+        )}
         {showRecentSearch && <Search.RecentSearches />}
       </SearchScreenContainer>
     );

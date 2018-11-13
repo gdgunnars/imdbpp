@@ -5,13 +5,16 @@ import ScreenContainer from './screen.style';
 import { navigate } from '../navigation';
 import { getTopRatedMovies, getMoviesByGenre } from '../services';
 import { DimSize, MediaLink, Theme } from '../common';
-import { Podium, Slider, Poster } from '../components';
+import {
+  Podium, Slider, Poster, Loading,
+} from '../components';
 
 import { Text } from '../general';
 
 const View = styled.View``;
 
 const MovieContainer = styled.View`
+  position: relative;
   margin-top: ${Theme.sizes.spaces.content.large.top};
   margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
 `;
@@ -36,6 +39,7 @@ class MovieScreen extends PureComponent {
   state = {
     topRated: null,
     movies: null,
+    loading: false,
   };
 
   cleanupSubscription = (key) => {
@@ -46,6 +50,7 @@ class MovieScreen extends PureComponent {
   };
 
   componentDidMount = () => {
+    this.setState({ loading: true });
     this.topRatedSubscription = getTopRatedMovies().subscribe((topRated) => {
       this.cleanupSubscription('topRatedSubscription');
       this.setState({
@@ -58,6 +63,7 @@ class MovieScreen extends PureComponent {
       this.cleanupSubscription('genresSubscription');
       this.setState({
         movies,
+        loading: false,
       });
     });
   };
@@ -68,11 +74,12 @@ class MovieScreen extends PureComponent {
   };
 
   render() {
-    const { topRated, movies } = this.state;
+    const { topRated, movies, loading } = this.state;
 
     return (
       <ScreenContainer>
         <MovieContainer>
+          <Loading isLoading={loading} screenHasNavbar />
           {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
           {movies && getMovies(movies)}
         </MovieContainer>
