@@ -2,6 +2,8 @@ import * as config from "../config";
 import * as types from "./types";
 
 const setImagePath = data => {
+  if (!data) return;
+
   if (types.isArray(data)) {
     return data.map(elem => setImagePath(elem));
   }

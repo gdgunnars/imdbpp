@@ -7,8 +7,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Animated } from 'react-native';
-import * as DimSize from '../../common/dimensionSize';
-import theme from '../../common/theme';
+import { DimSize, Theme } from '../../common';
 
 const border = styled.View`
   border-top-width: 10;
@@ -25,9 +24,9 @@ const SpinnerWrapper = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: ${DimSize.height('100%') - Theme.sizes.tabBar.height};
   width: ${DimSize.width('100%')};
-  background-color: ${theme.colors.background.dark};
+  background-color: ${Theme.colors.background.dark};
   z-index: 2;
 `;
 

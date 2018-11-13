@@ -66,16 +66,9 @@ class HomeScreen extends PureComponent {
     const backdropSnapWidth = Math.round(DimSize.width('100%'));
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
-    if (!trendingNow) {
-      return (
-        <ScreenContainer>
-          <Loading isLoading />
-        </ScreenContainer>
-      );
-    }
-
     return (
       <ScreenContainer>
+        <Loading isLoading={!trendingNow} delay={500} />
         {trendingNow && (
           <Slider snapWidth={backdropSnapWidth} items={renderBackdrop(trendingNow)} />
         )}

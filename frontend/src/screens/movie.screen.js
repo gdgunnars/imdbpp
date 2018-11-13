@@ -39,7 +39,6 @@ class MovieScreen extends PureComponent {
   state = {
     topRated: null,
     movies: null,
-    loading: false,
   };
 
   cleanupSubscription = (key) => {
@@ -50,7 +49,6 @@ class MovieScreen extends PureComponent {
   };
 
   componentDidMount = () => {
-    this.setState({ loading: true });
     this.topRatedSubscription = getTopRatedMovies().subscribe((topRated) => {
       this.cleanupSubscription('topRatedSubscription');
       this.setState({
@@ -63,7 +61,6 @@ class MovieScreen extends PureComponent {
       this.cleanupSubscription('genresSubscription');
       this.setState({
         movies,
-        loading: false,
       });
     });
   };
@@ -74,12 +71,12 @@ class MovieScreen extends PureComponent {
   };
 
   render() {
-    const { topRated, movies, loading } = this.state;
+    const { topRated, movies } = this.state;
 
     return (
       <ScreenContainer>
+        <Loading isLoading={!topRated || !movies} delay={500} screenHasNavbar />
         <MovieContainer>
-          <Loading isLoading={loading} screenHasNavbar />
           {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
           {movies && getMovies(movies)}
         </MovieContainer>

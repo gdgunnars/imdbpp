@@ -97,6 +97,7 @@ class MovieTvDetail extends PureComponent {
   render() {
     const { media } = this.state;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
+
     if (!media) {
       return <ScreenContainer><Loading isLoading /></ScreenContainer>;
     }

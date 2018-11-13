@@ -38,7 +38,6 @@ class TvShowScreen extends PureComponent {
   state = {
     topRated: null,
     shows: null,
-    loading: false,
   };
 
   cleanupSubscription = (key) => {
@@ -49,7 +48,6 @@ class TvShowScreen extends PureComponent {
   };
 
   componentDidMount = () => {
-    this.setState({ loading: true });
     this.topRatedSubscription = getTopRatedTv().subscribe((topRated) => {
       this.cleanupSubscription('topRatedSubscription');
       this.setState({
@@ -62,7 +60,6 @@ class TvShowScreen extends PureComponent {
       this.cleanupSubscription('genresSubscription');
       this.setState({
         shows,
-        loading: false,
       });
     });
   };
@@ -73,11 +70,11 @@ class TvShowScreen extends PureComponent {
   };
 
   render() {
-    const { topRated, shows, loading } = this.state;
+    const { topRated, shows } = this.state;
 
     return (
       <ScreenContainer>
-        <Loading isLoading={loading} screenHasNavbar />
+        <Loading isLoading={!topRated || !shows} delay={500} screenHasNavbar />
         <TvShwoContainer>
           {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
           {shows && getMovies(shows)}
