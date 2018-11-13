@@ -10,10 +10,14 @@ const person = ({
   known_for,
   popularity,
   biography,
+  birhday,
+  deathday,
   combined_credits = { cast: [], crew: [] }
 }) => ({
   character,
   popularity,
+  birhday,
+  deathday,
   id,
   name,
   posterPath: setImagePath(profile_path),
@@ -22,15 +26,14 @@ const person = ({
   job,
   biography,
   knownFor: populateMedia(known_for),
-  cast: combined_credits.cast
-    .sort((a, b) => (a.popularity < b.popularity ? 1 : -1))
-    .map(item => ({
-      character: item.character || name,
-      ...populateMedia(item)
-    })),
-  crew: combined_credits.crew
-    .sort((a, b) => (a.popularity < b.popularity ? 1 : -1))
-    .map(item => ({ job: item.job, ...populateMedia(item) }))
+  cast: combined_credits.cast.map(item => ({
+    character: item.character || name,
+    ...populateMedia(item)
+  })),
+  crew: combined_credits.crew.map(item => ({
+    job: item.job,
+    ...populateMedia(item)
+  }))
 });
 
 export default person;
