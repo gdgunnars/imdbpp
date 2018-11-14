@@ -55,7 +55,6 @@ class SearchScreen extends PureComponent {
         return [];
       }))
       .subscribe((data) => {
-        console.log(Object.keys(data));
         this.setState({ searchResults: data, showRecentSearch: false });
       });
   };
