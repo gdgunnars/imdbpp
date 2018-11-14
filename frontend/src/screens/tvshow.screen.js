@@ -55,7 +55,7 @@ class TvShowScreen extends PureComponent {
       });
     });
 
-    const genres = zip(getTvByGenre(18), getTvByGenre(35), getTvByGenre(16));
+    const genres = zip(getTvByGenre(18), getTvByGenre(35), getTvByGenre(99), getTvByGenre(16));
     this.genresSubscription = genres.subscribe((shows) => {
       this.cleanupSubscription('genresSubscription');
       this.setState({

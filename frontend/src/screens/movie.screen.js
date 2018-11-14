@@ -56,7 +56,7 @@ class MovieScreen extends PureComponent {
       });
     });
 
-    const genres = zip(getMoviesByGenre(28), getMoviesByGenre(35), getMoviesByGenre(14));
+    const genres = zip(getMoviesByGenre(28), getMoviesByGenre(35), getMoviesByGenre(14), getMoviesByGenre(27));
     this.genresSubscription = genres.subscribe((movies) => {
       this.cleanupSubscription('genresSubscription');
       this.setState({
