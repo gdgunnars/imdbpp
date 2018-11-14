@@ -36,8 +36,9 @@ router.route("/").post(async (req, res) => {
   try {
     const client = new vision.ImageAnnotatorClient();
     const { image: base64str } = req.body;
+    const image = base64str.replace(/(\r\n|\n|\r)/gm,"");
     const request = {
-      image: { content: base64str },
+      image: { content:  image },
       features: [
         {
           type: "WEB_DETECTION",
@@ -54,6 +55,7 @@ router.route("/").post(async (req, res) => {
 
     //res.json(obj);
     res.redirect(`../search?query=${obj.bestGuess}`);
+    
   } catch (error) {
     console.error('/vision -> Got an error processing vision endpoint:', error);
     return res.status(500).json({ message: "Got an error processing vision endpoint" });
