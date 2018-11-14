@@ -10,4 +10,13 @@ const get = async (url) => {
   }
 };
 
-export default get;
+const post = async (url, payload) => {
+  try {
+    const response = await axios.post(url, payload);
+    return response.data;
+  } catch (error) {
+    throw new ApiGetDataError(error);
+  }
+};
+
+export { post, get };
