@@ -5,7 +5,8 @@ import {
   Camera, Permissions, ImageManipulator, Icon,
 } from 'expo';
 import { Theme } from '../../common';
-import { goBack } from '../../navigation';
+import { navigate, goBack } from '../../navigation';
+import { getVisionSearchData } from '../../services';
 
 const Img = styled.Image`
   width: 250;
@@ -121,10 +122,15 @@ export default class SearchCamera extends React.Component {
     });
   };
 
-  onImageBtnPressHandler = () => {
+  onImageBtnPressHandler = async () => {
     // imgUrl is base64
-    const { imgUrl } = this.state;
-    console.log(encodeURI(imgUrl)); // I have no clue what format this should be sent on.,. :S
+    try {
+      const { imgUrl } = this.state;
+      const res = await getVisionSearchData(imgUrl);
+      navigate({ routeName: 'Search', params: { imgSearchRes: res } });
+    } catch (error) {
+      console.log('there was an error:', error);
+    }
   };
 
   render() {

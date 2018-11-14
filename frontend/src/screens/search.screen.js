@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { from, Subject } from 'rxjs';
+import { from, BehaviorSubject, of } from 'rxjs';
 import {
   debounceTime, switchMap, map, distinctUntilChanged,
 } from 'rxjs/operators';
@@ -16,12 +16,13 @@ class SearchScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = { searchResults: [], showRecentSearch: true, loading: false };
-    this.searchSubject = new Subject();
+    const { navigation } = this.props;
+    const imgSearchRes = navigation.getParam('imgSearchRes') || '';
+    this.searchSubject = new BehaviorSubject(imgSearchRes);
     this.searchSubjectObserver = this.searchSubject.asObservable();
   }
 
   queryChange = (newQ) => {
-    this.setState({ loading: true });
     return this.searchSubject.next(newQ.trim());
   };
 
@@ -31,18 +32,30 @@ class SearchScreen extends PureComponent {
       .pipe(distinctUntilChanged())
       .pipe(
         map((val) => {
+          if (typeof val === 'object') {
+            return val;
+          }
           if (!val || val.trim() === '') {
             this.setState({
               showRecentSearch: true,
-              loading: false,
             });
           }
           return val.trim();
         }),
       )
-      .pipe(switchMap(query => (query ? from(getSearchResults(query)) : [])))
+      .pipe(switchMap((query) => {
+        console.log(typeof query);
+        if (query && typeof query === 'string') {
+          return from(getSearchResults(query));
+        }
+        if (query && typeof query === 'object') {
+          return of(query);
+        }
+        return [];
+      }))
       .subscribe((data) => {
-        this.setState({ searchResults: data, showRecentSearch: false, loading: false });
+        console.log(Object.keys(data));
+        this.setState({ searchResults: data, showRecentSearch: false });
       });
   };
 
@@ -52,6 +65,7 @@ class SearchScreen extends PureComponent {
 
   render() {
     const { searchResults, showRecentSearch, loading } = this.state;
+
     return (
       <SearchScreenContainer>
         <Search.SearchInput onSearch={this.queryChange} />
