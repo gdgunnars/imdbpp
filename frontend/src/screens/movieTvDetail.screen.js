@@ -1,12 +1,22 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
-import { getMovieById, getTvShowById, toggleItemToWatchList } from '../services';
+import {
+  getMovieById,
+  getTvShowById,
+  toggleItemToWatchList,
+} from '../services';
 import { navigate } from '../navigation';
 import { Text } from '../general';
 
 import {
-  Trailer, Duration, Genre, Poster, Slider, Buttons, Loading,
+  Trailer,
+  Duration,
+  Genre,
+  Poster,
+  Slider,
+  Buttons,
+  Loading,
 } from '../components';
 import {
   DimSize, DateFormat, Capitalize, MediaLink,
@@ -32,7 +42,13 @@ const renderPoster = (media, caption = false) => media.map((item) => {
   const link = () => navigate(MediaLink(item));
   const cap = caption ? item.name : null;
   return (
-    <Poster caption={cap} onPress={link} key={item.id} url={item.posterPath} height={DimSize.height('32%')} />
+    <Poster
+      caption={cap}
+      onPress={link}
+      key={item.id}
+      url={item.posterPath || 'https://wingslax.com/wp-content/uploads/2017/12/no-image-available.png'}
+      height={DimSize.height('32%')}
+    />
   );
 });
 
@@ -42,8 +58,6 @@ const getSubscription = (type) => {
   }
   return getMovieById;
 };
-
-
 
 class MovieTvDetail extends PureComponent {
   state = {
@@ -63,13 +77,15 @@ class MovieTvDetail extends PureComponent {
 
   addRemoveFromWatchList = () => {
     const { media } = this.state;
-    this.addRemoveSubscription = toggleItemToWatchList(media).subscribe((newMedia) => {
-      this.cleanupSubscription();
-      this.setState({
-        media: newMedia,
-      });
-    });
-  }
+    this.addRemoveSubscription = toggleItemToWatchList(media).subscribe(
+      (newMedia) => {
+        this.cleanupSubscription();
+        this.setState({
+          media: newMedia,
+        });
+      },
+    );
+  };
 
   componentDidMount = () => {
     const { navigation } = this.props;
@@ -96,70 +112,78 @@ class MovieTvDetail extends PureComponent {
 
   render() {
     const { media } = this.state;
-    const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
+    const posterSnapWidth = Math.round(
+      DimSize.height('32%') * 0.7 + DimSize.width('2%'),
+    );
 
-    if (!media) {
-      return <ScreenContainer><Loading isLoading /></ScreenContainer>;
-    }
-
-    const {
-      name,
-      score,
-      date,
-      backdropPath,
-      overview,
-      trailer,
-      genres,
-      cast,
-      similar,
-      duration,
-      type,
-      onWatchList,
-    } = media;
     return (
       <ScreenContainer>
-        <Trailer
-          score={score}
-          src={trailer}
-          poster={backdropPath}
-          height={DimSize.height('38%')}
-          width={DimSize.width('100%')}
-        />
-        <Row>
-          <Text.huge>{name}</Text.huge>
-        </Row>
+        <Loading isLoading={!media} delay={500} />
+        {media && (
+          <Trailer
+            score={media.score}
+            src={media.trailer}
+            poster={media.backdropPath}
+            height={DimSize.height('38%')}
+            width={DimSize.width('100%')}
+          />
+        )}
+        <Row>{media && <Text.huge>{media.name}</Text.huge>}</Row>
         <Row justifyContent="space-between">
-          <Duration type={type} duration={duration} />
-          <Genre type={type} text={DateFormat(date)} />
+          {media && <Duration type={media.type} duration={media.duration} />}
+          {media && <Genre type={media.type} text={DateFormat(media.date)} />}
         </Row>
         <Row>
-          {[
-            <Genre type={type} text={Capitalize(type)} light withMargin key={`genre_${type}`} />,
-            ...genres
+          {media && [
+            <Genre
+              type={media.type}
+              text={Capitalize(media.type)}
+              light
+              withMargin
+              key={`genre_${media.type}`}
+            />,
+            ...media.genres
               .slice(0, 3)
               .sort((a, b) => (a.id || b.id > 0 || 1 ? 1 : -1))
-              .map(item => <Genre text={item.name} withMargin key={`genre_${item.name}`} />),
+              .map(item => (
+                <Genre text={item.name} withMargin key={`genre_${item.name}`} />
+              )),
           ]}
         </Row>
         <ButtonGroupContainer justifyContent="space-between">
-          <Buttons.addToWatchList
-            active={onWatchList}
-            type={type}
-            size={DimSize.width('100%') - DimSize.windowSidesPadding() * 2}
-            onPress={this.addRemoveFromWatchList}
-          />
+          {media && (
+            <Buttons.addToWatchList
+              active={media.onWatchList}
+              type={media.type}
+              size={DimSize.width('100%') - DimSize.windowSidesPadding() * 2}
+              onPress={this.addRemoveFromWatchList}
+            />
+          )}
         </ButtonGroupContainer>
         <Text.subTitle>StoryLine</Text.subTitle>
-        <Row>
-          <Text.body1>{overview}</Text.body1>
-        </Row>
-        {/* Todo: Add preloader */}
-        {cast && <Text.subTitle>Cast</Text.subTitle>}
-        {cast && <Slider snapWidth={posterSnapWidh} items={renderPoster(cast, true)} seperator />}
-        {similar && (
-          <Text.subTitle>{`similar ${type === 'tv' ? 'tv-shows' : 'movies'}`}</Text.subTitle>
+        <Row>{media && <Text.body1>{media.overview}</Text.body1>}</Row>
+        {media && media.cast && <Text.subTitle>Cast</Text.subTitle>}
+        {media && media.cast && (
+          <Slider
+            snapWidth={posterSnapWidth}
+            items={renderPoster(media.cast, true)}
+            seperator
+          />
         )}
-        {similar && <Slider snapWidth={posterSnapWidh} items={renderPoster(similar)} seperator />}
+        {media && media.similar && (
+          <Text.subTitle>
+            {`similar ${
+              media.type === 'tv' ? 'tv-shows' : 'movies'
+            }`}
+          </Text.subTitle>
+        )}
+        {media && media.similar && (
+          <Slider
+            snapWidth={posterSnapWidth}
+            items={renderPoster(media.similar)}
+            seperator
+          />
+        )}
       </ScreenContainer>
     );
   }

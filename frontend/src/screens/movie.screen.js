@@ -19,19 +19,30 @@ const MovieContainer = styled.View`
   margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
 `;
 
-const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
+const posterSnapWidh = Math.round(
+  DimSize.height('32%') * 0.7 + DimSize.width('2%'),
+);
 
 const renderPoster = movies => movies.map((item) => {
   const link = () => navigate(MediaLink(item));
   return (
-    <Poster onPress={link} key={item.id} url={item.posterPath} height={DimSize.height('32%')} />
+    <Poster
+      onPress={link}
+      key={item.id}
+      url={item.posterPath}
+      height={DimSize.height('32%')}
+    />
   );
 });
 
 const getMovies = list => list.map(item => (
   <View key={item.title}>
     <Text.subTitle>{item.title}</Text.subTitle>
-    <Slider snapWidth={posterSnapWidh} items={renderPoster(item.data)} seperator />
+    <Slider
+      snapWidth={posterSnapWidh}
+      items={renderPoster(item.data)}
+      seperator
+    />
   </View>
 ));
 
@@ -56,7 +67,12 @@ class MovieScreen extends PureComponent {
       });
     });
 
-    const genres = zip(getMoviesByGenre(28), getMoviesByGenre(35), getMoviesByGenre(14), getMoviesByGenre(27));
+    const genres = zip(
+      getMoviesByGenre(28),
+      getMoviesByGenre(35),
+      getMoviesByGenre(14),
+      getMoviesByGenre(27),
+    );
     this.genresSubscription = genres.subscribe((movies) => {
       this.cleanupSubscription('genresSubscription');
       this.setState({
@@ -77,7 +93,9 @@ class MovieScreen extends PureComponent {
       <ScreenContainer>
         <Loading isLoading={!topRated || !movies} delay={500} screenHasNavbar />
         <MovieContainer>
-          {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
+          {topRated && (
+            <Podium items={topRated} height={DimSize.height('23%')} />
+          )}
           {movies && getMovies(movies)}
         </MovieContainer>
       </ScreenContainer>
