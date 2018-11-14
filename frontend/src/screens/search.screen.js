@@ -20,6 +20,7 @@ class SearchScreen extends PureComponent {
     const imgSearchRes = navigation.getParam('imgSearchRes') || '';
     this.searchSubject = new BehaviorSubject(imgSearchRes);
     this.searchSubjectObserver = this.searchSubject.asObservable();
+    this.initialQuery = imgSearchRes.query || '';
   }
 
   queryChange = (newQ) => {
@@ -68,7 +69,7 @@ class SearchScreen extends PureComponent {
 
     return (
       <SearchScreenContainer>
-        <Search.SearchInput onSearch={this.queryChange} />
+        <Search.SearchInput initialValue={this.initialQuery} onSearch={this.queryChange} />
         {!showRecentSearch && (
           <Search.SearchResults searchResults={searchResults} isLoading={loading} />
         )}
