@@ -24,7 +24,7 @@ const renderBackdrop = movies =>
     return (
       <Backdrop
         onPress={link}
-        key={id}
+        key={`backdrop${id}`}
         name={name}
         score={score}
         date={date}

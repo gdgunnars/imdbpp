@@ -23,7 +23,12 @@ const renderPoster = movies => movies.map((item) => {
   const link = () => navigate(MediaLink(item));
 
   return (
-    <Poster onPress={link} key={item.id} url={item.posterPath} height={DimSize.height('32%')} />
+    <Poster
+      onPress={link}
+      key={`${item.type}${item.genres[0]}${item.id}`}
+      url={item.posterPath}
+      height={DimSize.height('32%')}
+    />
   );
 });
 
