@@ -21,6 +21,10 @@ class Slider extends PureComponent {
     }
   };
 
+  componentWillUnmount = () => {
+    clearTimeout(this.timeout);
+  }
+
   autoSwipe = () => {
     const { items } = this.props;
     const { page } = this.state;
@@ -39,7 +43,6 @@ class Slider extends PureComponent {
 
     // Check if this is a manual swipe and cancel the auto swipe if so.
     if (page <= lastPage) {
-      this.setState({ page: page + 1 });
       clearTimeout(this.timeout);
     }
   }
