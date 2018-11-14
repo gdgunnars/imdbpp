@@ -5,7 +5,9 @@ import ScreenContainer from './screen.style';
 import { navigate } from '../navigation';
 import { DimSize, MediaLink, Theme } from '../common';
 import { getTopRatedTv, getTvByGenre } from '../services';
-import { Podium, Slider, Poster } from '../components';
+import {
+  Podium, Slider, Poster, Loading,
+} from '../components';
 import { Text } from '../general';
 
 const View = styled.View``;
@@ -21,7 +23,12 @@ const renderPoster = movies => movies.map((item) => {
   const link = () => navigate(MediaLink(item));
 
   return (
-    <Poster onPress={link} key={item.id} url={item.posterPath} height={DimSize.height('32%')} />
+    <Poster
+      onPress={link}
+      key={`${item.type}${item.genres[0]}${item.id}`}
+      url={item.posterPath}
+      height={DimSize.height('32%')}
+    />
   );
 });
 
@@ -53,7 +60,7 @@ class TvShowScreen extends PureComponent {
       });
     });
 
-    const genres = zip(getTvByGenre(18), getTvByGenre(35), getTvByGenre(16));
+    const genres = zip(getTvByGenre(18), getTvByGenre(35), getTvByGenre(99), getTvByGenre(16));
     this.genresSubscription = genres.subscribe((shows) => {
       this.cleanupSubscription('genresSubscription');
       this.setState({
@@ -72,6 +79,7 @@ class TvShowScreen extends PureComponent {
 
     return (
       <ScreenContainer>
+        <Loading isLoading={!topRated || !shows} delay={500} screenHasNavbar />
         <TvShwoContainer>
           {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
           {shows && getMovies(shows)}

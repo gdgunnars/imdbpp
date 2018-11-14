@@ -7,53 +7,52 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Animated } from 'react-native';
-import * as DimSize from '../../common/dimensionSize';
+import { DimSize, Theme } from '../../common';
 
 const border = styled.View`
-    border-top-width: 10;
-    border-bottom-width: 10;
-    border-right-width: 10;
-    border-left-width: 10;
-    border-top-color: #3B63E6;
-    border-left-color: transparent;
-    border-bottom-color: transparent;
-    border-right-color: transparent;
+  border-top-width: 10;
+  border-bottom-width: 10;
+  border-right-width: 10;
+  border-left-width: 10;
+  border-top-color: #979799;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
 `;
 
 const SpinnerWrapper = styled.View`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: ${DimSize.height('100%')};
-    width: ${DimSize.width('100%')};
-    background-color: #2C2C2C;
-    z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: ${DimSize.height('100%') - Theme.sizes.tabBar.height};
+  width: ${DimSize.width('100%')};
+  background-color: ${Theme.colors.background.dark};
+  z-index: 2;
 `;
 
-const SpinnerOne = styled(border)` 
-    height: 200;
-    width: 200;
-    border-radius: 100;
+const SpinnerOne = styled(border)`
+  height: 200;
+  width: 200;
+  border-radius: 100;
 `;
 
 const SpinnerChildOne = styled(SpinnerOne)`
-    margin-top: 10px;
-    height: 100%;
-    width: 100%;
-    align-self: center;
-    border-top-color: #ce3131;
-    border-radius: 90;
+  margin-top: 10px;
+  height: 100%;
+  width: 100%;
+  align-self: center;
+  border-top-color: #bababc;
+  border-radius: 90;
 `;
 
 const SpinnerChildTwo = styled(SpinnerOne)`
-    margin-top: 10px;    
-    height: 90%;
-    width: 90%;
-    align-self: center;
-    border-top-color: #DF9738;
-    border-radius: 70;
+  margin-top: 10px;
+  height: 90%;
+  width: 90%;
+  align-self: center;
+  border-top-color: #d9d9db;
+  border-radius: 70;
 `;
-
 
 class CircleSpinner extends PureComponent {
   componentWillMount() {
@@ -64,8 +63,7 @@ class CircleSpinner extends PureComponent {
     Animated.loop(
       Animated.timing(this._animatedValue, {
         toValue: 100,
-        duration: 3000,
-        delay: 200,
+        duration: 2000,
         useNativeDriver: true,
       }),
     ).start();
