@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Motion, spring } from 'react-motion';
 import * as DimSize from '../../common/dimensionSize';
 import { navigate, routeChange } from '../stackNavigation.service';
 import NavTabItem from './item.tab';
