@@ -11,6 +11,9 @@ const RatingContainer = styled.View`
 `;
 
 const getStars = (score) => {
+  if (!score) {
+    return <Text.caption />;
+  }
   const fiveStarRating = score / 2;
   const hasDecimal = fiveStarRating % 1 !== 0;
   const flooredRating = Math.floor(fiveStarRating);
