@@ -1,22 +1,12 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
-import {
-  getMovieById,
-  getTvShowById,
-  toggleItemToWatchList,
-} from '../services';
+import { getMovieById, getTvShowById, toggleItemToWatchList } from '../services';
 import { navigate } from '../navigation';
 import { Text } from '../general';
 
 import {
-  Trailer,
-  Duration,
-  Genre,
-  Poster,
-  Slider,
-  Buttons,
-  Loading,
+  Trailer, Duration, Genre, Poster, Slider, Buttons, Loading,
 } from '../components';
 import {
   DimSize, DateFormat, Capitalize, MediaLink,
@@ -46,7 +36,10 @@ const renderPoster = (media, caption = false) => media.map((item) => {
       caption={cap}
       onPress={link}
       key={`${item.type}${item.id}`}
-      url={item.posterPath || 'https://wingslax.com/wp-content/uploads/2017/12/no-image-available.png'}
+      url={
+          item.posterPath
+          || 'https://wingslax.com/wp-content/uploads/2017/12/no-image-available.png'
+        }
       height={DimSize.height('32%')}
     />
   );
@@ -77,14 +70,12 @@ class MovieTvDetail extends PureComponent {
 
   addRemoveFromWatchList = () => {
     const { media } = this.state;
-    this.addRemoveSubscription = toggleItemToWatchList(media).subscribe(
-      (newMedia) => {
-        this.cleanupSubscription();
-        this.setState({
-          media: newMedia,
-        });
-      },
-    );
+    this.addRemoveSubscription = toggleItemToWatchList(media).subscribe((newMedia) => {
+      this.cleanupSubscription();
+      this.setState({
+        media: newMedia,
+      });
+    });
   };
 
   componentDidMount = () => {
@@ -112,9 +103,7 @@ class MovieTvDetail extends PureComponent {
 
   render() {
     const { media } = this.state;
-    const posterSnapWidth = Math.round(
-      DimSize.height('32%') * 0.7 + DimSize.width('2%'),
-    );
+    const posterSnapWidth = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
     return (
       <ScreenContainer>
@@ -123,7 +112,7 @@ class MovieTvDetail extends PureComponent {
           <Trailer
             score={media.score}
             src={media.trailer}
-            poster={media.backdropPath}
+            poster={media.backdropPath || media.posterPath}
             height={DimSize.height('38%')}
             width={DimSize.width('100%')}
           />
@@ -145,9 +134,7 @@ class MovieTvDetail extends PureComponent {
             ...media.genres
               .slice(0, 3)
               .sort((a, b) => (a.id || b.id > 0 || 1 ? 1 : -1))
-              .map(item => (
-                <Genre text={item.name} withMargin key={`genre_${item.name}`} />
-              )),
+              .map(item => <Genre text={item.name} withMargin key={`genre_${item.name}`} />),
           ]}
         </Row>
         <ButtonGroupContainer justifyContent="space-between">
@@ -164,25 +151,13 @@ class MovieTvDetail extends PureComponent {
         <Row>{media && <Text.body1>{media.overview}</Text.body1>}</Row>
         {media && media.cast && <Text.subTitle>Cast</Text.subTitle>}
         {media && media.cast && (
-          <Slider
-            snapWidth={posterSnapWidth}
-            items={renderPoster(media.cast, true)}
-            seperator
-          />
+          <Slider snapWidth={posterSnapWidth} items={renderPoster(media.cast, true)} seperator />
+        )}
+        {media && media.similar && media.similar.length > 0 && (
+          <Text.subTitle>{`similar ${media.type === 'tv' ? 'tv-shows' : 'movies'}`}</Text.subTitle>
         )}
         {media && media.similar && (
-          <Text.subTitle>
-            {`similar ${
-              media.type === 'tv' ? 'tv-shows' : 'movies'
-            }`}
-          </Text.subTitle>
-        )}
-        {media && media.similar && (
-          <Slider
-            snapWidth={posterSnapWidth}
-            items={renderPoster(media.similar)}
-            seperator
-          />
+          <Slider snapWidth={posterSnapWidth} items={renderPoster(media.similar)} seperator />
         )}
       </ScreenContainer>
     );
