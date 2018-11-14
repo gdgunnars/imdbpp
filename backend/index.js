@@ -1,6 +1,7 @@
 import "./env";
 import express from "express";
 import cors from "cors";
+import bodyParser from "body-parser";
 import trendingRoute from "./routes/trending.route";
 import tvShowRoute from "./routes/tvShow.route";
 import searchRoute from "./routes/search.route";
@@ -16,6 +17,8 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: '15mb'}));
 app.use("/trending", trendingRoute);
 app.use("/tvshow", tvShowRoute);
 app.use("/movie", movieRoute);
