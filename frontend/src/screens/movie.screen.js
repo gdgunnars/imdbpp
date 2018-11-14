@@ -28,7 +28,7 @@ const renderPoster = movies => movies.map((item) => {
   return (
     <Poster
       onPress={link}
-      key={item.id}
+      key={`${item.type}${item.genres[0]}${item.id}`}
       url={item.posterPath}
       height={DimSize.height('32%')}
     />
