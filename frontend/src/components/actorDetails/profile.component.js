@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { DimSize, Theme } from '../../common';
 
-
 const textColor = Theme.colors.text;
 const textSize = Theme.sizes.text;
 
@@ -52,8 +51,7 @@ const Role = styled.Text`
     color: ${textColor.default};
     font-size: ${textSize.large};
 `;
-//  <Image source={{ uri: 'http://www.gstatic.com/tv/thumb/persons/57282/57282_v9_bb.jpg' }} />
-// <BackImage blurRadius={5} source={{ uri: 'https://cdn-images-1.medium.com/max/1920/1*0ubYRV_WNR9iYrzUAVINHw.jpeg' }} />
+
 const Profile = (props) => {
     const { backdropPath, posterPath, name, role } = props;
     return (
