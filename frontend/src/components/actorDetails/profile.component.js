@@ -44,7 +44,7 @@ const OverlayImage = styled.Image`
 const Image = styled.Image`
   height: ${DimSize.height('20%')};
   width: ${DimSize.height('20%')};
-  border-radius: 200;
+  border-radius: ${DimSize.height('20%')};
   border-width: 4px;
   border-color: white;
   margin-top: ${Theme.sizes.spaces.content.large.top};
@@ -70,7 +70,7 @@ const Profile = (props) => {
   return (
     <MainContainer>
       <BackImagecontainer>
-        <BackImage blurRadius={2} source={{ uri: backdropPath }} />
+        <BackImage blurRadius={2} source={{ uri: backdropPath }} resizeMode="cover" />
         <OverlayImage source={OverlayEdges} resizeMode="stretch" />
       </BackImagecontainer>
       <Image source={{ uri: posterPath }} />

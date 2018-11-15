@@ -6,7 +6,7 @@ import {
 } from '../components';
 import { getPersonById } from '../services';
 import { Text } from '../general';
-import { DimSize, MediaLink } from '../common';
+import { DimSize, MediaLink, RandBetween } from '../common';
 import { navigate } from '../navigation';
 
 const Row = styled.View`
@@ -31,6 +31,18 @@ const renderPoster = (media, caption = false) => media.map((item) => {
   );
 });
 
+const getBackdropImage = (pool) => {
+  let path = '';
+  const elem = pool.movies.length > pool.tvShows.length ? 'movies' : 'tvShows';
+  while (!path || path === '') {
+    const randHigh = pool[elem].length - 1;
+    const chosenElem = pool[elem][RandBetween(0, randHigh)];
+    const { backdropPath } = chosenElem;
+    path = backdropPath;
+  }
+  return path;
+};
+
 class PersonDetailScreen extends PureComponent {
   state = {
     media: null,
@@ -46,7 +58,7 @@ class PersonDetailScreen extends PureComponent {
 
   componentDidMount = () => {
     const { navigation } = this.props;
-    const mediaData = navigation.getParam('data') || {id: 500};
+    const mediaData = navigation.getParam('data');
     if (!mediaData) {
       console.warn('No id was provided!');
       return;
@@ -80,11 +92,12 @@ class PersonDetailScreen extends PureComponent {
     const {
       name, posterPath, biography, knownForDepartment, tvShows, movies,
     } = media;
+    const backdropPath = getBackdropImage({ tvShows, movies });
 
     return (
       <ScreenContainer>
         <Profile
-          backdropPath={posterPath}
+          backdropPath={backdropPath}
           posterPath={posterPath}
           name={name}
           role={knownForDepartment}
