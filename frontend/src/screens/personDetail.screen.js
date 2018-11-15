@@ -115,7 +115,7 @@ class PersonDetailScreen extends PureComponent {
         </Row>
         <ToggleShowMore text={biography} active={toggleMoreText} />
         <Row justifyContent="center">
-          <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
+          {biography && <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />}
         </Row>
         <Row>
           <Text.subTitle>Movies</Text.subTitle>
