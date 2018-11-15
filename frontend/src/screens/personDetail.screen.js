@@ -7,7 +7,7 @@ import {
 import ToggleShowMore from '../components/toggleShowMore';
 import { getPersonById } from '../services';
 import { Text } from '../general';
-import { DimSize, MediaLink } from '../common';
+import { DimSize, MediaLink, RandBetween } from '../common';
 import { navigate } from '../navigation';
 
 const Row = styled.View`
@@ -25,14 +25,27 @@ const renderPoster = (media, caption = false) => media.map((item) => {
     <Poster
       caption={cap}
       onPress={link}
-      key={item.id}
+      key={`${item.type}${item.id}`}
       url={item.posterPath}
       height={DimSize.height('32%')}
     />
   );
 });
 
+const getBackdropImage = (pool) => {
+  let path = '';
+  const elem = pool.movies.length > pool.tvShows.length ? 'movies' : 'tvShows';
+  while (!path || path === '') {
+    const randHigh = pool[elem].length - 1;
+    const chosenElem = pool[elem][RandBetween(0, randHigh)];
+    const { backdropPath } = chosenElem;
+    path = backdropPath;
+  }
+  return path;
+};
+
 class PersonDetailScreen extends PureComponent {
+  backdropPath = '';
   state = {
     media: null,
     toggleMoreText: false,
@@ -57,6 +70,7 @@ class PersonDetailScreen extends PureComponent {
 
     this.subscription = getPersonById(id).subscribe((media) => {
       this.cleanupSubscription();
+      this.backdropPath = getBackdropImage({ tvShows: media.tvShows, movies: media.movies });
       this.setState({
         media,
       });
