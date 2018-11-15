@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import ScreenContainer from './screen.style';
 import { Slider, Poster, Backdrop, Loading } from '../components';
 import { Text } from '../general';
-import { getTrendingCombined } from '../services';
+import { getTrendingCombined, getDiscover } from '../services';
 import { navigate } from '../navigation';
 import { DimSize, MediaLink } from '../common';
 
@@ -38,21 +38,32 @@ const renderBackdrop = movies =>
 class HomeScreen extends PureComponent {
   state = {
     trendingNow: null,
-    recommended: null,
+    discover: null,
   };
 
-  cleanupSubscription = () => {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
+  cleanupSubscription = sub => {
+    if (this.trendingSubscription && sub === 'trendingSubscription') {
+      this.trendingSubscription.unsubscribe();
+      this.trendingSubscription = null;
+    }
+    if (this.discoverSubscription && sub === 'discoverSubscription') {
+      this.discoverSubscription.unsubscribe();
+      this.discoverSubscription = null;
     }
   };
 
   componentDidMount = () => {
-    this.subscription = getTrendingCombined().subscribe(data => {
-      this.cleanupSubscription();
+    this.trendingSubscription = getTrendingCombined().subscribe(data => {
+      this.cleanupSubscription('trendingSubscription');
       this.setState({
         trendingNow: data,
+      });
+    });
+
+    this.discoverSubscription = getDiscover().subscribe(data => {
+      this.cleanupSubscription('discoverSubscription');
+      this.setState({
+        discover: data,
       });
     });
   };
@@ -62,7 +73,7 @@ class HomeScreen extends PureComponent {
   };
 
   render() {
-    const { trendingNow, recommended, loading } = this.state;
+    const { trendingNow, discover, loading } = this.state;
     const backdropSnapWidth = Math.round(DimSize.width('100%'));
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
@@ -73,9 +84,7 @@ class HomeScreen extends PureComponent {
           <Slider snapWidth={backdropSnapWidth} items={renderBackdrop(trendingNow)} />
         )}
         <Text.subTitle>TRENDING NOW</Text.subTitle>
-        {trendingNow && (
-          <Slider snapWidth={posterSnapWidh} items={renderPoster(trendingNow)} seperator />
-        )}
+        {discover && <Slider snapWidth={posterSnapWidh} items={renderPoster(discover)} seperator />}
       </ScreenContainer>
     );
   }

@@ -8,6 +8,7 @@ const storageKeys = {
   list: {
     home: {
       trendingNow: () => 'list_home_trendingNow',
+      discover: () => 'list_home_discover',
     },
     movies: {
       topThree: () => 'list_movies_topThree',
