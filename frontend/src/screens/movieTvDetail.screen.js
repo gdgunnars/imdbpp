@@ -7,7 +7,7 @@ import { Text } from '../general';
 import ToggleShowMore from '../components/toggleShowMore';
 
 import {
-  Trailer, Duration, Genre, Poster, Slider, Buttons, Loading,
+  Trailer, Duration, Genre, Poster, Slider, Buttons,
 } from '../components';
 import {
   DimSize, DateFormat, Capitalize, MediaLink, Theme,
@@ -42,9 +42,9 @@ const renderPoster = (media, caption = false) => media.map((item) => {
       onPress={link}
       key={`${item.type}${item.id}`}
       url={
-        item.posterPath
-        || 'https://wingslax.com/wp-content/uploads/2017/12/no-image-available.png'
-      }
+          item.posterPath
+          || 'https://wingslax.com/wp-content/uploads/2017/12/no-image-available.png'
+        }
       height={DimSize.height('32%')}
     />
   );
@@ -56,7 +56,6 @@ const getSubscription = (type) => {
   }
   return getMovieById;
 };
-
 
 class MovieTvDetail extends PureComponent {
   state = {
@@ -118,7 +117,6 @@ class MovieTvDetail extends PureComponent {
 
     return (
       <ScreenContainer>
-        <Loading isLoading={!media} />
         {media && (
           <Trailer
             score={media.score}
@@ -158,12 +156,15 @@ class MovieTvDetail extends PureComponent {
             />
           )}
         </ButtonGroupContainer>
-        <Text.subTitle>StoryLine</Text.subTitle>
-        {media && <ToggleShowMore text={media.overview} active={toggleMoreText} />}
-        <Row justifyContent="center">
-          <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
-        </Row>
-
+        {media && media.overview && <Text.subTitle>StoryLine</Text.subTitle>}
+        {media && media.overview && (
+          <ToggleShowMore text={media.overview} active={toggleMoreText} />
+        )}
+        {media && media.overview && (
+          <Row justifyContent="center">
+            <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
+          </Row>
+        )}
         {media && media.cast && <Text.subTitle>Cast</Text.subTitle>}
         {media && media.cast && (
           <Slider snapWidth={posterSnapWidth} items={renderPoster(media.cast, true)} seperator />
