@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Spinner from '../spinners';
 import { Theme } from '../../common';
@@ -15,39 +15,8 @@ const Container = styled.View`
   padding-bottom: ${props => (props.hasBar ? Theme.sizes.navBar.height : 0)};
 `;
 
-class Loading extends PureComponent {
-  state = { isDelaying: false };
-
-  componentWillMount = () => {
-    const { delay } = this.props;
-    if (delay) {
-      this.setState({ isDelaying: true });
-      setTimeout(() => this.setState({ isDelaying: false }), delay);
-    }
-  };
-
-  render() {
-    const { isLoading, screenHasNavbar, delay } = this.props;
-    const { isDelaying } = this.state;
-
-    if (delay && (isLoading || isDelaying)) {
-      return (
-        <Container hasBar={screenHasNavbar}>
-          <Spinner spinnerType="circle" />
-        </Container>
-      );
-    }
-
-    if (!delay && isLoading) {
-      return (
-        <Container hasBar={screenHasNavbar}>
-          <Spinner spinnerType="circle" />
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
-
-export default Loading;
+export default () => (
+  <Container>
+    <Spinner />
+  </Container>
+);
