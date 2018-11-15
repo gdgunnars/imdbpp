@@ -5,14 +5,11 @@ import { Text, View, ImageStore } from 'react-native';
 import {
   Camera, Permissions, ImageManipulator, Icon,
 } from 'expo';
-import { Theme } from '../../common';
+import { Theme, DimSize } from '../../common';
 import { navigate, goBack } from '../../navigation';
 import { getVisionSearchData } from '../../services';
-
-const Img = styled.Image`
-  width: 250;
-  height: 250;
-`;
+import Loading from '../loading';
+import NotFound from './notfound.component';
 
 const Cam = styled.View`
   padding-top: ${Theme.sizes.statusBar.height};
@@ -48,15 +45,8 @@ const TakePicture = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const ImageResContainer = styled.View`
+const LoadingContainer = styled.View`
   flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Btn = styled.Button`
-  margin-top: ${Theme.sizes.spaces.content.medium.top};
-  background-color: ${Theme.colors.background.tv};
 `;
 
 // Todo: Remember to comment out TabNavigation in frontend/src/navigation/index.js to see the camera button.
@@ -66,6 +56,8 @@ export default class SearchCamera extends React.Component {
     type: Camera.Constants.Type.back,
     parsingImage: false,
     imgUrl: null,
+    loading: false,
+    notFound: false,
   };
 
   camera = null;
@@ -78,6 +70,8 @@ export default class SearchCamera extends React.Component {
   }
 
   snap = async () => {
+    this.setState({ loading: true });
+
     try {
       const { parsingImage } = this.state;
 
@@ -106,6 +100,8 @@ export default class SearchCamera extends React.Component {
           parsingImage: false,
           imgUrl: photo.base64,
         });
+
+        this.sendImage();
       }
     } catch (error) {
       console.log(error);
@@ -123,11 +119,19 @@ export default class SearchCamera extends React.Component {
     });
   };
 
-  onImageBtnPressHandler = async () => {
+  sendImage = async () => {
     // imgUrl is base64
     try {
       const { imgUrl } = this.state;
       const res = await getVisionSearchData(imgUrl);
+      this.setState({ loading: false });
+      console.log(res);
+
+      if (res === null) {
+        this.setState({ notFound: true });
+        return;
+      }
+
       navigate({ routeName: 'Search', params: { imgSearchRes: res } });
     } catch (error) {
       console.log('there was an error:', error);
@@ -135,7 +139,9 @@ export default class SearchCamera extends React.Component {
   };
 
   render() {
-    const { hasCameraPermission, type, imgUrl } = this.state;
+    const {
+      hasCameraPermission, type, notFound, loading,
+    } = this.state;
 
     if (hasCameraPermission === null) {
       return <View />;
@@ -143,13 +149,17 @@ export default class SearchCamera extends React.Component {
     if (hasCameraPermission === false) {
       return <Text>No access to the camera.</Text>;
     }
-    if (imgUrl) {
+
+    if (loading) {
       return (
-        <ImageResContainer>
-          <Img source={{ uri: `data:image/jpeg;base64,${imgUrl}` }} resizeMode="contain" />
-          <Btn onPress={this.onImageBtnPressHandler} title="Send image" />
-        </ImageResContainer>
+        <LoadingContainer>
+          <Loading isLoading={loading} fullScreen />
+        </LoadingContainer>
       );
+    }
+
+    if (notFound) {
+      return <NotFound />;
     }
 
     return (
