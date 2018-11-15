@@ -1,6 +1,7 @@
 import allGenres from "../common/genres";
 import setImagePath from "../common/setImagePath";
 import populateMedia from "../common/populateMedia";
+import { uniqBy } from "lodash";
 
 const movie = ({
   id,
@@ -48,8 +49,8 @@ const movie = ({
   revenue,
   budget,
   trailer,
-  cast: populateMedia(cast),
-  crew: populateMedia(crew),
+  cast: uniqBy(populateMedia(cast), item => item.id),
+  crew: uniqBy(populateMedia(crew), item => item.id),
   similar: populateMedia(similar),
   popularity
 });

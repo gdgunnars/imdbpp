@@ -10,6 +10,8 @@ const Container = styled.View`
   left: 0;
   right: 0;
   z-index: 9999;
+  height: ${Theme.sizes.window.height};
+  background-color: ${Theme.colors.background.dark};
   padding-bottom: ${props => (props.hasBar ? Theme.sizes.navBar.height : 0)};
 `;
 

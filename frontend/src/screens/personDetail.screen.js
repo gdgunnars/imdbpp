@@ -7,15 +7,20 @@ import {
 import ToggleShowMore from '../components/toggleShowMore';
 import { getPersonById } from '../services';
 import { Text } from '../general';
-import { DimSize, MediaLink, RandBetween } from '../common';
+import {
+  DimSize, MediaLink, RandBetween, Theme,
+} from '../common';
 import { navigate } from '../navigation';
 
 const Row = styled.View`
   display: flex;
   flex-direction: row;
-  margin-top: ${DimSize.height('1%')};
   margin-bottom: ${props => props.marginBottom || DimSize.height('1%')};
   align-items: center;
+`;
+
+const LastItem = styled.View`
+  margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
 `;
 
 const renderPoster = (media, caption = false) => media.map((item) => {
@@ -46,6 +51,7 @@ const getBackdropImage = (pool) => {
 
 class PersonDetailScreen extends PureComponent {
   backdropPath = '';
+
   state = {
     media: null,
     toggleMoreText: false,
@@ -119,6 +125,7 @@ class PersonDetailScreen extends PureComponent {
           <Text.subTitle>Tv Shows</Text.subTitle>
         </Row>
         <Slider snapWidth={posterSnapWidh} items={renderPoster(tvShows)} seperator />
+        <LastItem />
       </ScreenContainer>
     );
   }

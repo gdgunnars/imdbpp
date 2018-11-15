@@ -91,7 +91,7 @@ class MovieScreen extends PureComponent {
 
     return (
       <ScreenContainer>
-        <Loading isLoading={!topRated || !movies} delay={500} screenHasNavbar />
+        <Loading isLoading={!topRated || !movies} screenHasNavbar />
         <MovieContainer>
           {topRated && (
             <Podium items={topRated} height={DimSize.height('23%')} />

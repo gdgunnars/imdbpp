@@ -35,7 +35,7 @@ class Slider extends PureComponent {
     this.timeout = setTimeout(() => {
       this.setState({ page: next });
       this.autoSwipe();
-    }, 6000);
+    }, 3000);
   }
 
   onManualSwipe = () => {

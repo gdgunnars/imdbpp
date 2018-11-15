@@ -10,7 +10,7 @@ import {
   Trailer, Duration, Genre, Poster, Slider, Buttons, Loading,
 } from '../components';
 import {
-  DimSize, DateFormat, Capitalize, MediaLink,
+  DimSize, DateFormat, Capitalize, MediaLink, Theme,
 } from '../common';
 
 const Row = styled.View`
@@ -22,6 +22,10 @@ const Row = styled.View`
   margin-top: ${DimSize.height('1%')};
   margin-bottom: ${props => props.marginBottom || DimSize.height('1%')};
   align-items: center;
+`;
+
+const LastItem = styled.View`
+  margin-bottom: ${Theme.sizes.spaces.content.large.bottom};
 `;
 
 const ButtonGroupContainer = styled(Row)`
@@ -114,7 +118,7 @@ class MovieTvDetail extends PureComponent {
 
     return (
       <ScreenContainer>
-        <Loading isLoading={!media} delay={500} />
+        <Loading isLoading={!media} />
         {media && (
           <Trailer
             score={media.score}
@@ -170,6 +174,7 @@ class MovieTvDetail extends PureComponent {
         {media && media.similar && (
           <Slider snapWidth={posterSnapWidth} items={renderPoster(media.similar)} seperator />
         )}
+        <LastItem />
       </ScreenContainer>
     );
   }
