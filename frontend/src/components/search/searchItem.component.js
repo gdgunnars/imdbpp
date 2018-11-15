@@ -18,7 +18,7 @@ const SearchItemNaviagtionContainer = styled.TouchableOpacity`
 const SearchImageStyle = styled.Image`
   width: ${DimSize.width('20%')};
   height: ${DimSize.width('20%')};
-  border-radius: ${props => (props.round ? DimSize.width(`${IsIos() ? '6%' : '12%'}`) : 0)};
+  border-radius: ${props => (props.round ? DimSize.width(`${IsIos() ? '10%' : '12%'}`) : 0)};
 `;
 
 const SearchItemImage = {
