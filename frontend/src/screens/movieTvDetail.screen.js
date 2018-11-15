@@ -4,6 +4,7 @@ import ScreenContainer from './screen.style';
 import { getMovieById, getTvShowById, toggleItemToWatchList } from '../services';
 import { navigate } from '../navigation';
 import { Text } from '../general';
+import ToggleShowMore from '../components/toggleShowMore';
 
 import {
   Trailer, Duration, Genre, Poster, Slider, Buttons, Loading,
@@ -37,9 +38,9 @@ const renderPoster = (media, caption = false) => media.map((item) => {
       onPress={link}
       key={`${item.type}${item.id}`}
       url={
-          item.posterPath
-          || 'https://wingslax.com/wp-content/uploads/2017/12/no-image-available.png'
-        }
+        item.posterPath
+        || 'https://wingslax.com/wp-content/uploads/2017/12/no-image-available.png'
+      }
       height={DimSize.height('32%')}
     />
   );
@@ -52,9 +53,11 @@ const getSubscription = (type) => {
   return getMovieById;
 };
 
+
 class MovieTvDetail extends PureComponent {
   state = {
     media: null,
+    toggleMoreText: false,
   };
 
   cleanupSubscription = () => {
@@ -66,6 +69,10 @@ class MovieTvDetail extends PureComponent {
       this.addRemoveSubscription.unsubscribe();
       this.addRemoveSubscription = null;
     }
+  };
+
+  toggleMoreText = () => {
+    this.setState(prev => ({ toggleMoreText: !prev.toggleMoreText }));
   };
 
   addRemoveFromWatchList = () => {
@@ -102,7 +109,7 @@ class MovieTvDetail extends PureComponent {
   };
 
   render() {
-    const { media } = this.state;
+    const { media, toggleMoreText } = this.state;
     const posterSnapWidth = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
     return (
@@ -148,7 +155,11 @@ class MovieTvDetail extends PureComponent {
           )}
         </ButtonGroupContainer>
         <Text.subTitle>StoryLine</Text.subTitle>
-        <Row>{media && <Text.body1>{media.overview}</Text.body1>}</Row>
+        {media && <ToggleShowMore text={media.overview} active={toggleMoreText} />}
+        <Row justifyContent="center">
+          <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
+        </Row>
+
         {media && media.cast && <Text.subTitle>Cast</Text.subTitle>}
         {media && media.cast && (
           <Slider snapWidth={posterSnapWidth} items={renderPoster(media.cast, true)} seperator />

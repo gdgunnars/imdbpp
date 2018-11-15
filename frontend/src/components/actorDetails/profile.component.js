@@ -33,7 +33,7 @@ const BackImage = styled.Image`
 const Image = styled.Image`
     height: ${DimSize.height('30%')};
     width: ${DimSize.height('30%')};
-    border-radius: 200;
+    border-radius: ${DimSize.height('40%') / 2};
     border-width: 4px;
     border-color: white;
     margin-top: 20;
@@ -48,7 +48,7 @@ const Name = styled.Text`
 
 const Role = styled.Text`
     text-align: center;
-    color: ${textColor.default};
+    color: ${textColor.person};
     font-size: ${textSize.large};
 `;
 

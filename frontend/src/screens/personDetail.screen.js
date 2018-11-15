@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import ScreenContainer from './screen.style';
 import {
-  Profile, Biography, Slider, Poster, Buttons,
+  Profile, Slider, Poster, Buttons,
 } from '../components';
+import ToggleShowMore from '../components/toggleShowMore';
 import { getPersonById } from '../services';
 import { Text } from '../general';
 import { DimSize, MediaLink } from '../common';
@@ -34,7 +35,7 @@ const renderPoster = (media, caption = false) => media.map((item) => {
 class PersonDetailScreen extends PureComponent {
   state = {
     media: null,
-    showMoreBio: false,
+    toggleMoreText: false,
   };
 
   cleanupSubscription = () => {
@@ -52,7 +53,7 @@ class PersonDetailScreen extends PureComponent {
       return;
     }
 
-    const { id = 500 } = mediaData;
+    const { id } = mediaData;
 
     this.subscription = getPersonById(id).subscribe((media) => {
       this.cleanupSubscription();
@@ -66,12 +67,12 @@ class PersonDetailScreen extends PureComponent {
     this.cleanupSubscription();
   };
 
-  toggleBioSize = () => {
-    this.setState(prev => ({ showMoreBio: !prev.showMoreBio }));
+  toggleMoreText = () => {
+    this.setState(prev => ({ toggleMoreText: !prev.toggleMoreText }));
   };
 
   render() {
-    const { media, showMoreBio } = this.state;
+    const { media, toggleMoreText } = this.state;
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
     if (!media) {
       // Todo: Add preloader
@@ -80,11 +81,11 @@ class PersonDetailScreen extends PureComponent {
     const {
       name, posterPath, biography, knownForDepartment, tvShows, movies,
     } = media;
-
+    const backPoster = movies[0].posterPath || tvShows[0].posterPath;
     return (
       <ScreenContainer>
         <Profile
-          backdropPath={posterPath}
+          backdropPath={backPoster}
           posterPath={posterPath}
           name={name}
           role={knownForDepartment}
@@ -92,9 +93,9 @@ class PersonDetailScreen extends PureComponent {
         <Row>
           <Text.subTitle>Biography</Text.subTitle>
         </Row>
-        <Biography bio={biography} active={showMoreBio} />
+        <ToggleShowMore text={biography} active={toggleMoreText} />
         <Row justifyContent="center">
-          <Buttons.showMore onPress={() => this.toggleBioSize()} active={showMoreBio} />
+          <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
         </Row>
         <Row>
           <Text.subTitle>Movies</Text.subTitle>
