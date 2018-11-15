@@ -82,6 +82,14 @@ const Buttons = {
     </Button>
   ),
 
+  showMore: ({ onPress, active }) => (
+    <Button onPress={onPress}>
+      <BookmarkContainer>
+        <ButtonText color={Theme.colors.text.tv} active={active}>{active ? 'Show less' : 'Show more'}</ButtonText>
+      </BookmarkContainer>
+    </Button>
+  ),
+
   markAsWatched: ({ active, onPress, size }) => (
     <Button onPress={onPress}>
       <ButtonWrapper active={active} width={size}>
@@ -89,19 +97,18 @@ const Buttons = {
       </ButtonWrapper>
     </Button>
   ),
-
   addToWatchList: ({
     active,
     onPress,
     size,
     type = 'default',
   }) => (
-    <Button onPress={onPress}>
-      <ButtonWrapper borderColor={Theme.colors.background[type]} color={active ? Theme.colors.background[type] : 'transparent'} width={size}>
-        <ButtonText color={active ? Theme.colors.text[type] : Theme.colors.text.default}>{active ? 'On Watchlist' : 'Add to watch list'}</ButtonText>
-      </ButtonWrapper>
-    </Button>
-  ),
+      <Button onPress={onPress}>
+        <ButtonWrapper borderColor={Theme.colors.background[type]} color={active ? Theme.colors.background[type] : 'transparent'} width={size}>
+          <ButtonText color={active ? Theme.colors.text[type] : Theme.colors.text.default}>{active ? 'On Watchlist' : 'Add to watch list'}</ButtonText>
+        </ButtonWrapper>
+      </Button>
+    )
 };
 
 export default Buttons;

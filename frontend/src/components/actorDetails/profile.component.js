@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { DimSize, Theme } from '../../common';
 
+
 const textColor = Theme.colors.text;
 const textSize = Theme.sizes.text;
 
@@ -45,7 +46,7 @@ const Name = styled.Text`
     font-weight: bold;
     font-size: ${textSize.grand};
 `;
- 
+
 const Role = styled.Text`
     text-align: center;
     color: ${textColor.default};
@@ -58,11 +59,11 @@ const Profile = (props) => {
     return (
         <MainContainer>
             <BackImagecontainer>
-            <BackImage blurRadius={5} source={{ uri: 'https://cdn-images-1.medium.com/max/1920/1*0ubYRV_WNR9iYrzUAVINHw.jpeg' }} />
+                <BackImage blurRadius={2} source={{ uri: backdropPath }} />
             </BackImagecontainer>
             <Image source={{ uri: posterPath }} />
-            <Name>{ name }</Name>
-            <Role>{ role }</Role>
+            <Name>{name}</Name>
+            <Role>{role}</Role>
         </MainContainer>
     )
 }

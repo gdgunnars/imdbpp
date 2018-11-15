@@ -49,6 +49,12 @@ const getTvShowById = (id) => {
   return createDefer(key, url, true);
 };
 
+const getPersonById = (id) => {
+  const key = storageKeys.person(id);
+  const url = `${basePath}/person/${id}`;
+  return createDefer(key, url, true);
+};
+
 const getTrendingCombined = () => {
   const key = storageKeys.list.home.trendingNow();
   const url = `${basePath}/trending`;
@@ -207,4 +213,5 @@ export {
   getWatchList,
   toggleItemToWatchList,
   getVisionSearchData,
+  getPersonById
 };

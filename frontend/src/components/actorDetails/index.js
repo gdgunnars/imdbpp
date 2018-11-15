@@ -1,5 +1,5 @@
 import Profile from './profile.component';
-import KnownFor from './knownFor.component';
+import Biography from './Biography.component';
 import Relations from './Relations.component';
 
-export { Profile, KnownFor, Relations };
+export { Profile, Biography, Relations };

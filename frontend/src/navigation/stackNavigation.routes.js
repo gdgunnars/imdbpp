@@ -31,14 +31,21 @@ const withNav = {
 };
 
 const Routes = {
-  PersonDetail: {
-    screen: Screen.PersonDetailScreen,
+  Home: {
+    screen: Screen.HomeScreen,
     navigationOptions: {
       ...NavigationStyle,
     },
   },
-  Home: {
-    screen: Screen.HomeScreen,
+  Movies: {
+    screen: Screen.MovieScreen,
+    navigationOptions: {
+      title: 'Top Movies',
+      ...withNav,
+    },
+  },
+  PersonDetail: {
+    screen: Screen.PersonDetailScreen,
     navigationOptions: {
       ...NavigationStyle,
     },
@@ -64,13 +71,7 @@ const Routes = {
     },
   },
 
-  Movies: {
-    screen: Screen.MovieScreen,
-    navigationOptions: {
-      title: 'Top Movies',
-      ...withNav,
-    },
-  },
+
 
   TvShow: {
     screen: Screen.TvShowScreen,
@@ -92,7 +93,7 @@ const Routes = {
       ...NavigationStyle,
     },
   },
- 
+
 };
 
 export default Routes;

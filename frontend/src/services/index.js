@@ -14,6 +14,7 @@ import {
   toggleItemToWatchList,
   getWatchList,
   getVisionSearchData,
+  getPersonById
 } from './storage.service';
 
 export {
@@ -32,4 +33,5 @@ export {
   toggleItemToWatchList,
   getWatchList,
   getVisionSearchData,
+  getPersonById
 };
