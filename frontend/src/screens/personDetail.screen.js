@@ -6,13 +6,14 @@ import {
 } from '../components';
 import { getPersonById } from '../services';
 import { Text } from '../general';
-import { DimSize, MediaLink, RandBetween, Theme } from '../common';
+import {
+  DimSize, MediaLink, RandBetween, Theme,
+} from '../common';
 import { navigate } from '../navigation';
 
 const Row = styled.View`
   display: flex;
   flex-direction: row;
-  margin-top: ${DimSize.height('1%')};
   margin-bottom: ${props => props.marginBottom || DimSize.height('1%')};
   align-items: center;
 `;
@@ -49,6 +50,7 @@ const getBackdropImage = (pool) => {
 
 class PersonDetailScreen extends PureComponent {
   backdropPath = '';
+
   state = {
     media: null,
     showMoreBio: false,
