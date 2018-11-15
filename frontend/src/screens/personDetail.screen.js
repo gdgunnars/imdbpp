@@ -24,7 +24,7 @@ const renderPoster = (media, caption = false) => media.map((item) => {
     <Poster
       caption={cap}
       onPress={link}
-      key={item.id}
+      key={`${item.type}${item.id}`}
       url={item.posterPath}
       height={DimSize.height('32%')}
     />

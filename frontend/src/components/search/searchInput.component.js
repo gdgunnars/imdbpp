@@ -55,7 +55,6 @@ const SearchTitle = styled.Text`
 `;
 
 class SearchInput extends PureComponent {
-  
   constructor(props) {
     super(props);
     const { initialValue } = this.props;
