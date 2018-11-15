@@ -1,9 +1,11 @@
 import populateMedia from "../common/populateMedia";
 import setImagePath from "../common/setImagePath";
+import { uniqBy } from "lodash";
 
 const getKnownForMoviesAndTvs = combined => {
   const populated = populateMedia(combined);
-  return populated.reduce(
+
+  const moviesAndTvShows = populated.reduce(
     (prev, curr) => {
       if (curr.type === "tv") {
         prev.tvShows.push(curr);
@@ -15,6 +17,9 @@ const getKnownForMoviesAndTvs = combined => {
     },
     { tvShows: [], movies: [] }
   );
+  moviesAndTvShows.movies = uniqBy(moviesAndTvShows.movies, item => item.id);
+  moviesAndTvShows.tvShows = uniqBy(moviesAndTvShows.tvShows, item => item.id);
+  return moviesAndTvShows;
 };
 
 const person = ({
@@ -44,7 +49,7 @@ const person = ({
   job,
   biography,
   knownForDepartment: known_for_department,
-  knownFor: populateMedia(known_for),
+  knownFor: uniqBy(populateMedia(known_for), item => item.id),
   ...getKnownForMoviesAndTvs(combined_credits.cast)
 });
 

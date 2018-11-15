@@ -17,6 +17,7 @@
     "color-thief-jimp": "^2.0.2",
     "cors": "^2.8.4",
     "express": "^4.16.4",
+    "lodash": "^4.17.11",
     "parse-torrent-title": "^1.2.0"
   },
   "devDependencies": {
