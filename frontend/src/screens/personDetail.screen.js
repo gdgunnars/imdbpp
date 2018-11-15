@@ -101,6 +101,7 @@ class PersonDetailScreen extends PureComponent {
     const {
       name, posterPath, biography, knownForDepartment, tvShows, movies,
     } = media;
+    console.log(media.id);
     const backPoster = movies[0].posterPath || tvShows[0].posterPath;
     return (
       <ScreenContainer>
@@ -115,7 +116,9 @@ class PersonDetailScreen extends PureComponent {
         </Row>
         <ToggleShowMore text={biography} active={toggleMoreText} />
         <Row justifyContent="center">
-          {biography && <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />}
+          {biography && (
+            <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
+          )}
         </Row>
         <Row>
           <Text.subTitle>Movies</Text.subTitle>

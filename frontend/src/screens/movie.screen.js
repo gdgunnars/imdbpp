@@ -6,7 +6,7 @@ import { navigate } from '../navigation';
 import { getTopRatedMovies, getMoviesByGenre } from '../services';
 import { DimSize, MediaLink, Theme } from '../common';
 import {
-  Podium, Slider, Poster, Loading,
+  Podium, Slider, Poster,
 } from '../components';
 
 import { Text } from '../general';
@@ -91,7 +91,6 @@ class MovieScreen extends PureComponent {
 
     return (
       <ScreenContainer>
-        <Loading isLoading={!topRated || !movies} screenHasNavbar />
         <MovieContainer>
           {topRated && (
             <Podium items={topRated} height={DimSize.height('23%')} />

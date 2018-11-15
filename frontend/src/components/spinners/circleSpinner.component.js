@@ -7,7 +7,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Animated } from 'react-native';
-import { DimSize, Theme } from '../../common';
+import { Theme } from '../../common';
 
 const border = styled.View`
   border-top-width: 10;
@@ -24,8 +24,8 @@ const SpinnerWrapper = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: ${DimSize.height('100%') - Theme.sizes.tabBar.height};
-  width: ${DimSize.width('100%')};
+  height: ${Theme.sizes.window.height};
+  width: ${Theme.sizes.window.width};
   background-color: ${Theme.colors.background.dark};
   z-index: 2;
 `;
@@ -55,14 +55,12 @@ const SpinnerChildTwo = styled(SpinnerOne)`
 `;
 
 class CircleSpinner extends PureComponent {
-  componentWillMount() {
-    this._animatedValue = new Animated.Value(0);
-  }
+  animatedValue = new Animated.Value(0);
 
-  componentDidMount() {
+  componentWillMount() {
     Animated.loop(
-      Animated.timing(this._animatedValue, {
-        toValue: 100,
+      Animated.timing(this.animatedValue, {
+        toValue: 360,
         duration: 2000,
         useNativeDriver: true,
       }),
@@ -70,8 +68,9 @@ class CircleSpinner extends PureComponent {
   }
 
   render() {
-    const interpolatedRotateAnimation = this._animatedValue.interpolate({
-      inputRange: [0, 100],
+    console.log('RENDER');
+    const interpolatedRotateAnimation = this.animatedValue.interpolate({
+      inputRange: [0, 360],
       outputRange: ['0deg', '360deg'],
     });
     return (

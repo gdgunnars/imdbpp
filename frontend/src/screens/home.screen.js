@@ -1,7 +1,7 @@
 /* eslint-disable*/
 import React, { PureComponent } from 'react';
 import ScreenContainer from './screen.style';
-import { Slider, Poster, Backdrop, Loading } from '../components';
+import { Slider, Poster, Backdrop } from '../components';
 import { Text } from '../general';
 import { getTrendingCombined, getDiscover } from '../services';
 import { navigate } from '../navigation';
@@ -73,17 +73,16 @@ class HomeScreen extends PureComponent {
   };
 
   render() {
-    const { trendingNow, discover, loading } = this.state;
+    const { trendingNow, discover } = this.state;
     const backdropSnapWidth = Math.round(DimSize.width('100%'));
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
     return (
       <ScreenContainer>
-        <Loading isLoading={!trendingNow || !discover} />
         {trendingNow && (
           <Slider snapWidth={backdropSnapWidth} items={renderBackdrop(trendingNow)} />
         )}
-        <Text.subTitle>TRENDING NOW</Text.subTitle>
+        {discover && <Text.subTitle>TRENDING NOW</Text.subTitle>}
         {discover && <Slider snapWidth={posterSnapWidh} items={renderPoster(discover)} seperator />}
       </ScreenContainer>
     );
