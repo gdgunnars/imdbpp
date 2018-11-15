@@ -5,7 +5,6 @@ import { Theme, DimSize } from '../../common';
 
 const Container = styled.View`
   position: absolute;
-  height: ${props => (props.fullScreen ? DimSize.height('100%') : 0)};
   top: 0;
   bottom: 0;
   left: 0;
@@ -27,13 +26,13 @@ class Loading extends PureComponent {
 
   render() {
     const {
-      isLoading, screenHasNavbar, delay, fullScreen,
+      isLoading, screenHasNavbar, delay,
     } = this.props;
     const { isDelaying } = this.state;
 
     if (delay && (isLoading || isDelaying)) {
       return (
-        <Container hasBar={screenHasNavbar} fullScreen={fullScreen}>
+        <Container hasBar={screenHasNavbar}>
           <Spinner spinnerType="circle" />
         </Container>
       );
@@ -41,7 +40,7 @@ class Loading extends PureComponent {
 
     if (!delay && isLoading) {
       return (
-        <Container hasBar={screenHasNavbar} fullScreen={fullScreen}>
+        <Container hasBar={screenHasNavbar}>
           <Spinner spinnerType="circle" />
         </Container>
       );

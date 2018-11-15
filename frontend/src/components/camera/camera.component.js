@@ -153,7 +153,7 @@ export default class SearchCamera extends React.Component {
     if (loading) {
       return (
         <LoadingContainer>
-          <Loading isLoading={loading} fullScreen />
+          <Loading isLoading={loading} />
         </LoadingContainer>
       );
     }
