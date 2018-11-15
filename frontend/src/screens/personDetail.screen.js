@@ -44,6 +44,7 @@ const getBackdropImage = (pool) => {
 };
 
 class PersonDetailScreen extends PureComponent {
+  backdropPath = '';
   state = {
     media: null,
     showMoreBio: false,
@@ -68,6 +69,7 @@ class PersonDetailScreen extends PureComponent {
 
     this.subscription = getPersonById(id).subscribe((media) => {
       this.cleanupSubscription();
+      this.backdropPath = getBackdropImage({ tvShows: media.tvShows, movies: media.movies });
       this.setState({
         media,
       });
@@ -92,12 +94,11 @@ class PersonDetailScreen extends PureComponent {
     const {
       name, posterPath, biography, knownForDepartment, tvShows, movies,
     } = media;
-    const backdropPath = getBackdropImage({ tvShows, movies });
 
     return (
       <ScreenContainer>
         <Profile
-          backdropPath={backdropPath}
+          backdropPath={this.backdropPath}
           posterPath={posterPath}
           name={name}
           role={knownForDepartment}
