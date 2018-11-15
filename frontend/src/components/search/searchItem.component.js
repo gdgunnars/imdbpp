@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from 'expo';
 import styled from 'styled-components';
 import Genre from '../genre';
-import { DimSize, Capitalize } from '../../common';
+import { DimSize, Capitalize, IsIos } from '../../common';
 
 const SearchItemContainer = styled.View`
   flex-direction: row;
@@ -18,7 +18,7 @@ const SearchItemNaviagtionContainer = styled.TouchableOpacity`
 const SearchImageStyle = styled.Image`
   width: ${DimSize.width('20%')};
   height: ${DimSize.width('20%')};
-  border-radius: ${props => (props.round ? DimSize.width('12%') : 0)};
+  border-radius: ${props => (props.round ? DimSize.width(`${IsIos() ? '6%' : '12%'}`) : 0)};
 `;
 
 const SearchItemImage = {

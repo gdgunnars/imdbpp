@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { DimSize, Theme } from '../../common';
+import { DimSize, Theme, IsIos } from '../../common';
 import OverlayEdges from '../../../assets/images/overlay-edges.png';
 
 const textColor = Theme.colors.text;
@@ -44,7 +44,7 @@ const OverlayImage = styled.Image`
 const Image = styled.Image`
   height: ${DimSize.height('20%')};
   width: ${DimSize.height('20%')};
-  border-radius: ${DimSize.height('20%')};
+  border-radius: ${IsIos() ? DimSize.height('10%') : DimSize.height('20%')};
   border-width: 4px;
   border-color: white;
   margin-top: ${Theme.sizes.spaces.content.large.top};
