@@ -44,7 +44,7 @@ const OverlayImage = styled.Image`
 const Image = styled.Image`
   height: ${DimSize.height('20%')};
   width: ${DimSize.height('20%')};
-  border-radius: ${DimSize.height('20%')};
+  border-radius: ${DimSize.height('20%') / 2};
   border-width: 4px;
   border-color: white;
   margin-top: ${Theme.sizes.spaces.content.large.top};
