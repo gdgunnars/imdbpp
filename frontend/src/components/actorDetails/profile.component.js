@@ -54,7 +54,7 @@ const Image = styled.Image`
 const Name = styled.Text`
   text-align: center;
   color: ${textColor.person};
-  font-size: ${textSize.grand};
+  font-size: ${textSize.huge};
 `;
 
 const Role = styled.Text`
