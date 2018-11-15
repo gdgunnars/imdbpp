@@ -37,6 +37,19 @@ const Routes = {
       ...NavigationStyle,
     },
   },
+  Movies: {
+    screen: Screen.MovieScreen,
+    navigationOptions: {
+      title: 'Top Movies',
+      ...withNav,
+    },
+  },
+  PersonDetail: {
+    screen: Screen.PersonDetailScreen,
+    navigationOptions: {
+      ...NavigationStyle,
+    },
+  },
 
   Camera: {
     screen: Screen.CameraScreen,
@@ -51,7 +64,6 @@ const Routes = {
       ...withNav,
     },
   },
-
   Search: {
     screen: Screen.SearchScreen,
     navigationOptions: {
@@ -59,13 +71,7 @@ const Routes = {
     },
   },
 
-  Movies: {
-    screen: Screen.MovieScreen,
-    navigationOptions: {
-      title: 'Top Movies',
-      ...withNav,
-    },
-  },
+
 
   TvShow: {
     screen: Screen.TvShowScreen,
@@ -80,7 +86,6 @@ const Routes = {
       ...NavigationStyle,
     },
   },
-
   Roulette: {
     screen: Screen.RouletteScreen,
     navigationOptions: {
@@ -88,12 +93,7 @@ const Routes = {
       ...NavigationStyle,
     },
   },
-  PersonDetail: {
-    screen: Screen.PersonDetailScreen,
-    navigationOptions: {
-      ...NavigationStyle,
-    },
-  },
+
 };
 
 export default Routes;

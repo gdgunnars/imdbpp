@@ -49,6 +49,12 @@ const getTvShowById = (id) => {
   return createDefer(key, url, true);
 };
 
+const getPersonById = (id) => {
+  const key = storageKeys.person(id);
+  const url = `${basePath}/person/${id}`;
+  return createDefer(key, url, true);
+};
+
 const getTrendingCombined = () => {
   const key = storageKeys.list.home.trendingNow();
   const url = `${basePath}/trending`;
@@ -132,18 +138,26 @@ const getSearchResults = (query, page = 1) => new Promise((resolve) => {
     .catch(() => resolve(null));
 });
 
-const toggleItemToWatchList = item => defer(() => Observable.create(async (observer) =>{
+
+const getVisionResults = query => new Promise((resolve) => {
+  console.log('In get Vision Results')
+  $get(`${basePath}/vision?query=${query}`)
+    .then(data => resolve(data))
+    .catch(() => resolve(null));
+})
+
+const toggleItemToWatchList = item => defer(() => Observable.create(async (observer) => {
   const itemKey = storageKeys[item.type](item.id);
   const watchListKey = storageKeys.watchList();
   try {
     const watchList = await retrieveData(watchListKey);
     const onWatchList = watchList[itemKey];
-    if(onWatchList) {
+    if (onWatchList) {
       delete watchList[itemKey];
       await storeData(watchListKey, watchList);
       observer.next({ ...item, onWatchList: false });
     } else {
-      await storeData(watchListKey, { ...watchList, [itemKey]: new Date().getDate()});
+      await storeData(watchListKey, { ...watchList, [itemKey]: new Date().getDate() });
       observer.next({ ...item, onWatchList: true });
     }
     observer.complete();
@@ -161,7 +175,7 @@ const getWatchList = () => defer(() => Observable.create(async (observer) => {
   const key = storageKeys.watchList();
   try {
     const storageData = await retrieveData(key);
-    const promisedAllData = Object.keys(storageData).sort((a,b) => storageData[a] < storageData[b] ? 1 : -1).map(watchListItemKey => retrieveData(watchListItemKey));
+    const promisedAllData = Object.keys(storageData).sort((a, b) => storageData[a] < storageData[b] ? 1 : -1).map(watchListItemKey => retrieveData(watchListItemKey));
     // console.log(promisedAllData);
     const watchList = await Promise.all(promisedAllData);
     observer.next(watchList);
@@ -195,7 +209,9 @@ export {
   addItemToRecentSearches,
   getRecentSearches,
   removeItemFromRecentSearches,
+  getVisionResults,
   getWatchList,
   toggleItemToWatchList,
   getVisionSearchData,
+  getPersonById
 };

@@ -10,9 +10,11 @@ import {
   addItemToRecentSearches,
   getRecentSearches,
   removeItemFromRecentSearches,
+  getVisionResults,
   toggleItemToWatchList,
   getWatchList,
   getVisionSearchData,
+  getPersonById
 } from './storage.service';
 
 export {
@@ -27,7 +29,9 @@ export {
   addItemToRecentSearches,
   getRecentSearches,
   removeItemFromRecentSearches,
+  getVisionResults,
   toggleItemToWatchList,
   getWatchList,
   getVisionSearchData,
+  getPersonById
 };

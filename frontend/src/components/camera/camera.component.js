@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Text, View, ImageStore } from 'react-native';
+
 import {
   Camera, Permissions, ImageManipulator, Icon,
 } from 'expo';
