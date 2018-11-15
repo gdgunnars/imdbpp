@@ -5,7 +5,7 @@ import { errorCodes } from '../errors';
 import {
   storeData, retrieveData, storageKeys, clearSessionData,
 } from '../storage';
-import $get from './api.service';
+import * as $ from './api.service';
 
 /* eslint-disable */
 const createDefer = (key, url, populateWatchList) => defer(() => Observable.create(async (observer) => {
@@ -28,7 +28,7 @@ const createDefer = (key, url, populateWatchList) => defer(() => Observable.crea
     }
   } catch (error) {
     if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
-      const apiData = await $get(url);
+      const apiData = await $.get(url);
       observer.next(apiData);
       await storeData(key, apiData);
       return observer.complete();
@@ -127,7 +127,7 @@ const removeItemFromRecentSearches = async (id) => {
 };
 
 const getSearchResults = (query, page = 1) => new Promise((resolve) => {
-  $get(`${basePath}/search?query=${query}&page=${page}`)
+  $.get(`${basePath}/search?query=${query}&page=${page}`)
     .then(data => resolve(data))
     .catch(() => resolve(null));
 });
@@ -185,6 +185,11 @@ const getWatchList = () => defer(() => Observable.create(async (observer) => {
   return () => `Defer with the key:${key} was completed`;
 }));
 
+const getVisionSearchData = (image) => new Promise((resolve) => {
+  $.post(`${basePath}/vision`, { image })
+    .then(data => resolve(data))
+    .catch(() => resolve(null));
+});
 
 export {
   getMovieById,
@@ -201,4 +206,5 @@ export {
   getVisionResults,
   getWatchList,
   toggleItemToWatchList,
+  getVisionSearchData,
 };

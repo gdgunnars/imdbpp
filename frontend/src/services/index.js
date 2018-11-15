@@ -13,7 +13,7 @@ import {
   getVisionResults,
   toggleItemToWatchList,
   getWatchList,
-
+  getVisionSearchData,
 } from './storage.service';
 
 export {
@@ -31,5 +31,5 @@ export {
   getVisionResults,
   toggleItemToWatchList,
   getWatchList,
-
+  getVisionSearchData,
 };

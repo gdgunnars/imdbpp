@@ -7,7 +7,10 @@ import * as ptt from 'parse-torrent-title';
  * það er boðið upp á api keys en þarf að skoða það betur. 
  * https://cloud.google.com/docs/authentication/getting-started#auth-cloud-implicit-nodejs
  * https://cloud.google.com/nodejs/docs/reference/vision/0.22.x/v1.ImageAnnotatorClient#imageProperties
- * Postman request localhost:3000/vision?query= ${`path to picture`}
+ * 
+ * Use an online image to base64 encoder and make sure that the string does not have image/bas64 string 
+ * before the string. POST to localhost:3000/vision with content-type: application/json and the bosy
+ * { image: <actual base64 string> }
  */
 
 var fs = require('fs');
@@ -29,14 +32,13 @@ const visionObject = (bestGuess = {}, topEntities, logoAnnotations) => {
 }
 
 const router = express.Router();
-router.route("/").get(async (req, res) => {
+router.route("/").post(async (req, res) => {
   try {
-    const { query } = req.query;
-    const base64str = await base64_encode(query)
     const client = new vision.ImageAnnotatorClient();
-
+    const { image: base64str } = req.body;
+    const image = base64str.replace(/(\r\n|\n|\r)/gm,"");
     const request = {
-      image: { content: base64str },
+      image: { content:  image },
       features: [
         {
           type: "WEB_DETECTION",
@@ -53,6 +55,7 @@ router.route("/").get(async (req, res) => {
 
     //res.json(obj);
     res.redirect(`../search?query=${obj.bestGuess}`);
+    
   } catch (error) {
     console.error('/vision -> Got an error processing vision endpoint:', error);
     return res.status(500).json({ message: "Got an error processing vision endpoint" });

@@ -42,7 +42,8 @@ router.route("/").get(async (req, res) => {
       },
       person: { popularity: -1, data: [] },
       movie: { popularity: -1, data: [] },
-      tv: { popularity: -1, data: [] }
+      tv: { popularity: -1, data: [] },
+      query
     };
 
     const filteredRest = rest.filter(item => item.posterPath !== null);

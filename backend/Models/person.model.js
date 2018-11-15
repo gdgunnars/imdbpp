@@ -1,5 +1,22 @@
 import populateMedia from "../common/populateMedia";
 import setImagePath from "../common/setImagePath";
+
+const getKnownForMoviesAndTvs = combined => {
+  const populated = populateMedia(combined);
+  return populated.reduce(
+    (prev, curr) => {
+      if (curr.type === "tv") {
+        prev.tvShows.push(curr);
+      }
+      if (curr.type === "movie") {
+        prev.movies.push(curr);
+      }
+      return prev;
+    },
+    { tvShows: [], movies: [] }
+  );
+};
+
 const person = ({
   character,
   id,
@@ -10,13 +27,14 @@ const person = ({
   known_for,
   popularity,
   biography,
-  birhday,
+  birthday,
   deathday,
+  known_for_department,
   combined_credits = { cast: [], crew: [] }
 }) => ({
   character,
   popularity,
-  birhday,
+  birthday,
   deathday,
   id,
   name,
@@ -25,15 +43,9 @@ const person = ({
   department,
   job,
   biography,
+  knownForDepartment: known_for_department,
   knownFor: populateMedia(known_for),
-  cast: combined_credits.cast.map(item => ({
-    character: item.character || name,
-    ...populateMedia(item)
-  })),
-  crew: combined_credits.crew.map(item => ({
-    job: item.job,
-    ...populateMedia(item)
-  }))
+  ...getKnownForMoviesAndTvs(combined_credits.cast)
 });
 
 export default person;

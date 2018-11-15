@@ -55,12 +55,16 @@ const SearchTitle = styled.Text`
 `;
 
 class SearchInput extends PureComponent {
-  inputRef = React.createRef();
-
-  state = {
-    focused: false,
-    inputText: '',
-  };
+  
+  constructor(props) {
+    super(props);
+    const { initialValue } = this.props;
+    this.inputRef = React.createRef();
+    this.state = {
+      focused: initialValue !== '',
+      inputText: initialValue,
+    };
+  }
 
   componentDidMount() {
     this.navigationSubscription = routeChange()
