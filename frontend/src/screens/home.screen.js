@@ -79,7 +79,7 @@ class HomeScreen extends PureComponent {
 
     return (
       <ScreenContainer>
-        <Loading isLoading={!trendingNow} delay={500} />
+        <Loading isLoading={!trendingNow || !discover} />
         {trendingNow && (
           <Slider snapWidth={backdropSnapWidth} items={renderBackdrop(trendingNow)} />
         )}

@@ -79,7 +79,7 @@ class TvShowScreen extends PureComponent {
 
     return (
       <ScreenContainer>
-        <Loading isLoading={!topRated || !shows} delay={500} screenHasNavbar />
+        <Loading isLoading={!topRated || !shows} screenHasNavbar />
         <TvShwoContainer>
           {topRated && <Podium items={topRated} height={DimSize.height('23%')} />}
           {shows && getMovies(shows)}

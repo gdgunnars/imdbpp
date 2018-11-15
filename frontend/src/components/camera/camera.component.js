@@ -69,40 +69,29 @@ export default class SearchCamera extends React.Component {
     });
   }
 
+  // Photo was taken.
   snap = async () => {
-    this.setState({ loading: true });
-
     try {
-      const { parsingImage } = this.state;
+      this.setState({ loading: true });
 
-      if (this.camera && !parsingImage) {
-        this.setState({
-          parsingImage: true,
-        });
-        let photo = await this.camera.takePictureAsync({ exif: true });
+      let photo = await this.camera.takePictureAsync({ exif: true });
 
-        // We need to orientate the picture correctly based on EXIF metadata
-        // Otherwise it's always in landscape orientation
-        // More info: https://docs.expo.io/versions/v31.0.0/sdk/imagemanipulator
-        photo = await ImageManipulator.manipulate(
-          photo.uri,
-          [
-            {
-              resize: {
-                width: photo.width / 10, // The resize mode keeps ratio if we only specify width or height
-              },
+      // We need to orientate the picture correctly based on EXIF metadata
+      // Otherwise it's always in landscape orientation
+      // More info: https://docs.expo.io/versions/v31.0.0/sdk/imagemanipulator
+      photo = await ImageManipulator.manipulate(
+        photo.uri,
+        [
+          {
+            resize: {
+              width: photo.width / 10, // The resize mode keeps ratio if we only specify width or height
             },
-          ],
-          { compress: 1, base64: true },
-        );
-
-        this.setState({
-          parsingImage: false,
-          imgUrl: photo.base64,
-        });
-
-        this.sendImage();
-      }
+          },
+        ],
+        { compress: 1, base64: true },
+      );
+      console.log('IM HERERER');
+      this.sendImage(photo.base64);
     } catch (error) {
       console.log(error);
     }
@@ -119,22 +108,18 @@ export default class SearchCamera extends React.Component {
     });
   };
 
-  sendImage = async () => {
-    // imgUrl is base64
+  sendImage = async (base64) => {
     try {
-      const { imgUrl } = this.state;
-      const res = await getVisionSearchData(imgUrl);
-      this.setState({ loading: false });
-      console.log(res);
+      const res = await getVisionSearchData(base64);
 
       if (res === null) {
-        this.setState({ notFound: true });
+        this.setState({ notFound: true, loading: false });
         return;
       }
 
       navigate({ routeName: 'Search', params: { imgSearchRes: res } });
     } catch (error) {
-      console.log('there was an error:', error);
+      this.setState({ notFound: true, loading: false });
     }
   };
 
@@ -150,48 +135,43 @@ export default class SearchCamera extends React.Component {
       return <Text>No access to the camera.</Text>;
     }
 
-    if (loading) {
-      return (
-        <LoadingContainer>
-          <Loading isLoading={loading} />
-        </LoadingContainer>
-      );
-    }
-
     if (notFound) {
       return <NotFound />;
     }
 
     return (
-      <Camera
-        style={{ flex: 1, backgroundColor: Theme.colors.background.dark }}
-        type={type}
-        ref={(ref) => {
-          this.camera = ref;
-        }}
-      >
-        <Cam>
-          <TopIconsContainer>
-            <Icon.EvilIcons
-              name="close"
-              color={Theme.colors.text.default}
-              size={Theme.sizes.text.grand}
-              onPress={() => goBack()}
-            />
-            <Icon.Ionicons
-              name="ios-reverse-camera"
-              color={Theme.colors.text.default}
-              size={Theme.sizes.text.grand}
-              onPress={this.flip}
-            />
-          </TopIconsContainer>
-          <SnapContainer>
-            <TakePicture onPress={this.snap}>
-              <Icon.Ionicons name="ios-camera" color={Theme.colors.text.light} size={64} />
-            </TakePicture>
-          </SnapContainer>
-        </Cam>
-      </Camera>
+      <View style={{ flex: 1 }}>
+        <Camera
+          style={{ flex: 1, backgroundColor: Theme.colors.background.dark }}
+          type={type}
+          ref={(r) => {
+            this.camera = r;
+          }}
+        >
+          <Cam>
+            <TopIconsContainer>
+              <Icon.EvilIcons
+                name="close"
+                color={Theme.colors.text.default}
+                size={Theme.sizes.text.grand}
+                onPress={() => goBack()}
+              />
+              <Icon.Ionicons
+                name="ios-reverse-camera"
+                color={Theme.colors.text.default}
+                size={Theme.sizes.text.grand}
+                onPress={this.flip}
+              />
+            </TopIconsContainer>
+            <SnapContainer>
+              <TakePicture onPress={this.snap}>
+                <Icon.Ionicons name="ios-camera" color={Theme.colors.text.light} size={64} />
+              </TakePicture>
+            </SnapContainer>
+          </Cam>
+        </Camera>
+        <Loading isLoading={loading} />
+      </View>
     );
   }
 }

@@ -108,10 +108,10 @@ class MovieTvDetail extends PureComponent {
   render() {
     const { media } = this.state;
     const posterSnapWidth = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
-
+    
     return (
       <ScreenContainer>
-        <Loading isLoading={!media} delay={500} />
+        <Loading isLoading={!media} />
         {media && (
           <Trailer
             score={media.score}

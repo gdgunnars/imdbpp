@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Spinner from '../spinners';
-import { Theme, DimSize } from '../../common';
+import { Theme } from '../../common';
 
 const Container = styled.View`
   position: absolute;
@@ -10,6 +10,8 @@ const Container = styled.View`
   left: 0;
   right: 0;
   z-index: 9999;
+  height: ${Theme.sizes.window.height};
+  background-color: ${Theme.colors.background.dark};
   padding-bottom: ${props => (props.hasBar ? Theme.sizes.navBar.height : 0)};
 `;
 
@@ -25,9 +27,7 @@ class Loading extends PureComponent {
   };
 
   render() {
-    const {
-      isLoading, screenHasNavbar, delay,
-    } = this.props;
+    const { isLoading, screenHasNavbar, delay } = this.props;
     const { isDelaying } = this.state;
 
     if (delay && (isLoading || isDelaying)) {
