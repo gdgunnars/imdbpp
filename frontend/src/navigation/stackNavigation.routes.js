@@ -31,6 +31,12 @@ const withNav = {
 };
 
 const Routes = {
+  PersonDetail: {
+    screen: Screen.PersonDetailScreen,
+    navigationOptions: {
+      ...NavigationStyle,
+    },
+  },
   Home: {
     screen: Screen.HomeScreen,
     navigationOptions: {
@@ -51,7 +57,6 @@ const Routes = {
       ...withNav,
     },
   },
-
   Search: {
     screen: Screen.SearchScreen,
     navigationOptions: {
@@ -80,7 +85,6 @@ const Routes = {
       ...NavigationStyle,
     },
   },
-
   Roulette: {
     screen: Screen.RouletteScreen,
     navigationOptions: {
@@ -88,12 +92,7 @@ const Routes = {
       ...NavigationStyle,
     },
   },
-  PersonDetail: {
-    screen: Screen.PersonDetailScreen,
-    navigationOptions: {
-      ...NavigationStyle,
-    },
-  },
+ 
 };
 
 export default Routes;
