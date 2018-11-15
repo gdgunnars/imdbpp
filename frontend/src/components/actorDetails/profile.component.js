@@ -11,7 +11,7 @@ const MainContainer = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: ${DimSize.height('50%')};
+  height: ${DimSize.height('38%')};
   width: ${DimSize.width('100%')};
   position: relative;
 `;
@@ -37,14 +37,14 @@ const OverlayImage = styled.Image`
   left: 0;
   right: 0;
   bottom: 0;
-  height: ${DimSize.height('50%')};
+  height: ${DimSize.height('38%')};
   width: ${DimSize.width('100%')};
 `;
 
 const Image = styled.Image`
-  height: ${DimSize.height('20%')};
-  width: ${DimSize.height('20%')};
-  border-radius: ${IsIos() ? DimSize.height('10%') : DimSize.height('20%')};
+  height: ${DimSize.height('16%')};
+  width: ${DimSize.height('16%')};
+  border-radius: ${IsIos() ? DimSize.height('8%') : DimSize.height('16%')};
   border-width: 4px;
   border-color: white;
   margin-top: ${Theme.sizes.spaces.content.large.top};
