@@ -46,7 +46,7 @@ class PersonDetailScreen extends PureComponent {
 
   componentDidMount = () => {
     const { navigation } = this.props;
-    const mediaData = navigation.getParam('data');
+    const mediaData = navigation.getParam('data') || {id: 500};
     if (!mediaData) {
       console.warn('No id was provided!');
       return;
