@@ -11,6 +11,7 @@ const router = express.Router();
  */
 router.route("/").get(async (req, res) => {
   const { query, page = 1 } = req.query;
+  console.log('Bingo dingo i am here');
   if (!query) {
     return res.status(400).json({ message: "Missing search query" });
   }

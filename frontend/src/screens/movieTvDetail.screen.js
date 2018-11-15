@@ -9,7 +9,7 @@ import {
   Trailer, Duration, Genre, Poster, Slider, Buttons, Loading,
 } from '../components';
 import {
-  DimSize, DateFormat, Capitalize, MediaLink, Theme
+  DimSize, DateFormat, Capitalize, MediaLink, Theme,
 } from '../common';
 
 const Row = styled.View`
@@ -108,7 +108,7 @@ class MovieTvDetail extends PureComponent {
   render() {
     const { media } = this.state;
     const posterSnapWidth = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
-    
+
     return (
       <ScreenContainer>
         <Loading isLoading={!media} />
@@ -151,10 +151,10 @@ class MovieTvDetail extends PureComponent {
             />
           )}
         </ButtonGroupContainer>
-        <Text.subTitle>StoryLine</Text.subTitle>
-        <Row>{media && <Text.body1>{media.overview}</Text.body1>}</Row>
-        {media && media.cast && <Text.subTitle>Cast</Text.subTitle>}
-        {media && media.cast && (
+        {media && media.overview && <Text.subTitle>StoryLine</Text.subTitle>}
+        {media && media.overview && <Row><Text.body1>{media.overview}</Text.body1></Row>}
+        {media && media.cast[0] && <Text.subTitle>Cast</Text.subTitle>}
+        {media && media.cast[0] && (
           <Slider snapWidth={posterSnapWidth} items={renderPoster(media.cast, true)} seperator />
         )}
         {media && media.similar && media.similar.length > 0 && (

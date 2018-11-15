@@ -1,5 +1,9 @@
 import express from "express";
 import * as ptt from 'parse-torrent-title';
+import axios from "axios";
+import * as config from "../config.js";
+import dominantColor from '../dominantColor';
+import populateMedia from '../common/populateMedia';
 
 
 /**
@@ -53,9 +57,7 @@ router.route("/").post(async (req, res) => {
     const { webDetection, logoAnnotations } = imageData[0];
     const obj = visionObject(webDetection.bestGuessLabels[0], webDetection.webEntities.splice(0, 3), logoAnnotations.splice(0, 1))
 
-    //res.json(obj);
-    res.redirect(`../search?query=${obj.bestGuess}`);
-    
+    searchResult(obj.bestGuess, res);
   } catch (error) {
     console.error('/vision -> Got an error processing vision endpoint:', error);
     return res.status(500).json({ message: "Got an error processing vision endpoint" });
@@ -75,6 +77,55 @@ const base64_encode = (image) => {
       reject('Error, file was not found or encoding failed');
     }
   });
+}
+
+const searchResult = async (query, res) => {
+  try {
+    console.time("Fetching data");
+    const searchQuery = encodeURI(query);
+    const queryResults = await axios.get(
+      `${config.getBasePath()}/search/multi?api_key=${config.getApiKey()}&language=en-US&query=${searchQuery}&page=1&include_adult=false}`
+    );
+    console.timeEnd("Fetching data");
+    const sortedByPopularity = queryResults.data.results.sort(
+      (a, b) => (a.popularity >= b.popularity ? -1 : 1)
+    );
+    const data = populateMedia(sortedByPopularity);
+    let [mostPopular, ...rest] = data;
+    if (!mostPopular || !mostPopular.posterPath) {
+      console.log("im HERHEHR");
+      return res.status(404).json({});
+    }
+
+    const [r = 14, g = 14, b = 14] = await dominantColor(
+      mostPopular.posterPath
+    );
+    let responseObject = {
+      topResult: {
+        data: mostPopular,
+        color: `rgb(${r},${g},${b})`
+      },
+      person: { popularity: -1, data: [] },
+      movie: { popularity: -1, data: [] },
+      tv: { popularity: -1, data: [] },
+      query
+    };
+
+    const filteredRest = rest.filter(item => item.posterPath !== null);
+
+    for (let item of filteredRest) {
+      const { popularity, type } = item;
+      responseObject[type].data.push(item);
+      if (responseObject[type].popularity < popularity) {
+        responseObject[type].popularity = popularity;
+      }
+    }
+
+    res.status(200).json(responseObject);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error occurred" });
+  }
 }
 
 module.exports = router;

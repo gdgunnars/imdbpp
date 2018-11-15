@@ -13,7 +13,7 @@ const GenreContainer = styled.View`
   margin-right: ${props => (props.withMargin ? Theme.sizes.spaces.content.small.right : '0')};
 `;
 
-const GenreComponent = ({ type = 'default', text, withMargin }) => (
+const GenreComponent = ({ type = 'default', text, withMargin }) => text && (
   <GenreContainer color={Theme.colors.background[type]} withMargin={withMargin}>
     <Text.caption color={type}>{text}</Text.caption>
   </GenreContainer>

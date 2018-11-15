@@ -24,13 +24,13 @@ app.use("/trending", trendingRoute);
 app.use("/tvshow", tvShowRoute);
 app.use("/movie", movieRoute);
 app.use("/person", personRoute);
-app.use("/search", searchRoute);
 app.use("/topratedmovies", topRatedMoviesRoute);
 app.use("/topratedtv", topRatedTvRoute);
 app.use("/moviesgenre", moviesByGenreRoute);
 app.use("/tvgenre", tvByGenreRoute);
 app.use("/vision", vision);
 app.use("/discover", discoverRoute);
+app.use("/search", searchRoute);
 
 app.get("/", function(req, res) {
   res.send("API up and running...");

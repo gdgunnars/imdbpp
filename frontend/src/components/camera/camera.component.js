@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Text, View, ImageStore } from 'react-native';
+import { Text, View } from 'react-native';
 
 import {
   Camera, Permissions, ImageManipulator, Icon,
 } from 'expo';
-import { Theme, DimSize } from '../../common';
+import { Theme } from '../../common';
 import { navigate, goBack } from '../../navigation';
 import { getVisionSearchData } from '../../services';
 import Loading from '../loading';
@@ -45,17 +45,10 @@ const TakePicture = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const LoadingContainer = styled.View`
-  flex: 1;
-`;
-
-// Todo: Remember to comment out TabNavigation in frontend/src/navigation/index.js to see the camera button.
 export default class SearchCamera extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
-    parsingImage: false,
-    imgUrl: null,
     loading: false,
     notFound: false,
   };
@@ -84,13 +77,13 @@ export default class SearchCamera extends React.Component {
         [
           {
             resize: {
-              width: photo.width / 10, // The resize mode keeps ratio if we only specify width or height
+              width: photo.width / 10,
             },
           },
         ],
         { compress: 1, base64: true },
       );
-      console.log('IM HERERER');
+
       this.sendImage(photo.base64);
     } catch (error) {
       console.log(error);
@@ -119,6 +112,7 @@ export default class SearchCamera extends React.Component {
 
       navigate({ routeName: 'Search', params: { imgSearchRes: res } });
     } catch (error) {
+      console.log('ERRRRR');
       this.setState({ notFound: true, loading: false });
     }
   };
