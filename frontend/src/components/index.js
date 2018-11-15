@@ -9,8 +9,8 @@ import Search from './search';
 import Slider from './Slider';
 import Trailer from './trailer';
 import Loading from './loading';
-import { Profile, KnownFor, Relations } from './actorDetails';
+import { Profile, Biography, Relations } from './actorDetails';
 
 export {
-  Backdrop, Buttons, Duration, Genre, Podium, Poster, Rating, Search, Slider, Trailer, Profile, KnownFor, Relations, Loading,
+  Backdrop, Buttons, Duration, Genre, Podium, Poster, Rating, Search, Slider, Trailer, Profile, Biography, Relations, Loading,
 };

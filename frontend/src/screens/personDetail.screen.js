@@ -7,7 +7,6 @@ import { Text } from '../general';
 import { DimSize, MediaLink } from '../common';
 import { navigate } from '../navigation';
 
-
 const Row = styled.View`
   display: flex;
   flex-direction: row;
@@ -26,8 +25,6 @@ const renderPoster = (media, caption = false) => media.map((item) => {
     <Poster caption={cap} onPress={link} key={item.id} url={item.posterPath} height={DimSize.height('32%')} />
   );
 });
-
-
 
 class PersonDetailScreen extends PureComponent {
   state = {
@@ -49,6 +46,7 @@ class PersonDetailScreen extends PureComponent {
       console.warn('No id was provided!');
       return;
     }
+
     const { id = 500 } = mediaData;
 
     this.subscription = getPersonById(id).subscribe((media) => {
@@ -78,17 +76,15 @@ class PersonDetailScreen extends PureComponent {
     }
     const {
       name,
-      role,
       posterPath,
       biography,
-      crew,
-      cast,
+      knownForDepartment,
+      tvShows,
+      movies
     } = media;
 
-    const [first = {}] = cast;
-
     return <ScreenContainer>
-      <Profile backdropPath={first.backdropPath} posterPath={posterPath} name={name} role={role} />
+      <Profile backdropPath={posterPath} posterPath={posterPath} name={name} role={knownForDepartment} />
       <Row>
         <Text.subTitle>Biography</Text.subTitle>
       </Row>
@@ -97,13 +93,13 @@ class PersonDetailScreen extends PureComponent {
         <Buttons.showMore onPress={() => this.toggleBioSize()} active={showMoreBio} />
       </Row>
       <Row>
-        <Text.subTitle>Acted In</Text.subTitle>
+        <Text.subTitle>Movies</Text.subTitle>
       </Row>
-      <Slider snapWidth={posterSnapWidh} items={renderPoster(cast)} seperator />
+      <Slider snapWidth={posterSnapWidh} items={renderPoster(movies)} seperator />
       <Row>
-        <Text.subTitle>Know For</Text.subTitle>
+        <Text.subTitle>Tv Shows</Text.subTitle>
       </Row>
-      <Slider snapWidth={posterSnapWidh} items={renderPoster(crew)} seperator />
+      <Slider snapWidth={posterSnapWidh} items={renderPoster(tvShows)} seperator />
     </ScreenContainer>;
   }
 }
