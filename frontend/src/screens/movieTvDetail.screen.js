@@ -132,7 +132,11 @@ class MovieTvDetail extends PureComponent {
       media, toggleMoreText, toggleFullCast, toggleFullCrew,
     } = this.state;
     const posterSnapWidth = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
-
+    console.log('IM IN MOVIETVDETAIL');
+    if(media) {
+      console.log('IM IN MOVIETVDETAIL');
+      console.log(media.id);
+    }
     return (
       <ScreenContainer>
         {media && (
@@ -183,7 +187,7 @@ class MovieTvDetail extends PureComponent {
             <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
           </Row>
         )}
-        {media && media.cast && <Text.subTitle>Cast</Text.subTitle>}
+        {media && media.cast[0] && <Text.subTitle>Cast</Text.subTitle>}
         {media && media.cast && (
           <PersonList listType="cast" list={media.cast} active={toggleFullCast} />
         )}
@@ -192,7 +196,7 @@ class MovieTvDetail extends PureComponent {
             <Buttons.showMore onPress={() => this.toggleFullCast()} active={toggleFullCast} />
           </Row>
         )}
-        {media && media.crew && <Text.subTitle>Crew</Text.subTitle>}
+        {media && media.crew[0] && <Text.subTitle>Crew</Text.subTitle>}
         {media && media.crew && (
           <PersonList listType="crew" list={media.crew} active={toggleFullCrew} />
         )}

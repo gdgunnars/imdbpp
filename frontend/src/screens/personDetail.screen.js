@@ -11,7 +11,6 @@ import {
   DimSize, MediaLink, RandBetween, Theme,
 } from '../common';
 import { navigate } from '../navigation';
-import randBetween from '../common/randBetween';
 
 const Row = styled.View`
   display: flex;
@@ -119,14 +118,10 @@ class PersonDetailScreen extends PureComponent {
             <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
           )}
         </Row>
-        <Row>
-          <Text.subTitle>Movies</Text.subTitle>
-        </Row>
-        <Slider snapWidth={posterSnapWidh} items={renderPoster(movies)} seperator />
-        <Row>
-          <Text.subTitle>Tv Shows</Text.subTitle>
-        </Row>
-        <Slider snapWidth={posterSnapWidh} items={renderPoster(tvShows)} seperator />
+        <Row>{movies && <Text.subTitle>Movies</Text.subTitle>}</Row>
+        {movies && <Slider snapWidth={posterSnapWidh} items={renderPoster(movies)} seperator />}
+        <Row>{tvShows && <Text.subTitle>Tv Shows</Text.subTitle>}</Row>
+        {tvShows && <Slider snapWidth={posterSnapWidh} items={renderPoster(tvShows)} seperator />}
         <LastItem />
       </ScreenContainer>
     );

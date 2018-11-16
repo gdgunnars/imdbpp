@@ -70,7 +70,9 @@ const Profile = (props) => {
   return (
     <MainContainer>
       <BackImagecontainer>
-        <BackImage blurRadius={2} source={{ uri: backdropPath }} resizeMode="cover" />
+        {backdropPath !== '' && (
+          <BackImage blurRadius={2} source={{ uri: backdropPath }} resizeMode="cover" />
+        )}
         <OverlayImage source={OverlayEdges} resizeMode="stretch" />
       </BackImagecontainer>
       <Image source={{ uri: posterPath }} />
