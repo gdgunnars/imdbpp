@@ -49,8 +49,14 @@ const movie = ({
   revenue,
   budget,
   trailer,
-  cast: uniqBy(populateMedia(cast), item => item.id),
-  crew: uniqBy(populateMedia(crew), item => item.id),
+  cast: uniqBy(
+    (populateMedia(cast) || []).filter(item => item.hasOwnProperty("type")),
+    item => item.id
+  ),
+  crew: uniqBy(
+    (populateMedia(crew) || []).filter(item => item.hasOwnProperty("type")),
+    item => item.id
+  ),
   similar: populateMedia(similar),
   popularity
 });
