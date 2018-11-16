@@ -3,6 +3,7 @@ import { Icon } from 'expo';
 import styled from 'styled-components';
 import Genre from '../genre';
 import { DimSize, Capitalize, IsIos } from '../../common';
+import DefaultListItemImage from '../../../assets/images/defaultUserImage.png';
 
 const SearchItemContainer = styled.View`
   flex-direction: row;
@@ -22,9 +23,19 @@ const SearchImageStyle = styled.Image`
 `;
 
 const SearchItemImage = {
-  tv: url => <SearchImageStyle source={{ uri: url }} resizeMode="cover" />,
-  movie: url => <SearchImageStyle source={{ uri: url }} resizeMode="cover" />,
-  person: url => <SearchImageStyle round source={{ uri: url }} resizeMode="cover" />,
+  // Todo: Add other defaultImage for movie & tvShow
+  tv: (url) => {
+    const source = url ? { uri: url } : DefaultListItemImage;
+    return <SearchImageStyle source={source} resizeMode="cover" />;
+  },
+  movie: (url) => {
+    const source = url ? { uri: url } : DefaultListItemImage;
+    return <SearchImageStyle source={source} resizeMode="cover" />;
+  },
+  person: (url) => {
+    const source = url ? { uri: url } : DefaultListItemImage;
+    return <SearchImageStyle round source={source} resizeMode="cover" />;
+  },
 };
 
 const SearchTextColumn = styled.View`

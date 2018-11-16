@@ -4,10 +4,16 @@ import ScreenContainer from './screen.style';
 import { getMovieById, getTvShowById, toggleItemToWatchList } from '../services';
 import { navigate } from '../navigation';
 import { Text } from '../general';
-import ToggleShowMore from '../components/toggleShowMore';
 
 import {
-  Trailer, Duration, Genre, Poster, Slider, Buttons,
+  Trailer,
+  Duration,
+  Genre,
+  Poster,
+  Slider,
+  Buttons,
+  ToggleShowMore,
+  PersonList,
 } from '../components';
 import {
   DimSize, DateFormat, Capitalize, MediaLink, Theme,
@@ -61,6 +67,8 @@ class MovieTvDetail extends PureComponent {
   state = {
     media: null,
     toggleMoreText: false,
+    toggleFullCast: false,
+    toggleFullCrew: false,
   };
 
   cleanupSubscription = () => {
@@ -76,6 +84,14 @@ class MovieTvDetail extends PureComponent {
 
   toggleMoreText = () => {
     this.setState(prev => ({ toggleMoreText: !prev.toggleMoreText }));
+  };
+
+  toggleFullCast = () => {
+    this.setState(prev => ({ toggleFullCast: !prev.toggleFullCast }));
+  };
+
+  toggelFullCrew = () => {
+    this.setState(prev => ({ toggleFullCrew: !prev.toggleFullCrew }));
   };
 
   addRemoveFromWatchList = () => {
@@ -112,7 +128,9 @@ class MovieTvDetail extends PureComponent {
   };
 
   render() {
-    const { media, toggleMoreText } = this.state;
+    const {
+      media, toggleMoreText, toggleFullCast, toggleFullCrew,
+    } = this.state;
     const posterSnapWidth = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
 
     return (
@@ -167,7 +185,21 @@ class MovieTvDetail extends PureComponent {
         )}
         {media && media.cast && <Text.subTitle>Cast</Text.subTitle>}
         {media && media.cast && (
-          <Slider snapWidth={posterSnapWidth} items={renderPoster(media.cast, true)} seperator />
+          <PersonList listType="cast" list={media.cast} active={toggleFullCast} />
+        )}
+        {media && media.cast && media.cast.length > 3 && (
+          <Row justifyContent="center">
+            <Buttons.showMore onPress={() => this.toggleFullCast()} active={toggleFullCast} />
+          </Row>
+        )}
+        {media && media.crew && <Text.subTitle>Crew</Text.subTitle>}
+        {media && media.crew && (
+          <PersonList listType="crew" list={media.crew} active={toggleFullCrew} />
+        )}
+        {media && media.crew && media.crew.length > 3 && (
+          <Row justifyContent="center">
+            <Buttons.showMore onPress={() => this.toggelFullCrew()} active={toggleFullCrew} />
+          </Row>
         )}
         {media && media.similar && media.similar.length > 0 && (
           <Text.subTitle>{`similar ${media.type === 'tv' ? 'tv-shows' : 'movies'}`}</Text.subTitle>
