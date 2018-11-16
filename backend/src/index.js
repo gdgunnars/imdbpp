@@ -2,6 +2,7 @@ import "./env";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import polyfill from "@babel/polyfill";
 import trendingRoute from "./routes/trending.route";
 import tvShowRoute from "./routes/tvShow.route";
 import searchRoute from "./routes/search.route";

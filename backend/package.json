@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "@google-cloud/vision": "^0.22.1",
     "atob": "^2.1.2",
     "axios": "^0.18.0",
