@@ -101,12 +101,13 @@ class PersonDetailScreen extends PureComponent {
     const {
       name, posterPath, biography, knownForDepartment, tvShows, movies,
     } = media;
-    console.log(media.id);
-    const backPoster = movies[0].posterPath || tvShows[0].posterPath;
+
+    const backdropPath = movies.length > 0 ? movies[0].posterPath : tvShows[0].posterPath;
+
     return (
       <ScreenContainer>
         <Profile
-          backdropPath={backPoster}
+          backdropPath={backdropPath}
           posterPath={posterPath}
           name={name}
           role={knownForDepartment}
