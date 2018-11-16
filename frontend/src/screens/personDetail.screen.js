@@ -118,10 +118,12 @@ class PersonDetailScreen extends PureComponent {
             <Buttons.showMore onPress={() => this.toggleMoreText()} active={toggleMoreText} />
           )}
         </Row>
-        <Row>{movies && <Text.subTitle>Movies</Text.subTitle>}</Row>
+        <Row>{movies && movies[0] && <Text.subTitle>Movies</Text.subTitle>}</Row>
         {movies && <Slider snapWidth={posterSnapWidh} items={renderPoster(movies)} seperator />}
-        <Row>{tvShows && <Text.subTitle>Tv Shows</Text.subTitle>}</Row>
-        {tvShows && <Slider snapWidth={posterSnapWidh} items={renderPoster(tvShows)} seperator />}
+        <Row>{tvShows && tvShows[0] && <Text.subTitle>Tv Shows</Text.subTitle>}</Row>
+        {tvShows && tvShows[0] && (
+          <Slider snapWidth={posterSnapWidh} items={renderPoster(tvShows)} seperator />
+        )}
         <LastItem />
       </ScreenContainer>
     );

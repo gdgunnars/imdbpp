@@ -55,7 +55,6 @@ class Trailer extends PureComponent {
     const {
       src, poster, width, height, score,
     } = this.props;
-
     return (
       <Container style={{ width, height }}>
         {!play && (

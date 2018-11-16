@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { DimSize, Theme, IsIos } from '../../common';
 import OverlayEdges from '../../../assets/images/overlay-edges.png';
+import DefaultUserImage from '../../../assets/images/defaultUserImage.png';
 
 const textColor = Theme.colors.text;
 const textSize = Theme.sizes.text;
@@ -67,6 +68,8 @@ const Profile = (props) => {
   const {
     backdropPath, posterPath, name, role,
   } = props;
+
+  const img = posterPath ? { uri: posterPath } : DefaultUserImage;
   return (
     <MainContainer>
       <BackImagecontainer>
@@ -75,7 +78,7 @@ const Profile = (props) => {
         )}
         <OverlayImage source={OverlayEdges} resizeMode="stretch" />
       </BackImagecontainer>
-      <Image source={{ uri: posterPath }} />
+      <Image source={img} />
       <Name>{name}</Name>
       <Role>{role}</Role>
     </MainContainer>
