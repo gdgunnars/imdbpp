@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import * as DimSize from '../../common/dimensionSize';
 
+import missingposter from '../../../assets/images/missingposter.jpg';
+
 const PosterImage = styled.Image`
   height: ${props => props.height};
   width: ${props => props.width};
@@ -18,20 +20,33 @@ const Caption = styled.Text`
   text-align: center;
 `;
 
-const defaultFunc = () => {};
+const defaultFunc = () => { };
 
 const Poster = ({
   height, url, caption, onPress = defaultFunc,
 }) => {
   const containerHeight = caption ? height * 1.2 : height;
+
   return (
     <Container activeOpacity={1} height={containerHeight} onPress={onPress}>
-      <PosterImage
-        width={height * 0.7}
-        height={height}
-        source={{ uri: url }}
-        resizeMode="contain"
-      />
+      {
+        url &&
+        <PosterImage
+          width={height * 0.7}
+          height={height}
+          source={{ uri: url }}
+          resizeMode="contain"
+        />
+      }
+      {
+        !url &&
+        <PosterImage
+          width={height * 0.7}
+          height={height}
+          source={missingposter}
+          resizeMode="contain"
+        />
+      }
       {caption && <Caption>{caption}</Caption>}
     </Container>
   );
