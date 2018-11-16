@@ -14,7 +14,7 @@ const border = styled.View`
   border-bottom-width: 10;
   border-right-width: 10;
   border-left-width: 10;
-  border-top-color: #979799;
+  border-top-color: #3B63E6;
   border-left-color: transparent;
   border-bottom-color: transparent;
   border-right-color: transparent;
@@ -41,7 +41,7 @@ const SpinnerChildOne = styled(SpinnerOne)`
   height: 100%;
   width: 100%;
   align-self: center;
-  border-top-color: #bababc;
+  border-top-color: #E63B3B;
   border-radius: 90;
 `;
 
@@ -50,7 +50,7 @@ const SpinnerChildTwo = styled(SpinnerOne)`
   height: 90%;
   width: 90%;
   align-self: center;
-  border-top-color: #d9d9db;
+  border-top-color: #E7CF23;
   border-radius: 70;
 `;
 
