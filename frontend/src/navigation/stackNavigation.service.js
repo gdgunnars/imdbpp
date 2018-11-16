@@ -5,7 +5,7 @@ import Routes from './stackNavigation.routes';
 
 let navigator;
 const defaultRoute = { routeName: 'Home', params: null, activeTabName: 'Home' };
-const currentRouteObject = { ...defaultRoute };
+let currentRouteObject = { ...defaultRoute };
 const routingSubject = new BehaviorSubject({ ...defaultRoute });
 const mirrorStack = [{ ...defaultRoute }];
 const mainRoutes = {
@@ -26,20 +26,16 @@ const routeChange = () => defer(() => routingSubject.asObservable());
 
 const navigate = (
   { routeName, params },
-  activeTabName = oneOfMainRoutes(routeName) ? routeName : currentRouteObject.currentTabName,
+  activeTabName = oneOfMainRoutes(routeName) ? routeName : currentRouteObject.activeTabName,
 ) => {
   if (
     currentRouteObject.routeName === routeName
     && (routeName === 'Search' && params === currentRouteObject.params)
   ) {
-    console.log(`Route name : ${routeName}, params: ${params}`);
-    console.log('im just here again...');
-    routingSubject.next(currentRouteObject.currentTabName);
+    routingSubject.next(currentRouteObject.activeTabName);
     return;
   }
-  currentRouteObject.currentTabName = activeTabName;
-  currentRouteObject.routeName = routeName;
-  currentRouteObject.params = params;
+  currentRouteObject = { routeName, activeTabName, params };
   const options = { routeName, params, activeTabName };
   mirrorStack.push(options);
   routingSubject.next(options);
@@ -62,27 +58,7 @@ const goBack = () => {
 
 BackHandler.addEventListener('hardwareBackPress', goBack);
 
-const FadeTransition = (index, position) => {
-  const inputRange = [index - 1, index, index + 1];
-  const opacity = position.interpolate({
-    inputRange,
-    outputRange: [0, 1, 0],
-  });
-  return {
-    opacity,
-  };
-};
-
-const transitionConfig = () => ({
-  screenInterpolator: (sceneProps) => {
-    const { position, scene } = sceneProps;
-    const { index } = scene;
-    return FadeTransition(index, position);
-  },
-});
-
 const StackNavigator = createStackNavigator(Routes, {
-  transitionConfig,
   headerLayoutPreset: 'center',
 });
 
