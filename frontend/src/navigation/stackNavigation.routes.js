@@ -71,8 +71,6 @@ const Routes = {
     },
   },
 
-
-
   TvShow: {
     screen: Screen.TvShowScreen,
     navigationOptions: {
@@ -83,7 +81,8 @@ const Routes = {
   MovieTvDetail: {
     screen: Screen.MovieTvDetailScreen,
     navigationOptions: {
-      ...NavigationStyle,
+      title: 'Details',
+      ...withNav,
     },
   },
   Roulette: {
@@ -93,7 +92,6 @@ const Routes = {
       ...NavigationStyle,
     },
   },
-
 };
 
 export default Routes;
