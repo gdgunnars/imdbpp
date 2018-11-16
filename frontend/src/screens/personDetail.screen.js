@@ -102,7 +102,6 @@ class PersonDetailScreen extends PureComponent {
     const {
       name, posterPath, biography, knownForDepartment, tvShows, movies,
     } = media;
-    console.log(media.id);
     return (
       <ScreenContainer>
         <Profile
