@@ -1,7 +1,7 @@
 import { defer, Observable } from 'rxjs';
 import basePath from './service.config';
 import { errorCodes } from '../errors';
-
+import { showLoadingScreen, hideLoadingScreen } from './loading.service';
 import {
   storeData, retrieveData, storageKeys, clearSessionData,
 } from '../storage';
@@ -30,8 +30,10 @@ const createDefer = (key, url, populateWatchList) =>
         }
       } catch (error) {
         if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
+          showLoadingScreen();
           const apiData = await $.get(url);
           observer.next(apiData);
+          hideLoadingScreen();
           await storeData(key, apiData);
           return observer.complete();
         }
