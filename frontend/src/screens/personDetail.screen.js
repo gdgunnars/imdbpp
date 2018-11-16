@@ -11,6 +11,7 @@ import {
   DimSize, MediaLink, RandBetween, Theme,
 } from '../common';
 import { navigate } from '../navigation';
+import randBetween from '../common/randBetween';
 
 const Row = styled.View`
   display: flex;
@@ -37,16 +38,16 @@ const renderPoster = (media, caption = false) => media.map((item) => {
   );
 });
 
-const getBackdropImage = (pool) => {
-  let path = '';
-  const elem = pool.movies.length > pool.tvShows.length ? 'movies' : 'tvShows';
-  while (!path || path === '') {
-    const randHigh = pool[elem].length - 1;
-    const chosenElem = pool[elem][RandBetween(0, randHigh)];
-    const { backdropPath } = chosenElem;
-    path = backdropPath;
+const getSafeBackdropImage = ({ tvShows, movies }) => {
+  const arr = tvShows.length > movies.length ? tvShows : movies;
+  const backdropPool = arr.filter(item => item.backdropPath);
+  if (backdropPool.length === 1) {
+    return backdropPool[0].backdropPath;
   }
-  return path;
+  if (backdropPool.length > 1) {
+    return backdropPool[RandBetween(0, backdropPool.length - 1)].backdropPath;
+  }
+  return '';
 };
 
 class PersonDetailScreen extends PureComponent {
@@ -76,7 +77,7 @@ class PersonDetailScreen extends PureComponent {
 
     this.subscription = getPersonById(id).subscribe((media) => {
       this.cleanupSubscription();
-      this.backdropPath = getBackdropImage({ tvShows: media.tvShows, movies: media.movies });
+      this.backdropPath = getSafeBackdropImage({ tvShows: media.tvShows, movies: media.movies });
       this.setState({
         media,
       });
@@ -101,13 +102,10 @@ class PersonDetailScreen extends PureComponent {
     const {
       name, posterPath, biography, knownForDepartment, tvShows, movies,
     } = media;
-
-    const backdropPath = movies.length > 0 ? movies[0].posterPath : tvShows[0].posterPath;
-
     return (
       <ScreenContainer>
         <Profile
-          backdropPath={backdropPath}
+          backdropPath={this.backdropPath}
           posterPath={posterPath}
           name={name}
           role={knownForDepartment}
