@@ -31,11 +31,11 @@ const BtnWrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 44;
+  min-height: 44;
   padding-left: ${Theme.sizes.spaces.content.medium.left};
   padding-right: ${Theme.sizes.spaces.content.medium.right};
-  padding-top: ${Theme.sizes.spaces.content.medium.top};
-  padding-bottom: ${Theme.sizes.spaces.content.medium.bottom};
+  padding-top: ${Theme.sizes.spaces.content.small.top};
+  padding-bottom: ${Theme.sizes.spaces.content.small.bottom};
   background-color: ${Theme.colors.background.default};
   border-radius: ${DimSize.width('1%')};
 `;
