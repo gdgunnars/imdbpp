@@ -164,7 +164,7 @@ export default class SearchCamera extends React.Component {
             </SnapContainer>
           </Cam>
         </Camera>
-        <Loading isLoading={loading} />
+        {loading && <Loading fullScreen />}
       </View>
     );
   }

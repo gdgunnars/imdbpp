@@ -9,13 +9,13 @@ const Container = styled.View`
   left: 0;
   right: 0;
   z-index: 9999;
-  height: ${Theme.sizes.window.height - Theme.sizes.tabBar.height};
+  height: ${({ fullScreen }) => Theme.sizes.window.height - (fullScreen ? 0 : Theme.sizes.tabBar.height)};
   background-color: ${Theme.colors.background.dark};
   padding-bottom: ${props => (props.hasBar ? Theme.sizes.navBar.height : 0)};
 `;
 
-export default () => (
-  <Container>
+export default ({ fullScreen }) => (
+  <Container fullScreen={fullScreen}>
     <Spinner />
   </Container>
 );
