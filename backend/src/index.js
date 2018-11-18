@@ -36,6 +36,9 @@ const accessLogStream = rfs('access.log', {
   interval: '7d', // rotate weekly
   path: logDirectory
 });
+// API is hosted behind proxy so we set trusted proxies and only allow proxy through,
+// this also prints correct ip's in log file.
+app.set('trust proxy', ['loopback', '192.168.0.19/32']);
 // setup the logger
 app.use(morgan('combined', { stream: accessLogStream }));
 // And log to console.
