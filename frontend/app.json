@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "IMDB++",
-    "description": "Easily find your favourite films & TV shows.",
+    "description": "Easily discover new & revisit your favourite films & TV shows.",
     "slug": "IMDBpp",
     "privacy": "public",
     "sdkVersion": "30.0.0",
