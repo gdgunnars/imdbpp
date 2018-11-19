@@ -112,7 +112,7 @@ export default class SearchCamera extends React.Component {
 
       navigate({ routeName: 'Search', params: { imgSearchRes: res } });
     } catch (error) {
-      console.log('ERRRRR');
+      console.log('Error when searching for image: ', error);
       this.setState({ notFound: true, loading: false });
     }
   };

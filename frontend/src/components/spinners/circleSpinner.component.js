@@ -68,7 +68,6 @@ class CircleSpinner extends PureComponent {
   }
 
   render() {
-    console.log('RENDER');
     const interpolatedRotateAnimation = this.animatedValue.interpolate({
       inputRange: [0, 360],
       outputRange: ['0deg', '360deg'],

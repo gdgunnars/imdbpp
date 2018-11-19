@@ -17,7 +17,7 @@ router.route('/').get(async (req, res) => {
     const { results } = data;
     res.json(populateMedia(results.slice(0, 3)));
   } catch (error) {
-    console.log(error);
+    console.log('Error in getting top reated tv', error);
     res.json({ message: 'SHIT FAILED' });
   }
 });

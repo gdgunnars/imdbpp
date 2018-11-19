@@ -123,7 +123,6 @@ class MovieTvDetail extends PureComponent {
   };
 
   componentWillUnmount = () => {
-    console.log('I UNMOUNTED!');
     this.cleanupSubscription();
   };
 
@@ -132,11 +131,7 @@ class MovieTvDetail extends PureComponent {
       media, toggleMoreText, toggleFullCast, toggleFullCrew,
     } = this.state;
     const posterSnapWidth = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
-    console.log('IM IN MOVIETVDETAIL');
-    if(media) {
-      console.log('IM IN MOVIETVDETAIL');
-      console.log(media.id);
-    }
+
     return (
       <ScreenContainer>
         {media && (

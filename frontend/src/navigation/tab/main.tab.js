@@ -24,7 +24,6 @@ class MainTab extends Component {
 
   componentDidMount = () => {
     this.subscription = routeChange().subscribe(({ routeName, activeTabName }) => {
-      console.log(activeTabName);
       this.setState({
         currentTabName: activeTabName,
         hidden: routeName === 'Camera',

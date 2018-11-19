@@ -93,7 +93,7 @@ const searchResult = async (query, res) => {
     const data = populateMedia(sortedByPopularity);
     let [mostPopular, ...rest] = data;
     if (!mostPopular || !mostPopular.posterPath) {
-      console.log("im HERHEHR");
+      console.log('We did not find any likely candidate, sending 404');
       return res.status(404).json({});
     }
 

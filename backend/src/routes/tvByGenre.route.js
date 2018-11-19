@@ -15,7 +15,7 @@ router.route("/").get(async (req, res) => {
     const populated = populateMedia(results);
     res.json({ title: genres.tv[genre].name, data: populated });
   } catch (error) {
-    console.log(error);
+    console.log('Error in tv by genre', error);
     res.json({ message: "SHIT FAILED" });
   }
 });

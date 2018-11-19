@@ -45,7 +45,6 @@ class SearchScreen extends PureComponent {
         }),
       )
       .pipe(switchMap((query) => {
-        console.log(typeof query);
         if (query && typeof query === 'string') {
           return from(getSearchResults(query));
         }
