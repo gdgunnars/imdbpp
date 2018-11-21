@@ -31,7 +31,6 @@ const createDefer = (key, url, populateWatchList) =>
         if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
           try {
             const isConnected = await NetInfo.isConnected.fetch();
-            console.log(isConnected);
             if (!isConnected && !isIos()) {
               throw new NoInternet();
             }
@@ -41,7 +40,6 @@ const createDefer = (key, url, populateWatchList) =>
             hideScreen();
             await storeData(key, apiData);
           } catch (error) {
-            console.log(error);
             showScreen('isDisconnected');
           }
           return observer.complete();
