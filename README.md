@@ -17,9 +17,11 @@ Need Name is a cross-platform, mobile-ready, react-native powered app to browse 
 - Save movies / tv-shows to watchList.
 
 ## Demo:
-
-![Screen1](/screens/gif1.gif)
-
+<div style="display: flex; width: 1000px; justify-content: space-evenly;">
+<img  src="/screens/gif1.gif" height="300" />
+<img  src="/screens/gif2.gif" height="300" />
+<img  src="/screens/gif3.gif" height="300" />
+</div>
 ## Installation
 
 Install dependencies and start expo development process.
