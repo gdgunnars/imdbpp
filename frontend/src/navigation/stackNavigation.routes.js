@@ -50,7 +50,6 @@ const Routes = {
       ...NavigationStyle,
     },
   },
-
   Camera: {
     screen: Screen.CameraScreen,
     navigationOptions: {
@@ -70,9 +69,6 @@ const Routes = {
       header: null,
     },
   },
-
-
-
   TvShow: {
     screen: Screen.TvShowScreen,
     navigationOptions: {

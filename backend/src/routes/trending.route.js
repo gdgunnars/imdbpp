@@ -18,7 +18,7 @@ router.route("/").get(async (req, res) => {
     const { results } = data;
     res.json(populateMedia(results));
   } catch (error) {
-    console.log(error);
+    console.log('Error in trending', error);
     res.json({ message: "SHIT FAILED" });
   }
 });

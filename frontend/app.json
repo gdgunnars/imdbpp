@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "assignment5",
-    "description": "A very interesting project.",
-    "slug": "assignment5",
+    "name": "IMDB++",
+    "description": "Easily discover new & revisit your favourite films & TV shows.",
+    "slug": "IMDBpp",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
@@ -22,6 +22,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.mikligardur.imdbpp"
     }
   }
 }

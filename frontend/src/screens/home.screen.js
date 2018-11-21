@@ -66,6 +66,7 @@ class HomeScreen extends PureComponent {
         discover: data,
       });
     });
+
   };
 
   componentWillUnmount = () => {

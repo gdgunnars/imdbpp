@@ -1,20 +1,21 @@
 import { defer, Observable } from 'rxjs';
 import basePath from './service.config';
-import { errorCodes } from '../errors';
-import { showLoadingScreen, hideLoadingScreen } from './loading.service';
+import { errorCodes, NoInternet } from '../errors';
+import { NetInfo } from 'react-native';
+import { showScreen, hideScreen } from './loading.service';
 import {
-  storeData, retrieveData, storageKeys, clearSessionData,
+  storeData, retrieveData, storageKeys,
 } from '../storage';
 import * as $ from './api.service';
+
+
+
 
 /* eslint-disable */
 const createDefer = (key, url, populateWatchList) =>
   defer(() =>
     Observable.create(async observer => {
       try {
-        // Todo: Remove clearSessionData.
-        // Uncomment nextLine to clearAllData from LocalDB.
-        // await clearSessionData();
         const storageData = await retrieveData(key);
         if (populateWatchList) {
           retrieveData(storageKeys.watchList())
@@ -30,11 +31,19 @@ const createDefer = (key, url, populateWatchList) =>
         }
       } catch (error) {
         if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
-          showLoadingScreen();
-          const apiData = await $.get(url);
-          observer.next(apiData);
-          hideLoadingScreen();
-          await storeData(key, apiData);
+          try {
+            const isConnected = await NetInfo.isConnected.fetch();
+            if (!isConnected) {
+              throw new NoInternet();
+            }
+            showScreen('isLoading');
+            const apiData = await $.get(url);
+            observer.next(apiData);
+            hideScreen();
+            await storeData(key, apiData);
+          } catch (error) {
+            showScreen('isDisconnected');
+          }
           return observer.complete();
         }
       }
@@ -156,7 +165,6 @@ const getSearchResults = (query, page = 1) =>
 
 const getVisionResults = query =>
   new Promise(resolve => {
-    console.log('In get Vision Results');
     $get(`${basePath}/vision?query=${query}`)
       .then(data => resolve(data))
       .catch(() => resolve(null));
@@ -181,7 +189,6 @@ const toggleItemToWatchList = item =>
         observer.complete();
       } catch (error) {
         if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
-          console.log('NOTHING FOUND HERE!');
           await storeData(watchListKey, { [itemKey]: true });
           observer.next({ ...item, onWatchList: true });
           observer.complete();
@@ -199,7 +206,6 @@ const getWatchList = () =>
         const promisedAllData = Object.keys(storageData)
           .sort((a, b) => (storageData[a] < storageData[b] ? 1 : -1))
           .map(watchListItemKey => retrieveData(watchListItemKey));
-        // console.log(promisedAllData);
         const watchList = await Promise.all(promisedAllData);
         observer.next(watchList);
         observer.complete();
@@ -208,8 +214,6 @@ const getWatchList = () =>
           observer.next([]);
           observer.complete();
         }
-        console.log('I GOT ERRRR');
-        console.log(error);
       }
       return () => `Defer with the key:${key} was completed`;
     }),

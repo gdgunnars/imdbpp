@@ -40,9 +40,9 @@ router.route("/").post(async (req, res) => {
   try {
     const client = new vision.ImageAnnotatorClient();
     const { image: base64str } = req.body;
-    const image = base64str.replace(/(\r\n|\n|\r)/gm,"");
+    const image = base64str.replace(/(\r\n|\n|\r)/gm, "");
     const request = {
-      image: { content:  image },
+      image: { content: image },
       features: [
         {
           type: "WEB_DETECTION",
@@ -93,7 +93,7 @@ const searchResult = async (query, res) => {
     const data = populateMedia(sortedByPopularity);
     let [mostPopular, ...rest] = data;
     if (!mostPopular || !mostPopular.posterPath) {
-      console.log("im HERHEHR");
+      console.log('We did not find any likely candidate, sending 404');
       return res.status(404).json({});
     }
 
@@ -123,7 +123,6 @@ const searchResult = async (query, res) => {
 
     res.status(200).json(responseObject);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error occurred" });
   }
 }

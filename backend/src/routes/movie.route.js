@@ -49,7 +49,7 @@ router.route("/:movieId").get(async (req, res) => {
     console.timeEnd("populate");
     res.json(populated);
   } catch (error) {
-    console.log(error);
+    console.log('Error in movie endpoint:', error);
     res.json({ message: "I got err" });
   }
 });

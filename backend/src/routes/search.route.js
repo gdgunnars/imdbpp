@@ -11,7 +11,6 @@ const router = express.Router();
  */
 router.route("/").get(async (req, res) => {
   const { query, page = 1 } = req.query;
-  console.log('Bingo dingo i am here');
   if (!query) {
     return res.status(400).json({ message: "Missing search query" });
   }
@@ -29,7 +28,7 @@ router.route("/").get(async (req, res) => {
     const data = populateMedia(sortedByPopularity);
     let [mostPopular, ...rest] = data;
     if (!mostPopular || !mostPopular.posterPath) {
-      console.log("im HERHEHR");
+      console.log('We did not find any likely candidate, sending 404');
       return res.status(404).json({});
     }
 
@@ -59,7 +58,7 @@ router.route("/").get(async (req, res) => {
 
     res.status(200).json(responseObject);
   } catch (error) {
-    console.log(error);
+    console.log('Error in search route:', error);
     res.status(500).json({ message: "Error occurred" });
   }
 });

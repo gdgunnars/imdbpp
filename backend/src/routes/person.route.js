@@ -21,7 +21,7 @@ router.route("/:personId").get(async (req, res) => {
     const populated = setImagePath(populateMedia(personDetails));
     res.json(populated);
   } catch (error) {
-    console.log(error);
+    console.log('Error in person endpoint', error);
     return res.status(500).json({ message: "Got an error" });
   }
 });

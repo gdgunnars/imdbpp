@@ -17,7 +17,7 @@ router.route('/').get(async (req, res) => {
     const { results } = data;
     res.json(populateMedia(results.slice(1, 4))); // The top rated movie is for some reason some indian film so i skip that
   } catch (error) {
-    console.log(error);
+    console.log('Error in fetching top rated movies', error);
     res.json({ message: 'SHIT FAILED' });
   }
 });
