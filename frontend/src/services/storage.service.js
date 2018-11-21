@@ -7,9 +7,7 @@ import {
   storeData, retrieveData, storageKeys,
 } from '../storage';
 import * as $ from './api.service';
-
-
-
+import isIos from '../common/isIos';
 
 /* eslint-disable */
 const createDefer = (key, url, populateWatchList) =>
@@ -33,7 +31,7 @@ const createDefer = (key, url, populateWatchList) =>
         if (error.code === errorCodes.ClientDataStorage.keyNotFound) {
           try {
             const isConnected = await NetInfo.isConnected.fetch();
-            if (!isConnected) {
+            if (!isConnected && !isIos()) {
               throw new NoInternet();
             }
             showScreen('isLoading');
