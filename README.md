@@ -1,6 +1,6 @@
-# Need Name
+# IMDB++
 
-Need Name is a cross-platform, mobile-ready, react-native powered app to browse movies & tv-shows.
+Imdb++ is a cross-platform, mobile-ready, react-native powered app to browse movies & tv-shows.
 
 ## Team members:
 
