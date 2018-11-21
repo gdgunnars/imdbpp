@@ -86,7 +86,7 @@ export default class SearchCamera extends React.Component {
 
       this.sendImage(photo.base64);
     } catch (error) {
-      console.log(error);
+      this.setState({ loading: false });
     }
   };
 
@@ -112,7 +112,6 @@ export default class SearchCamera extends React.Component {
 
       navigate({ routeName: 'Search', params: { imgSearchRes: res } });
     } catch (error) {
-      console.log('Error when searching for image: ', error);
       this.setState({ notFound: true, loading: false });
     }
   };
@@ -164,7 +163,7 @@ export default class SearchCamera extends React.Component {
             </SnapContainer>
           </Cam>
         </Camera>
-        {loading && <Loading fullScreen />}
+        {loading && <Loading />}
       </View>
     );
   }

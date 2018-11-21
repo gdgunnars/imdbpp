@@ -1,12 +1,11 @@
 /* eslint-disable*/
 import React, { PureComponent } from 'react';
 import ScreenContainer from './screen.style';
-import { Slider, Poster, Backdrop, IsConnectedToInternet } from '../components';
+import { Slider, Poster, Backdrop } from '../components';
 import { Text } from '../general';
 import { getTrendingCombined, getDiscover } from '../services';
 import { navigate } from '../navigation';
 import { DimSize, MediaLink } from '../common';
-import { NetInfo } from 'react-native';
 
 const renderPoster = movies =>
   movies.map(item => (
@@ -40,7 +39,6 @@ class HomeScreen extends PureComponent {
   state = {
     trendingNow: null,
     discover: null,
-    isConnected: null,
   };
 
   cleanupSubscription = sub => {
@@ -69,46 +67,16 @@ class HomeScreen extends PureComponent {
       });
     });
 
-    /* Adding event listener to NetInfo */
-    NetInfo.isConnected.addEventListener(
-      'connectionChange',
-      this._handleConnectivityChange
-    );
-
-    /* Fetcing NetInfo and setting state */
-    NetInfo.isConnected.fetch().done(
-      (isConnected) => { this.setState({ isConnected }); }
-    );
-
   };
 
   componentWillUnmount = () => {
     this.cleanupSubscription();
-
-    /* removing event listner from NetIfno */
-    NetInfo.isConnected.removeEventListener(
-      'connectionChange',
-      this._handleConnectivityChange
-    );
-  };
-
-  /* Handling connection issues */
-  _handleConnectivityChange = (isConnected) => {
-    this.setState({
-      isConnected,
-    });
   };
 
   render() {
-    console.log(this.state.isConnected);
     const { trendingNow, discover } = this.state;
     const backdropSnapWidth = Math.round(DimSize.width('100%'));
     const posterSnapWidh = Math.round(DimSize.height('32%') * 0.7 + DimSize.width('2%'));
-
-    // Change this to === false to display homescreen.
-    if (this.state.isConnected === true) {
-      return (<IsConnectedToInternet />)
-    }
 
     return (
       <ScreenContainer>

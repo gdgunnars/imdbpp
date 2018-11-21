@@ -79,7 +79,6 @@ const createSearchResItemLink = (item) => {
       await addItemToRecentSearches(item);
       navigate(MediaLink(item));
     } catch (error) {
-      console.log(error);
       navigate(MediaLink(item));
     }
   };

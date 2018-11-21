@@ -11,7 +11,7 @@ import Trailer from './trailer';
 import Loading from './loading';
 import PersonList from './personList';
 import { Profile, ToggleShowMore } from './actorDetails';
-import IsConnectedToInternet from './noInternet.component';
+import NoInternet from './noInternet/noInternet.component';
 
 export {
   Backdrop,
@@ -28,5 +28,5 @@ export {
   ToggleShowMore,
   Loading,
   PersonList,
-  IsConnectedToInternet,
+  NoInternet,
 };

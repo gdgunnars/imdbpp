@@ -10,7 +10,7 @@ import {
 import TabNavigation from './tab/main.tab';
 import * as DimSize from '../common/dimensionSize';
 import { LoadingEvent } from '../services/loading.service';
-import LoadingScreen from '../components/loading';
+import { Loading, NoInternet } from '../components/';
 
 const MainContainer = styled.View`
   height: ${DimSize.height('100%')};
@@ -20,27 +20,50 @@ const MainContainer = styled.View`
 class Navigation extends PureComponent {
   state = {
     isLoading: false,
+    isDisconnected: false,
+    tabName: '',
+    hiddenTab: false,
   };
 
+  removeSubscriptions = () => {
+    this.loadSubscription.unsubscribe();
+    this.onRouteChangeSubscription.unsubscribe();
+  }
+
   componentDidMount = () => {
-    this.subscription = LoadingEvent.subscribe((data) => {
+    this.loadSubscription = LoadingEvent.subscribe((data) => {
+      const { isLoading, isDisconnected } = data;
       this.setState({
-        isLoading: data,
+        isLoading,
+        isDisconnected,
+      });
+    });
+    this.onRouteChangeSubscription = routeChange().subscribe(({ routeName, activeTabName }) => {
+      this.setState({
+        tabName: activeTabName,
+        hiddenTab: routeName === 'Camera',
+        isDisconnected: false,
       });
     });
   };
 
+  componentWillUnmount = () => {
+    this.removeSubscriptions();
+  }
+
+
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, isDisconnected, hiddenTab, tabName } = this.state;
     return (
       <MainContainer>
-        {isLoading && <LoadingScreen />}
+        {isLoading && <Loading />}
+        {isDisconnected && <NoInternet />}
         <StackNavigator
           ref={(navigationRef) => {
             setTopLevelNavigator(navigationRef);
           }}
         />
-        <TabNavigation />
+        <TabNavigation hidden={hiddenTab} currentTabName={tabName} />
       </MainContainer>
     );
   }

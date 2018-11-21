@@ -8,6 +8,7 @@ const errorCodes = {
     clearSessionData: 421,
   },
   ApiFetch: {
+    noInternet: 69,
     serverError: 500,
   },
 };
@@ -17,6 +18,14 @@ class ToJsonError extends Error {
     super(message);
     this.name = 'ToJsonError';
     this.code = errorCodes.ClientDataStorage.toJson;
+  }
+
+}
+class NoInternet extends Error {
+  constructor(message = 'Got no connection brah') {
+    super(message);
+    this.name = 'noInternet';
+    this.code = errorCodes.ApiFetch.noInternet;
   }
 }
 
@@ -76,4 +85,5 @@ export {
   ApiGetDataError,
   StorageDataWithKeyNotFound,
   StorageClearAllSessionData,
+  NoInternet
 };

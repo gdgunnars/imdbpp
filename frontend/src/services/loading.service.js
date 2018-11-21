@@ -1,14 +1,16 @@
 import { BehaviorSubject } from 'rxjs';
 
-const LoadingSubject = new BehaviorSubject(false);
+const LoadingSubject = new BehaviorSubject({});
 const LoadingEvent = LoadingSubject.asObservable();
 
-const showLoadingScreen = () => {
-  LoadingSubject.next(true);
+const showScreen = (screenKey) => {
+  LoadingSubject.next({ [screenKey]: true });
 };
 
-const hideLoadingScreen = () => {
-  LoadingSubject.next(false);
+
+
+const hideScreen = () => {
+  LoadingSubject.next({});
 };
 
-export { LoadingEvent, showLoadingScreen, hideLoadingScreen };
+export { LoadingEvent, showScreen, hideScreen };
