@@ -21,6 +21,7 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.mikligardur.imdbpp",
       "supportsTablet": true
     },
     "android": {
