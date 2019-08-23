@@ -1,5 +1,6 @@
 export const getApiKey = () => {
-  return "c676ad1c06defe8fd668a42c4b030547";
+  // Change this for your own key
+  return "YOUR-OWN-IMDB-API-KEY-HERE";
 };
 
 export const getBasePath = () => {
